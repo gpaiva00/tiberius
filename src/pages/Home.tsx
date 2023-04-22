@@ -150,7 +150,7 @@ export default function Home() {
     <main className='flex flex-col flex-1 min-h-screen px-40 py-10 items-center justify-center'>
       <div className="flex flex-col">
         <div className="flex flex-col bg-white rounded-default h-[500px] w-[450px] border border-black shadow-default">
-          <header className="flex items-center gap-2 p-4 bg-lightenPrimary rounded-t-default">
+          <header className="flex items-center gap-2 p-4 bg-header rounded-t-default">
             {showLists
               ? <div className="flex flex-1 items-center justify-between">
                 <h1 className="font-black text-2xl text-black">Listas</h1>
@@ -205,7 +205,7 @@ export default function Home() {
           )}
         </div>
         <footer className="w-full text-end mt-5">
-          <p className='text-sm text-lightenGray opacity-50 font-light'>Tiberius © {new Date().getFullYear()}</p>
+          <p className='text-sm text-gray opacity-50 font-light'>Tiberius © {new Date().getFullYear()}</p>
         </footer>
       </div>
     </main>

@@ -9,14 +9,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        // background: '#E6E6E6',
-        background: '#292929',
         black: '#111',
         gray: '#333333',
-        lightGray: '#E6E6E6',
+        lightGray: '#d1dcde',
         lightenGray: lighten(0.5, '#333'),
-        primary: '#f34971',
-        lightenPrimary: lighten(0.1, '#f34971'),
+        primary: '#467cd0',
+        header: '#ff91e7',
+        lightenPrimary: lighten(0.1, '#467cd0'),
         white: '#F5F5F5',
       },
       borderRadius: {
