@@ -5,8 +5,11 @@
 @layer base {
   html {
     font-family: Lato, system-ui, sans-serif;
-    background-color: #f1f2f6;
+    background-color: #e6e6e6;
     user-select: none;
+    font-size: 1.125rem /* 18px */;
+    line-height: 1.75rem /* 28px */;
+    color: #000;
   }
 
   body {

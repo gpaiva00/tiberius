@@ -1,12 +1,13 @@
 export interface ListProps {
-  items: ListItem[];
-  id: number;
-  name: string;
-  icon?: string;
+  items: ListItem[]
+  id: string
+  name: string
+  icon?: string
 }
 
 export interface ListItem {
-  id: number;
-  text: string;
-  completed: boolean;
+  id: string
+  text: string
+  completed: boolean
+  position?: number
 }

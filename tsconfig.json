@@ -32,6 +32,15 @@
       ],
       "@pages/*": [
         "pages/*"
+      ],
+      "@services/*": [
+        "services/*"
+      ],
+      "@assets/*": [
+        "assets/*"
+      ],
+      "@hooks/*": [
+        "hooks/*"
       ]
     }
   },

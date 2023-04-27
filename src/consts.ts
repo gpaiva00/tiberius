@@ -1,11 +1,10 @@
-import { ListProps } from "@/typings/List";
+import { ListProps } from '@/typings/List'
 
-export const LIST_ROUTE = '/list';
+export const LIST_ROUTE = '/list'
+export const SIGN_IN_ROUTE = '/sign-in'
 
-export const DEFAULT_LIST: ListProps = {
-  id: 1,
+export const GENERAL_LIST: ListProps = {
+  id: '1',
   items: [],
-  name: 'Geral',
+  name: 'geral',
 }
-
-export const GENERAL_LIST_ID = 1;
