@@ -11,9 +11,7 @@ export default function App() {
         <div className="mt-4">
           <Link to={SIGN_IN_ROUTE}>
             <button
-              className={
-                'py-2 px-5 bg-primary hover:text-black border-default rounded-default text-white hover: transition-colors shadow-default lowercase'
-              }
+              className="default-button"
             >
               Começar
             </button>

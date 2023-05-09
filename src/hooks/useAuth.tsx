@@ -4,8 +4,10 @@ import { useNavigate } from 'react-router-dom'
 
 import { auth, signInWithGoogle, User as UserFirebase } from '@services/firebase'
 
+import { SIGN_IN_ROUTE, STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
+import { checkIfUserHasLists, createDefaultListForNewUser } from '@/services/list'
+
 import { UserProps } from '@/typings/User'
-import { SIGN_IN_ROUTE } from '@/consts'
 
 interface UseAuthProps {
   isLogged: boolean
@@ -25,20 +27,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoadingUser, setIsLoadingUser] = useState(true)
   const [isLogged, setIsLogged] = useState(false)
   const [user, setUser] = useState<UserProps | null>(null)
+  const [userExists, setUserExists] = useState<boolean>(false)
 
   const navigate = useNavigate()
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(fallback)
-
-    return () => unsubscribe()
-  }, [])
 
   const signIn = async () => {
     try {
       const { user } = await signInWithGoogle()
 
-      fallback(user)
+      signInFallback(user)
     } catch (error) {
       console.error('sign in error', error)
       setIsLoadingUser(false)
@@ -48,6 +45,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const signOut = async () => {
     try {
       await auth.signOut()
+      localStorage.removeItem(STORAGE_SELECTED_LIST_ID_KEY)
       navigate(SIGN_IN_ROUTE)
     } catch (error) {
       console.error('sign out error', error)
@@ -57,11 +55,34 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }
 
-  const fallback = async (user: UserFirebase | null) => {
+  const signInFallback = async (user: UserFirebase | null) => {
     if (user !== null) {
       setIsLogged(true)
 
       try {
+        setUser({
+          ...user,
+          firstName: user.displayName?.split(' ')[0] || '',
+        })
+
+        const userHasLists = await checkIfUserHasLists(user.uid)
+        console.warn({ userHasLists });
+
+        if (!userHasLists) {
+          await createDefaultListForNewUser(user.uid)
+        }
+      } catch (error) {
+      } finally {
+        setIsLoadingUser(false)
+      }
+    }
+  }
+
+  const authStateChangedFallback = async (user: UserFirebase | null) => {
+    if (user !== null) {
+      try {
+        setIsLogged(true)
+
         setUser({
           ...user,
           firstName: user.displayName?.split(' ')[0] || '',
@@ -72,6 +93,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
     }
   }
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(authStateChangedFallback)
+
+    return () => unsubscribe()
+  }, [])
 
   return (
     <authContext.Provider

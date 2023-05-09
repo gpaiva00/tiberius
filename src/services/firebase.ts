@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, User } from 'firebase/auth'
+import { getAuth, GoogleAuthProvider, signInWithPopup, User, fetchSignInMethodsForEmail } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
@@ -16,21 +16,10 @@ const app = initializeApp(firebaseConfig)
 
 const auth = getAuth(app)
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/firebase.User
-    const uid = user.uid
-    console.warn('user is signed in', { user, uid })
-  } else {
-    console.warn('user was signed out')
-  }
-})
-
 const googleProvider = new GoogleAuthProvider()
 const signInWithGoogle = () => signInWithPopup(auth, googleProvider)
 
 const db = getFirestore(app)
 
-export { auth, googleProvider, signInWithGoogle, db }
+export { googleProvider, signInWithGoogle, db, app, auth, fetchSignInMethodsForEmail }
 export type { User }

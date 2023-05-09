@@ -1,31 +1,46 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import { useAuth } from '@/hooks/useAuth'
 
 import ListContent from '@/components/ListContent'
 import ListsContent from '@/components/ListsContent'
 import Divider from '@components/Divider'
 
-import { ListItem, ListProps } from '@typings/List'
-import { GENERAL_LIST } from '@/consts'
+import { ListItemProps, ListProps } from '@typings/List'
 
 import ListContentFooter from '@/components/ListContentFooter'
 import ListsContentFooter from '@/components/ListsContentFooter'
+import ListContentHeader from '@/components/ListContentHeader'
+import ListsContentHeader from '@/components/ListsContentHeader'
+import DefaultCard from '@/components/DefaultCard'
 
-import { createList as createListOnDB, deleteList as deleteListOnDB, updateList as updateListOnDB } from '@services/list'
+import { STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
+import { getFromStorage, setToStorage } from '@/utils/storage'
 
-export default function Home() {
+import {
+  createList as createListOnDB,
+  deleteList as deleteListOnDB,
+  subscribeToUserLists,
+  updateList as updateListOnDB,
+} from '@services/list'
+
+export default function List() {
+  const [lists, setLists] = useState<ListProps[]>([])
   const [showLists, setShowLists] = useState<boolean>(false)
-  const [selectedList, setSelectedList] = useState<ListProps | null>(GENERAL_LIST)
-  const [editingItem, setEditingItem] = useState<ListItem | null>(null)
+  const [selectedList, setSelectedList] = useState<ListProps | null>(null)
+  const [editingItem, setEditingItem] = useState<ListItemProps | null>(null)
 
-  const handleClickOnListName = () => setShowLists(true)
+  const { user } = useAuth()
+  const userId = user?.uid as string
 
-  const handleDoubleClickOnItem = (item: ListItem) => {
+  const toggleListView = () => setShowLists(!showLists)
+
+  const handleDoubleClickOnItem = (item: ListItemProps) => {
     if (item.completed) return
     setEditingItem(item)
   }
 
-  const handleDeleteItem = (item: ListItem) => {
+  const handleDeleteItem = (item: ListItemProps) => {
     const prompt = window.confirm('tem certeza que deseja excluir este item?')
 
     if (!prompt) return
@@ -33,7 +48,7 @@ export default function Home() {
     const updatedItems = selectedList?.items.filter((selectedListItem) => selectedListItem.id !== item.id)
     const updatedList = {
       ...(selectedList as ListProps),
-      items: updatedItems as ListItem[],
+      items: updatedItems as ListItemProps[],
     }
 
     setSelectedList(updatedList)
@@ -48,7 +63,7 @@ export default function Home() {
     deleteListOnDB(listID)
   }
 
-  const updateItem = (item: ListItem) => {
+  const updateItem = (item: ListItemProps) => {
     const updatedItems = selectedList?.items.map((selectedListItem) => {
       if (selectedListItem.id === item.id) {
         return item
@@ -59,7 +74,7 @@ export default function Home() {
 
     const updatedList = {
       ...(selectedList as ListProps),
-      items: updatedItems as ListItem[],
+      items: updatedItems as ListItemProps[],
     }
 
     setSelectedList(updatedList)
@@ -68,7 +83,7 @@ export default function Home() {
 
   const renameItem = (itemText: string) => {
     const newItem = {
-      ...(editingItem as ListItem),
+      ...(editingItem as ListItemProps),
       text: itemText,
     }
 
@@ -76,7 +91,7 @@ export default function Home() {
     setEditingItem(null)
   }
 
-  const handleOnCheckItem = (item: ListItem) => {
+  const handleOnCheckItem = (item: ListItemProps) => {
     const newItem = {
       ...item,
       completed: !item.completed,
@@ -92,7 +107,7 @@ export default function Home() {
     }
 
     const updatedItems = [
-      ...(selectedList?.items as ListItem[]),
+      ...(selectedList?.items as ListItemProps[]),
       {
         id: uuidv4(),
         text: itemText,
@@ -111,14 +126,9 @@ export default function Home() {
   }
 
   const handleOnChooseList = (list: ListProps) => {
-    if (list.id === GENERAL_LIST.id) {
-      setSelectedList(GENERAL_LIST)
-      setShowLists(false)
-      return
-    }
-
     setSelectedList(list)
     setShowLists(false)
+    setToStorage(STORAGE_SELECTED_LIST_ID_KEY, list.id)
   }
 
   const handleAddList = (listName: string) => {
@@ -126,57 +136,83 @@ export default function Home() {
       id: uuidv4(),
       name: listName,
       items: [],
+      userId,
     }
 
     createListOnDB(newList)
   }
 
+  const handleSetSelectedList = (lists: ListProps[]) => {
+    const selectedListOnStorage = getFromStorage(STORAGE_SELECTED_LIST_ID_KEY)
+
+    if (!selectedListOnStorage) {
+      setSelectedList(lists[0])
+      setToStorage(STORAGE_SELECTED_LIST_ID_KEY, lists[0].id)
+      return
+    }
+
+    const selectedList = lists.find((list) => list.id === selectedListOnStorage)
+
+    setSelectedList(selectedList as ListProps)
+  }
+
+  useEffect(() => {
+    const unsubscribe = subscribeToUserLists({
+      userId,
+      observer: (lists) => {
+        const newLists: ListProps[] = []
+
+        lists.forEach((list) => {
+          newLists.push(list.data() as ListProps)
+        })
+
+        setLists(newLists)
+        handleSetSelectedList(newLists)
+      },
+    })
+
+    return () => unsubscribe()
+  }, [])
+
   return (
-    <main className="flex flex-1 flex-col px-40 py-10 items-center justify-center">
-      <div className="flex flex-col bg-white rounded-default h-[550px] w-[500px] border-default shadow-default">
-        <header className="flex items-center gap-2 p-4 bg-header rounded-t-default">
-          {showLists ? (
-            <div className="flex flex-1 items-center justify-between">
-              <h1 className="font-black text-2xl  lowercase">Listas</h1>
-            </div>
-          ) : (
-            <div className="flex flex-1 items-center justify-between">
-              <h1 className="font-black text-2xl  lowercase">para hoje</h1>
-              <button className=" text-xl hover:underline max-w-[250px] truncate" onClick={handleClickOnListName}>
-                {selectedList?.name}
-              </button>
-            </div>
-          )}
-        </header>
-        <Divider />
+    <DefaultCard>
+      <header className="flex items-center gap-2 px-4 bg-header rounded-t-default h-16">
+        {showLists ? (
+          <ListsContentHeader handleClickOnBackButton={toggleListView} />
+        ) : (
+          <ListContentHeader
+            handleClickOnListName={toggleListView}
+            selectedList={selectedList}
+          />
+        )}
+      </header>
+      <Divider />
 
-        <div className="flex flex-1">
-          {showLists ? (
-            <ListsContent
-              handleOnChooseList={handleOnChooseList}
-              handleDeleteList={handleDeleteList}
-            />
-          ) : (
-            <ListContent
-              selectedList={selectedList}
-              setSelectedList={setSelectedList}
-              handleDoubleClickOnItem={handleDoubleClickOnItem}
-              handleOnCheckItem={handleOnCheckItem}
-              handleDeleteItem={handleDeleteItem}
-            />
-          )}
-        </div>
+      {showLists ? (
+        <ListsContent
+          handleOnChooseList={handleOnChooseList}
+          handleDeleteList={handleDeleteList}
+          lists={lists}
+        />
+      ) : (
+        <ListContent
+          selectedList={selectedList}
+          setSelectedList={setSelectedList}
+          handleDoubleClickOnItem={handleDoubleClickOnItem}
+          handleOnCheckItem={handleOnCheckItem}
+          handleDeleteItem={handleDeleteItem}
+        />
+      )}
 
-        <Divider />
-
-        <div className="">
-          {showLists ? (
-            <ListsContentFooter handleAddList={handleAddList} />
-          ) : (
-            <ListContentFooter handleAddItem={handleAddItem} editingItemText={editingItem?.text} />
-          )}
-        </div>
-      </div>
-    </main>
+      <Divider />
+      {showLists ? (
+        <ListsContentFooter handleAddList={handleAddList} />
+      ) : (
+        <ListContentFooter
+          handleAddItem={handleAddItem}
+          editingItemText={editingItem?.text}
+        />
+      )}
+    </DefaultCard>
   )
 }

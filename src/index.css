@@ -18,3 +18,9 @@
     box-sizing: border-box;
   }
 }
+
+@layer components {
+  .default-button {
+    @apply flex items-center gap-4 justify-center p-2 w-full bg-primary hover:bg-black hover:text-lightenPrimary border-default rounded-default text-white transition-colors;
+  }
+}

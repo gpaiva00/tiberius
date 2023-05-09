@@ -3,39 +3,44 @@ import {
   collection,
   deleteDoc,
   setDoc,
-  getDocs,
   onSnapshot,
   QuerySnapshot,
   DocumentData,
+  query,
+  where,
+  getDocs,
 } from 'firebase/firestore'
 
 import { db } from '@services/firebase'
 
 import { ListProps } from '@/typings/List'
+import { UserProps } from '@/typings/User'
 
-export const getList = async (listID: ListProps['id']) => {}
+import { GENERAL_LIST } from '@/consts'
+
+interface SubscribeToUserListsProps {
+  observer: (snapshot: QuerySnapshot<DocumentData>) => void
+  userId: UserProps['uid']
+}
 
 export const listCollection = collection(db, 'lists')
 
-export const getLists = async () => {
-  try {
-    const listsSnapshot = await getDocs(listCollection)
-    const lists: ListProps[] = []
+export const subscribeToUserLists = ({ observer, userId }: SubscribeToUserListsProps) => {
+  const userListQuery = query(listCollection, where('userId', '==', userId))
 
-    listsSnapshot.forEach((list) => {
-      lists.push(list.data() as ListProps)
-    })
-
-    return lists
-  } catch (error) {
-    console.error('getLists', error)
-    return []
-  }
+  const unsubscribe = onSnapshot(userListQuery, observer)
+  return unsubscribe
 }
 
-export const subscribeToLists = (observer: (snapshot: QuerySnapshot<DocumentData>) => void) => {
-  const unsubscribe = onSnapshot(listCollection, observer)
-  return unsubscribe
+export const checkIfUserHasLists = async (userId: UserProps['uid']) => {
+  try {
+    const userListQuery = query(listCollection, where('userId', '==', userId))
+    const userList = await getDocs(userListQuery)
+
+    return !userList.empty
+  } catch (error) {
+    console.error('checkIfUserHasLists', error)
+  }
 }
 
 export const updateList = (list: ListProps) => {
@@ -52,6 +57,19 @@ export const createList = async (list: ListProps) => {
     await setDoc(doc(db, 'lists', list.id), list)
   } catch (error) {
     console.error('createList', error)
+  }
+}
+
+export const createDefaultListForNewUser = async (userId: UserProps['uid']) => {
+  try {
+    const list: ListProps = {
+      ...GENERAL_LIST,
+      userId,
+    }
+
+    await createList(list)
+  } catch (error) {
+    console.error('createDefaultListForNewUser', error)
   }
 }
 
