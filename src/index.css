@@ -23,4 +23,12 @@
   .default-button {
     @apply flex items-center gap-4 justify-center p-2 w-full bg-primary hover:bg-black hover:text-lightenPrimary border-default rounded-default text-white transition-colors;
   }
+
+  .default-icon-button {
+    @apply text-black hover:bg-lightGray transition-all cursor-pointer rounded-default;
+  }
+
+  .drag-over {
+    @apply bg-lightGray;
+  }
 }

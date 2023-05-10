@@ -9,8 +9,9 @@ import App from '../pages/Home'
 import List from '../pages/List'
 import SignIn from '../pages/SignIn'
 import User from '../pages/User'
+import Lists from '../pages/Lists'
 
-import { LIST_ROUTE, SIGN_IN_ROUTE, USER_ROUTE } from '@/consts'
+import { LIST_ROUTE, LISTS_ROUTE, SIGN_IN_ROUTE, USER_ROUTE } from '@/consts'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,6 +30,11 @@ const router = createBrowserRouter(
           <Route
             path={LIST_ROUTE}
             element={<List />}
+            errorElement={<Error />}
+          />
+          <Route
+            path={LISTS_ROUTE}
+            element={<Lists />}
             errorElement={<Error />}
           />
           <Route

@@ -1,39 +1,26 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import classNames from 'classnames'
 import { v4 as uuidv4 } from 'uuid'
-import { useAuth } from '@/hooks/useAuth'
-
-import ListContent from '@/components/ListContent'
-import ListsContent from '@/components/ListsContent'
-import Divider from '@components/Divider'
 
 import { ListItemProps, ListProps } from '@typings/List'
 
+import Divider from '@components/Divider'
 import ListContentFooter from '@/components/ListContentFooter'
-import ListsContentFooter from '@/components/ListsContentFooter'
 import ListContentHeader from '@/components/ListContentHeader'
-import ListsContentHeader from '@/components/ListsContentHeader'
 import DefaultCard from '@/components/DefaultCard'
+import { ListContentContainer } from '@/components/ListContentContainer'
 
-import { STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
-import { getFromStorage, setToStorage } from '@/utils/storage'
+import { useList } from '@/contexts/useList'
 
-import {
-  createList as createListOnDB,
-  deleteList as deleteListOnDB,
-  subscribeToUserLists,
-  updateList as updateListOnDB,
-} from '@services/list'
+import { DEFAULT_ICON_PROPS } from '@/consts'
+import ItemTextFormatted from '@/utils/ItemTextFormatted'
+
+import { DotsSixVertical, TrashSimple } from '@phosphor-icons/react'
 
 export default function List() {
-  const [lists, setLists] = useState<ListProps[]>([])
-  const [showLists, setShowLists] = useState<boolean>(false)
-  const [selectedList, setSelectedList] = useState<ListProps | null>(null)
   const [editingItem, setEditingItem] = useState<ListItemProps | null>(null)
 
-  const { user } = useAuth()
-  const userId = user?.uid as string
-
-  const toggleListView = () => setShowLists(!showLists)
+  const { selectedList, updateList } = useList()
 
   const handleDoubleClickOnItem = (item: ListItemProps) => {
     if (item.completed) return
@@ -51,16 +38,7 @@ export default function List() {
       items: updatedItems as ListItemProps[],
     }
 
-    setSelectedList(updatedList)
-    updateListOnDB(updatedList)
-  }
-
-  const handleDeleteList = (listID: string) => {
-    const prompt = window.confirm('tem certeza que deseja excluir esta lista?')
-
-    if (!prompt) return
-
-    deleteListOnDB(listID)
+    updateList(updatedList)
   }
 
   const updateItem = (item: ListItemProps) => {
@@ -77,8 +55,7 @@ export default function List() {
       items: updatedItems as ListItemProps[],
     }
 
-    setSelectedList(updatedList)
-    updateListOnDB(updatedList)
+    updateList(updatedList)
   }
 
   const renameItem = (itemText: string) => {
@@ -121,98 +98,102 @@ export default function List() {
       items: updatedItems,
     }
 
-    setSelectedList(updatedList)
-    updateListOnDB(updatedList)
+    updateList(updatedList)
   }
 
-  const handleOnChooseList = (list: ListProps) => {
-    setSelectedList(list)
-    setShowLists(false)
-    setToStorage(STORAGE_SELECTED_LIST_ID_KEY, list.id)
+  const handleOnDragItemStart = (event: React.DragEvent<HTMLDivElement>, index: number) => {
+    event.dataTransfer.setData('text/plain', index.toString());
   }
 
-  const handleAddList = (listName: string) => {
-    const newList = {
-      id: uuidv4(),
-      name: listName,
-      items: [],
-      userId,
-    }
-
-    createListOnDB(newList)
+  const handleOnDragItemOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.currentTarget.classList.add('drag-over')
   }
 
-  const handleSetSelectedList = (lists: ListProps[]) => {
-    const selectedListOnStorage = getFromStorage(STORAGE_SELECTED_LIST_ID_KEY)
-
-    if (!selectedListOnStorage) {
-      setSelectedList(lists[0])
-      setToStorage(STORAGE_SELECTED_LIST_ID_KEY, lists[0].id)
-      return
-    }
-
-    const selectedList = lists.find((list) => list.id === selectedListOnStorage)
-
-    setSelectedList(selectedList as ListProps)
+  function handleDragItemLeave(event: React.DragEvent<HTMLDivElement>) {
+    event.currentTarget.classList.remove('drag-over');
   }
 
-  useEffect(() => {
-    const unsubscribe = subscribeToUserLists({
-      userId,
-      observer: (lists) => {
-        const newLists: ListProps[] = []
+  const handleOnDropItem = (event: React.DragEvent<HTMLDivElement>, index: number) => {
+    event.preventDefault();
+    event.currentTarget.classList.remove('drag-over');
 
-        lists.forEach((list) => {
-          newLists.push(list.data() as ListProps)
-        })
+    const dragIndex = Number(event.dataTransfer.getData('text/plain'));
+    const newListItems = [...selectedList?.items as ListItemProps[]];
+    const [removed] = newListItems.splice(dragIndex, 1);
 
-        setLists(newLists)
-        handleSetSelectedList(newLists)
-      },
+    newListItems.splice(index, 0, removed);
+
+    updateList({
+      ...selectedList as ListProps,
+      items: newListItems,
     })
-
-    return () => unsubscribe()
-  }, [])
+  }
 
   return (
     <DefaultCard>
-      <header className="flex items-center gap-2 px-4 bg-header rounded-t-default h-16">
-        {showLists ? (
-          <ListsContentHeader handleClickOnBackButton={toggleListView} />
-        ) : (
-          <ListContentHeader
-            handleClickOnListName={toggleListView}
-            selectedList={selectedList}
-          />
+      <ListContentHeader
+        handleClickOnListName={() => { }}
+        selectedList={selectedList}
+      />
+      <Divider />
+
+      <ListContentContainer>
+        {!selectedList?.items.length && (
+          <div className="flex flex-1 items-center justify-center">
+            <p className="text-lightenGray font-light lowercase">sem itens por enquanto</p>
+          </div>
         )}
-      </header>
-      <Divider />
+        {selectedList?.items.map((item, index) => (
+          <div key={item.id}
+            draggable
+            onDragStart={(event) => handleOnDragItemStart(event, index)}
+            onDragOver={(event) => handleOnDragItemOver(event)}
+            onDrop={(event) => handleOnDropItem(event, index)}
+            onDragLeave={(event) => handleDragItemLeave(event)}
+          >
+            <div className="flex flex-row items-center p-4">
+              <div className="flex gap-1">
+                <DotsSixVertical
+                  className="text-lightenGray2 cursor-grab"
+                  {...DEFAULT_ICON_PROPS}
+                />
+                <input
+                  className="relative h-[1.125rem] w-[1.125rem] appearance-none rounded-default border-default border-lightenGray outline-none checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:ml-[0.315rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer transition-all"
+                  type="checkbox"
+                  checked={item.completed}
+                  onChange={() => handleOnCheckItem(item)}
+                />
+              </div>
+              <div className="flex flex-1 ml-3">
+                <label
+                  className={classNames('transition-all font-light select-text', {
+                    'line-through text-gray opacity-30 hover:line-through': item.completed,
+                  })}
+                  onDoubleClick={() => handleDoubleClickOnItem(item)}
+                >
+                  <ItemTextFormatted itemText={item.text} />
+                </label>
+              </div>
+              <div className="flex">
+                <button
+                  className="hover:bg-lightGray rounded-default p-2 transition-colors"
+                  onClick={() => handleDeleteItem(item)}
+                >
+                  <TrashSimple {...DEFAULT_ICON_PROPS} />
+                </button>
+              </div>
+            </div>
+            {index !== selectedList?.items.length - 1 && <Divider />}
+          </div>
+        ))}
+      </ListContentContainer>
 
-      {showLists ? (
-        <ListsContent
-          handleOnChooseList={handleOnChooseList}
-          handleDeleteList={handleDeleteList}
-          lists={lists}
-        />
-      ) : (
-        <ListContent
-          selectedList={selectedList}
-          setSelectedList={setSelectedList}
-          handleDoubleClickOnItem={handleDoubleClickOnItem}
-          handleOnCheckItem={handleOnCheckItem}
-          handleDeleteItem={handleDeleteItem}
-        />
-      )}
-
       <Divider />
-      {showLists ? (
-        <ListsContentFooter handleAddList={handleAddList} />
-      ) : (
-        <ListContentFooter
-          handleAddItem={handleAddItem}
-          editingItemText={editingItem?.text}
-        />
-      )}
+      <ListContentFooter
+        handleAddItem={handleAddItem}
+        editingItemText={editingItem?.text}
+      />
     </DefaultCard>
   )
 }

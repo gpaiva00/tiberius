@@ -11,6 +11,7 @@ export default {
         gray: '#333',
         lightGray: '#e6e6e6',
         lightenGray: lighten(0.3, '#333'),
+        lightenGray2: lighten(0.5, '#333'),
         primary: '#467cd0',
         header: '#F5F5F5',
         lightenPrimary: lighten(0.2, '#467cd0'),

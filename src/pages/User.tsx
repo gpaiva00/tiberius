@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/contexts/useAuth'
 
 import DefaultCard from '@/components/DefaultCard'
 
@@ -22,7 +22,7 @@ export default function User() {
       <header className="flex items-center gap-2 px-4 bg-header rounded-t-default h-16">
         <div className="flex items-center">
           <button
-            className="hover:text-lightenGray"
+            className="hover:bg-lightGray rounded-default p-2 transition-colors"
             onClick={handleClickOnBackButton}
           >
             <CaretLeft {...DEFAULT_ICON_PROPS} />
@@ -42,7 +42,7 @@ export default function User() {
         <div className="flex flex-col gap-4">
           <h1 className="font-bold text-2xl lowercase ml-4">{user?.displayName}</h1>
           <button
-            className="py-2 px-5 bg-red hover:text-black border-default rounded-default text-white hover: transition-colors lowercase"
+            className="py-2 px-5 bg-red hover:bg-black hover:text-rose-500 border-default rounded-default text-white transition-colors lowercase"
             onClick={signOut}
           >
             sair da conta

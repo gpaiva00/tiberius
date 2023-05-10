@@ -2,7 +2,7 @@ import classNames from 'classnames'
 
 interface DefaultCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
-  size: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg'
 }
 
 export default function DefaultCard({ children, size = 'lg' }: DefaultCardProps) {

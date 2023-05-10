@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth, GoogleAuthProvider, signInWithPopup, User, fetchSignInMethodsForEmail } from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore'
+import { getFirestore, initializeFirestore, persistentLocalCache } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCFCNAF1y90lZ4ek-Ik59CQEbF1sDmpTgQ',
@@ -13,6 +13,8 @@ const firebaseConfig = {
 }
 
 const app = initializeApp(firebaseConfig)
+
+initializeFirestore(app, { localCache: persistentLocalCache(/*settings*/ {}) })
 
 const auth = getAuth(app)
 

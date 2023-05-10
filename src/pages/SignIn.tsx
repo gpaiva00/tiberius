@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/contexts/useAuth'
 
 import DefaultCard from '@/components/DefaultCard'
 import Divider from '@/components/Divider'
