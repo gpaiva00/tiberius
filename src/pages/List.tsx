@@ -110,7 +110,7 @@ export default function List() {
     event.currentTarget.classList.add('drag-over')
   }
 
-  function handleDragItemLeave(event: React.DragEvent<HTMLDivElement>) {
+  const handleDragItemLeave = (event: React.DragEvent<HTMLDivElement>) => {
     event.currentTarget.classList.remove('drag-over');
   }
 
