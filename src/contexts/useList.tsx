@@ -1,14 +1,14 @@
-import { ReactNode, createContext, useContext, useEffect, useState } from "react"
+import { ReactNode, createContext, useContext, useEffect, useState } from 'react'
 
-import { subscribeToUserLists, updateList as updateListOnDB } from "@/services/list"
+import { subscribeToUserLists, updateList as updateListOnDB } from '@/services/list'
 
-import { useAuth } from "@/contexts/useAuth"
+import { useAuth } from '@/contexts/useAuth'
 
-import { STORAGE_SELECTED_LIST_ID_KEY } from "@/consts"
+import { STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
 
-import { getFromStorage, setToStorage } from "@/utils/storage"
+import { getFromStorage, setToStorage } from '@/utils/storage'
 
-import { ListProps } from "@/typings/List"
+import { ListProps } from '@/typings/List'
 
 interface ListProviderProps {
   children: ReactNode
@@ -46,6 +46,7 @@ export const ListProvider = ({ children }: ListProviderProps) => {
 
   const updateList = (list: ListProps) => {
     updateListOnDB(list)
+    setSelectedList(list)
   }
 
   useEffect(() => {
@@ -67,17 +68,18 @@ export const ListProvider = ({ children }: ListProviderProps) => {
   }, [userId])
 
   return (
-    <listContext.Provider value={{
-      selectedList,
-      setSelectedList,
-      lists,
-      updateList
-    }}>
+    <listContext.Provider
+      value={{
+        selectedList,
+        setSelectedList,
+        lists,
+        updateList,
+      }}
+    >
       {children}
     </listContext.Provider>
   )
 }
-
 
 export const useList = () => {
   const context = useContext(listContext)

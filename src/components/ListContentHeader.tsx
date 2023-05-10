@@ -1,44 +1,38 @@
 import { Link } from 'react-router-dom'
-import classNames from 'classnames'
 
 import { DEFAULT_ICON_PROPS, LISTS_ROUTE } from '@/consts'
 
+import ProgressBar from '@/components/ProgressBar'
 import { ListProps } from '@/typings/List'
 
 import { List } from '@phosphor-icons/react'
 
 interface ListContentHeaderProps {
   selectedList: ListProps | null
-  handleClickOnListName: () => void
 }
 
-export default function ListContentHeader({ selectedList, handleClickOnListName }: ListContentHeaderProps) {
-  const completedItems = selectedList?.items.filter((item) => item.completed).length || 0
-  const isListCompleted = selectedList?.items.length === completedItems
-  const listItemsStatus = `${completedItems}/${selectedList?.items.length}`
-
+export default function ListContentHeader({ selectedList }: ListContentHeaderProps) {
   return (
-    <header className="flex items-center gap-2 px-4 bg-header rounded-t-default h-16">
+    <header className="translucid flex h-16 items-center gap-2 rounded-t-default px-4">
       <div className="flex flex-1 items-center justify-between">
         <div className="flex items-center justify-center">
-          <Link to={LISTS_ROUTE} className="hover:bg-lightGray rounded-default p-2 transition-colors">
+          <Link
+            to={LISTS_ROUTE}
+            className="rounded-default p-2 transition-colors hover:bg-lightGray"
+          >
             <List {...DEFAULT_ICON_PROPS} />
           </Link>
-          <h1 className="font-black text-2xl lowercase ml-4">para hoje</h1>
+          <h1 className="ml-4 text-2xl font-black lowercase">para hoje</h1>
         </div>
 
-        <div className="flex flex-col items-end">
-          <button className="text-xl text-primary hover:underline max-w-[15.625rem] truncate">
-            {selectedList?.name}
-          </button>
-          <span
-            className={classNames('text-xs text-lightenGray', {
-              'text-primary': isListCompleted,
-            })}
+        <div className="flex flex-col items-end gap-1">
+          <Link
+            to={''}
+            className="max-w-[15.625rem] truncate text-xl text-primary hover:underline"
           >
-            {' '}
-            {listItemsStatus}
-          </span>
+            {selectedList?.name}
+          </Link>
+          <ProgressBar items={selectedList?.items || []} />
         </div>
       </div>
     </header>

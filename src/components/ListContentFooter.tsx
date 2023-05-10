@@ -45,7 +45,7 @@ export default function ListContentFooter({ handleAddItem, editingItemText }: Li
         value={inputTextValue}
       />
       <button
-        className="text-primary hover:underline disabled:text-lightenGray disabled:no-underline ml-4 lowercase"
+        className="secondary-button"
         onClick={handleAdd}
         disabled={!inputTextValue.length}
       >

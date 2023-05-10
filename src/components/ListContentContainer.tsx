@@ -1,3 +1,8 @@
-export function ListContentContainer({ children }: { children: React.ReactNode }) {
-  return <div className="flex flex-1 flex-col pb-4 h-listBody overflow-y-scroll bg-white">{children}</div>
+interface ListContentContainerProps
+  extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+  children: React.ReactNode
+}
+
+export function ListContentContainer({ children }: ListContentContainerProps) {
+  return <div className="flex h-listBody flex-1 flex-col overflow-y-scroll bg-white pb-4">{children}</div>
 }

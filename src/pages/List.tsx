@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import classNames from 'classnames'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -7,20 +7,24 @@ import { ListItemProps, ListProps } from '@typings/List'
 import Divider from '@components/Divider'
 import ListContentFooter from '@/components/ListContentFooter'
 import ListContentHeader from '@/components/ListContentHeader'
-import DefaultCard from '@/components/DefaultCard'
+import Card from '@/components/Card'
 import { ListContentContainer } from '@/components/ListContentContainer'
+import ItemTextFormatted from '@/components/ItemTextFormatted'
 
 import { useList } from '@/contexts/useList'
-
 import { DEFAULT_ICON_PROPS } from '@/consts'
-import ItemTextFormatted from '@/utils/ItemTextFormatted'
+import { sortListItemsByStatus } from '@/utils/sortListItemsByStatus'
 
 import { DotsSixVertical, TrashSimple } from '@phosphor-icons/react'
+import CompletedItemsCount from '@/components/CompletedItemsCount'
 
 export default function List() {
   const [editingItem, setEditingItem] = useState<ListItemProps | null>(null)
 
   const { selectedList, updateList } = useList()
+  const listRef = useRef<HTMLDivElement>(null)
+
+  const sortedListItems = sortListItemsByStatus(selectedList?.items as ListItemProps[])
 
   const handleDoubleClickOnItem = (item: ListItemProps) => {
     if (item.completed) return
@@ -99,10 +103,14 @@ export default function List() {
     }
 
     updateList(updatedList)
+
+    setTimeout(() => {
+      listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    }, 100)
   }
 
   const handleOnDragItemStart = (event: React.DragEvent<HTMLDivElement>, index: number) => {
-    event.dataTransfer.setData('text/plain', index.toString());
+    event.dataTransfer.setData('text/plain', index.toString())
   }
 
   const handleOnDragItemOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -111,64 +119,63 @@ export default function List() {
   }
 
   const handleDragItemLeave = (event: React.DragEvent<HTMLDivElement>) => {
-    event.currentTarget.classList.remove('drag-over');
+    event.currentTarget.classList.remove('drag-over')
   }
 
   const handleOnDropItem = (event: React.DragEvent<HTMLDivElement>, index: number) => {
-    event.preventDefault();
-    event.currentTarget.classList.remove('drag-over');
+    event.preventDefault()
+    event.currentTarget.classList.remove('drag-over')
 
-    const dragIndex = Number(event.dataTransfer.getData('text/plain'));
-    const newListItems = [...selectedList?.items as ListItemProps[]];
-    const [removed] = newListItems.splice(dragIndex, 1);
+    const dragIndex = Number(event.dataTransfer.getData('text/plain'))
+    const newNotCompletedItems = [...(sortedListItems?.notCompleted as ListItemProps[])]
+    const [removed] = newNotCompletedItems.splice(dragIndex, 1)
 
-    newListItems.splice(index, 0, removed);
+    newNotCompletedItems.splice(index, 0, removed)
 
     updateList({
-      ...selectedList as ListProps,
-      items: newListItems,
+      ...(selectedList as ListProps),
+      items: [...newNotCompletedItems, ...(sortedListItems?.completed as ListItemProps[])],
     })
   }
 
   return (
-    <DefaultCard>
-      <ListContentHeader
-        handleClickOnListName={() => { }}
-        selectedList={selectedList}
-      />
+    <Card>
+      <ListContentHeader selectedList={selectedList} />
       <Divider />
 
       <ListContentContainer>
         {!selectedList?.items.length && (
           <div className="flex flex-1 items-center justify-center">
-            <p className="text-lightenGray font-light lowercase">sem itens por enquanto</p>
+            <p className="font-light lowercase text-lightenGray">sem itens por enquanto</p>
           </div>
         )}
-        {selectedList?.items.map((item, index) => (
-          <div key={item.id}
+        {sortedListItems.notCompleted.map((item, index) => (
+          <div
+            key={item.id}
             draggable
             onDragStart={(event) => handleOnDragItemStart(event, index)}
             onDragOver={(event) => handleOnDragItemOver(event)}
             onDrop={(event) => handleOnDropItem(event, index)}
             onDragLeave={(event) => handleDragItemLeave(event)}
+            ref={listRef}
           >
             <div className="flex flex-row items-center p-4">
               <div className="flex gap-1">
                 <DotsSixVertical
-                  className="text-lightenGray2 cursor-grab"
+                  className="cursor-grab text-lightenGray2"
                   {...DEFAULT_ICON_PROPS}
                 />
                 <input
-                  className="relative h-[1.125rem] w-[1.125rem] appearance-none rounded-default border-default border-lightenGray outline-none checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:ml-[0.315rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer transition-all"
+                  className="relative h-[1.125rem] w-[1.125rem] appearance-none rounded-default border-default border-lightenGray outline-none transition-all checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:ml-[0.315rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer"
                   type="checkbox"
                   checked={item.completed}
                   onChange={() => handleOnCheckItem(item)}
                 />
               </div>
-              <div className="flex flex-1 ml-3">
+              <div className="mx-4 flex flex-1">
                 <label
-                  className={classNames('transition-all font-light select-text', {
-                    'line-through text-gray opacity-30 hover:line-through': item.completed,
+                  className={classNames('select-text font-light transition-all', {
+                    'text-gray line-through opacity-30 hover:line-through': item.completed,
                   })}
                   onDoubleClick={() => handleDoubleClickOnItem(item)}
                 >
@@ -177,14 +184,44 @@ export default function List() {
               </div>
               <div className="flex">
                 <button
-                  className="hover:bg-lightGray rounded-default p-2 transition-colors"
+                  className="rounded-default p-2 transition-colors hover:bg-lightGray"
                   onClick={() => handleDeleteItem(item)}
                 >
                   <TrashSimple {...DEFAULT_ICON_PROPS} />
                 </button>
               </div>
             </div>
-            {index !== selectedList?.items.length - 1 && <Divider />}
+            {index !== sortedListItems.notCompleted.length - 1 && <Divider />}
+          </div>
+        ))}
+        {sortedListItems.completed.length > 0 && (
+          <div className="flex items-center gap-2 bg-lightGray px-4 py-2">
+            <h2 className="font-bold lowercase">concluídas</h2>
+            <CompletedItemsCount items={selectedList?.items || []} />
+          </div>
+        )}
+        {sortedListItems.completed.map((item, index) => (
+          <div key={item.id}>
+            <div className="flex flex-row items-center p-4">
+              <div className="flex">
+                <input
+                  className="relative h-[1.125rem] w-[1.125rem] appearance-none rounded-default border-default border-lightenGray outline-none transition-all checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:ml-[0.315rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer"
+                  type="checkbox"
+                  checked={item.completed}
+                  onChange={() => handleOnCheckItem(item)}
+                />
+              </div>
+              <div className="mx-4 flex flex-1">
+                <label
+                  className={classNames('select-text font-light transition-all', {
+                    'text-gray line-through opacity-30 hover:line-through': item.completed,
+                  })}
+                >
+                  {item.text}
+                </label>
+              </div>
+            </div>
+            {index !== sortedListItems.completed.length - 1 && <Divider />}
           </div>
         ))}
       </ListContentContainer>
@@ -194,6 +231,6 @@ export default function List() {
         handleAddItem={handleAddItem}
         editingItemText={editingItem?.text}
       />
-    </DefaultCard>
+    </Card>
   )
 }

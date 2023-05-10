@@ -85,7 +85,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           ...user,
           firstName: user.displayName?.split(' ')[0] || '',
         })
-
       } catch (error) {
       } finally {
         setIsLoadingUser(false)

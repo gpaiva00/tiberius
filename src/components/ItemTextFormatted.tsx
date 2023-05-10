@@ -1,22 +1,28 @@
-import { ReactNode } from "react"
+import { ReactNode } from 'react'
 
 const renderTextWithLinks = (itemText: string): ReactNode => {
   const urlPattern = /(https?:\/\/[^\s]+)/g
-  const textParts = itemText.split(urlPattern);
+  const textParts = itemText.split(urlPattern)
 
   const elements = textParts.map((part, index) => {
     if (part.match(urlPattern)) {
       return (
-        <a className="text-primary hover:underline" key={index} href={part} target="_blank" rel="noreferrer">
+        <a
+          className="text-primary hover:underline"
+          key={index}
+          href={part}
+          target="_blank"
+          rel="noreferrer"
+        >
           {part}
         </a>
-      );
+      )
     } else {
-      return <span key={index}>{part}</span>;
+      return <span key={index}>{part}</span>
     }
-  });
+  })
 
-  return <>{elements}</>;
+  return <>{elements}</>
 }
 
 interface ItemTextFormattedProps {
@@ -24,10 +30,5 @@ interface ItemTextFormattedProps {
 }
 
 export default function ItemTextFormatted({ itemText }: ItemTextFormattedProps) {
-
-  return (
-    <span>
-      {renderTextWithLinks(itemText)}
-    </span>
-  )
+  return <span>{renderTextWithLinks(itemText)}</span>
 }

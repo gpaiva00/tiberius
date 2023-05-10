@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/useAuth'
 
-import DefaultCard from '@/components/DefaultCard'
+import Card from '@/components/Card'
 import Divider from '@/components/Divider'
 
-import { ReactComponent as GoogleIcon } from '@assets/google-icon.svg'
+import { ReactComponent as GoogleIcon } from '@assets/icons/google-icon.svg'
 
 import { LIST_ROUTE } from '@/consts'
 
@@ -23,26 +23,32 @@ export default function SignIn() {
   const handleGoToTiberius = () => navigate(LIST_ROUTE)
 
   return (
-    <DefaultCard size="sm">
-      <header className="flex items-center gap-2 p-4 bg-header rounded-t-default">
-        <h1 className="font-black text-2xl  lowercase">entrar ou criar conta</h1>
+    <Card size="sm">
+      <header className="flex items-center gap-2 rounded-t-default bg-header p-4">
+        <h1 className="text-2xl font-black  lowercase">entrar ou criar conta</h1>
       </header>
       <Divider />
       {user?.uid ? (
-        <div className="flex flex-1 px-6 flex-col items-center justify-center gap-6">
-          <h1>Seja bem-vindo, <b className='text-primary'>{user.firstName}</b>!</h1>
+        <div className="flex flex-1 flex-col items-center justify-center gap-6 px-6">
+          <h1 className="font-bold">
+            Seja bem-vindo, <b className="text-primary">{user.firstName}</b>!
+          </h1>
           <button
-            className="default-button"
+            className="primary-button"
             onClick={handleGoToTiberius}
           >
-            Vamos lá!
+            vamos lá!
           </button>
         </div>
       ) : (
-        <div className="flex flex-1 px-6 flex-col items-center justify-center gap-6">
-          <h1>Entre para ter acesso ao Tiberius</h1>
+        <div className="flex flex-1 flex-col items-center justify-center gap-6 px-4">
+          <p className="font-bold">
+            Entre para ter acesso ao Tiberius.
+            <p className="text-start text-lightenGray"> Simples assim, e de graça.</p>
+          </p>
+
           <button
-            className="default-button"
+            className="primary-button"
             onClick={handleSignIn}
           >
             <GoogleIcon className="w-5" />
@@ -50,6 +56,6 @@ export default function SignIn() {
           </button>
         </div>
       )}
-    </DefaultCard>
+    </Card>
   )
 }

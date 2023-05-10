@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/useAuth'
 
-import DefaultCard from '@/components/DefaultCard'
+import Card from '@/components/Card'
 
 import { DEFAULT_ICON_PROPS } from '@/consts'
 
@@ -18,37 +18,37 @@ export default function User() {
   }
 
   return (
-    <DefaultCard>
-      <header className="flex items-center gap-2 px-4 bg-header rounded-t-default h-16">
+    <Card size="sm">
+      <header className="flex h-16 items-center gap-2 rounded-t-default bg-header px-4">
         <div className="flex items-center">
           <button
-            className="hover:bg-lightGray rounded-default p-2 transition-colors"
+            className="rounded-default p-2 transition-colors hover:bg-lightGray"
             onClick={handleClickOnBackButton}
           >
             <CaretLeft {...DEFAULT_ICON_PROPS} />
           </button>
-          <h1 className="font-black text-2xl lowercase ml-4">Perfil</h1>
+          <h1 className="ml-4 text-2xl font-black lowercase">Perfil</h1>
         </div>
       </header>
       <Divider />
 
-      <div className="flex flex-1 gap-10 items-center justify-center flex-col bg-white">
+      <div className="flex flex-1 flex-col items-center justify-center gap-4 bg-white">
         <img
           src={user?.photoURL || ''}
-          className="w-24 rounded-full"
+          className="w-20 rounded-full"
           alt="user photo"
           referrerPolicy="no-referrer"
         />
         <div className="flex flex-col gap-4">
-          <h1 className="font-bold text-2xl lowercase ml-4">{user?.displayName}</h1>
+          <h1 className="ml-4 text-2xl font-bold lowercase">{user?.displayName}</h1>
           <button
-            className="py-2 px-5 bg-red hover:bg-black hover:text-rose-500 border-default rounded-default text-white transition-colors lowercase"
+            className="rounded-default border-default bg-red px-5 py-2 lowercase text-white transition-colors hover:bg-black hover:text-rose-500"
             onClick={signOut}
           >
             sair da conta
           </button>
         </div>
       </div>
-    </DefaultCard>
+    </Card>
   )
 }

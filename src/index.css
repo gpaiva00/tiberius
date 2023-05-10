@@ -20,15 +20,26 @@
 }
 
 @layer components {
-  .default-button {
-    @apply flex items-center gap-4 justify-center p-2 w-full bg-primary hover:bg-black hover:text-lightenPrimary border-default rounded-default text-white transition-colors;
+  .primary-button {
+    @apply flex w-full items-center justify-center gap-4 rounded-md border-default bg-primary px-4 py-2 lowercase text-white transition-colors hover:bg-black hover:text-white;
+  }
+
+  .secondary-button {
+    @apply ml-4 rounded-sm border border-lightGray px-3 py-2 lowercase text-primary transition-all hover:bg-lightGray disabled:text-lightenGray;
   }
 
   .default-icon-button {
-    @apply text-black hover:bg-lightGray transition-all cursor-pointer rounded-default;
+    @apply cursor-pointer rounded-sm text-black transition-all hover:bg-lightGray;
   }
 
   .drag-over {
     @apply bg-lightGray;
+  }
+
+  .translucid {
+    /* @apply bg-white bg-opacity-50 backdrop-blur-md; */
+    background-color: rgba(255, 255, 255, 0.5);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
   }
 }

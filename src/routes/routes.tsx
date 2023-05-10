@@ -5,7 +5,7 @@ import { DefaultProvider } from '@/routes/DefaultProvider'
 
 import DefaultLayout from '../components/DefaultLayout'
 import Error from '../pages/Error'
-import App from '../pages/Home'
+import Home from '../pages/Home'
 import List from '../pages/List'
 import SignIn from '../pages/SignIn'
 import User from '../pages/User'
@@ -19,13 +19,13 @@ const router = createBrowserRouter(
       path="/"
       element={<DefaultProvider />}
     >
+      <Route
+        index
+        path="/"
+        element={<Home />}
+        errorElement={<Error />}
+      />
       <Route element={<DefaultLayout />}>
-        <Route
-          index
-          path="/"
-          element={<App />}
-          errorElement={<Error />}
-        />
         <Route element={<PrivateRouter />}>
           <Route
             path={LIST_ROUTE}

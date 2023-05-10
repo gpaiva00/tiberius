@@ -7,9 +7,7 @@ export const DefaultProvider = ({ children }: { children?: ReactElement }) => {
   return (
     <>
       <AuthProvider>
-        <ListProvider>
-          {children || <Outlet />}
-        </ListProvider>
+        <ListProvider>{children || <Outlet />}</ListProvider>
       </AuthProvider>
     </>
   )

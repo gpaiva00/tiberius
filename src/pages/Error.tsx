@@ -1,7 +1,7 @@
 export default function Error() {
   return (
-    <main className="flex flex-1 min-h-screen px-40 py-10 items-center justify-center">
-      <div className="flex flex-1 flex-col gap-3 items-center justify-center">
+    <main className="flex min-h-screen flex-1 items-center justify-center px-40 py-10">
+      <div className="flex flex-1 flex-col items-center justify-center gap-3">
         {/* replace this image for a minimalist 404 error image */}
         <img
           src="https://i.imgur.com/qIufhof.png"
@@ -10,7 +10,7 @@ export default function Error() {
         />
 
         <h1 className="text-4xl font-extrabold ">Oops!</h1>
-        <p className="text-gray text-base">Ocorreu um erro, tente de novo mais tarde.</p>
+        <p className="text-base text-gray">Ocorreu um erro, tente de novo mais tarde.</p>
       </div>
     </main>
   )
