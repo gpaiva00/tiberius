@@ -23,7 +23,10 @@ export default function Home() {
               to={LISTS_ROUTE}
               className="flex items-center gap-2 rounded-default p-2 transition-colors hover:bg-lightGray"
             >
-              <User {...DEFAULT_ICON_PROPS} />
+              <User
+                {...DEFAULT_ICON_PROPS}
+                className="dark:text-darkTextLight"
+              />
               {user.firstName}
             </Link>
           ) : (

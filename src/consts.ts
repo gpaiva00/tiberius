@@ -23,5 +23,5 @@ export const DEFAULT_ICON_SIZE = 20
 export const DEFAULT_ICON_PROPS = {
   size: DEFAULT_ICON_SIZE,
   weight: 'bold' as IconWeight,
-  // className: '',
+  // className: 'dark:text-darkTextLight',
 }

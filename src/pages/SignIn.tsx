@@ -24,14 +24,14 @@ export default function SignIn() {
 
   return (
     <Card size="sm">
-      <header className="flex items-center gap-2 rounded-t-default bg-header p-4">
-        <h1 className="text-2xl font-black  lowercase">entrar ou criar conta</h1>
+      <header className="flex items-center gap-2 rounded-t-default bg-header p-4 dark:bg-darkCardBackground">
+        <h1 className="text-2xl font-black  lowercase dark:text-darkTextLight">entrar ou criar conta</h1>
       </header>
       <Divider />
       {user?.uid ? (
         <div className="flex flex-1 flex-col items-center justify-center gap-6 px-6">
-          <h1 className="font-bold">
-            Seja bem-vindo, <b className="text-primary">{user.firstName}</b>!
+          <h1 className="font-bold dark:text-darkTextLight">
+            Seja bem-vindo, <b className="text-primary dark:text-darkTextGray">{user.firstName}</b>!
           </h1>
           <button
             className="primary-button"
@@ -44,7 +44,7 @@ export default function SignIn() {
         <div className="flex flex-1 flex-col items-center justify-center gap-6 px-4">
           <p className="font-bold">
             Entre para ter acesso ao Tiberius.
-            <p className="text-start text-lightenGray"> Simples assim, e de graça.</p>
+            <p className="text-start font-normal text-lightenGray"> Simples assim, e de graça.</p>
           </p>
 
           <button

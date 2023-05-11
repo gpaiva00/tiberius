@@ -22,12 +22,14 @@ import { getFromStorage, setToStorage } from '@/utils/storage'
 import { CaretRight, TrashSimple } from '@phosphor-icons/react'
 
 import { deleteList as deleteListOnDB, createList as createListOnDB } from '@services/list'
+import { useRef } from 'react'
 
 export default function Lists() {
   const { user } = useAuth()
   const userId = user?.uid as string
 
   const { lists, setSelectedList } = useList()
+  const listRef = useRef<HTMLDivElement>(null)
 
   const navigate = useNavigate()
 
@@ -42,6 +44,10 @@ export default function Lists() {
     }
 
     createListOnDB(newList)
+
+    setTimeout(() => {
+      listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    }, 100)
   }
 
   const handleDeleteList = (listID: string) => {
@@ -66,7 +72,10 @@ export default function Lists() {
 
       <ListContentContainer>
         {lists.map((list, index) => (
-          <div key={list.id}>
+          <div
+            key={list.id}
+            ref={listRef}
+          >
             <div className="flex items-center justify-between p-4">
               <div className="flex flex-1 flex-col">
                 <h1
@@ -88,13 +97,19 @@ export default function Lists() {
               </div>
 
               {list.name === GENERAL_LIST.name ? (
-                <CaretRight {...DEFAULT_ICON_PROPS} />
+                <CaretRight
+                  {...DEFAULT_ICON_PROPS}
+                  className="dark:text-darkTextLight"
+                />
               ) : (
                 <button
-                  className="rounded-default p-2 transition-colors hover:bg-lightGray"
+                  className="rounded-default p-2 transition-colors hover:bg-lightGray dark:hover:bg-darkTextGray"
                   onClick={() => handleDeleteList(list.id)}
                 >
-                  <TrashSimple {...DEFAULT_ICON_PROPS} />
+                  <TrashSimple
+                    {...DEFAULT_ICON_PROPS}
+                    className="dark:text-darkTextLight"
+                  />
                 </button>
               )}
             </div>
@@ -102,6 +117,8 @@ export default function Lists() {
           </div>
         ))}
       </ListContentContainer>
+
+      <Divider />
       <ListsContentFooter handleAddList={handleAddList} />
     </Card>
   )

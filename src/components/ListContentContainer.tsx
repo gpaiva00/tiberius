@@ -4,5 +4,9 @@ interface ListContentContainerProps
 }
 
 export function ListContentContainer({ children }: ListContentContainerProps) {
-  return <div className="flex h-listBody flex-1 flex-col overflow-y-scroll bg-white pb-4">{children}</div>
+  return (
+    <div className="flex h-listBody flex-1 flex-col overflow-y-scroll bg-white pb-4 dark:bg-darkCardBackground">
+      {children}
+    </div>
+  )
 }

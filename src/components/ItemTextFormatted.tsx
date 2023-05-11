@@ -8,7 +8,7 @@ const renderTextWithLinks = (itemText: string): ReactNode => {
     if (part.match(urlPattern)) {
       return (
         <a
-          className="text-primary hover:underline"
+          className="text-primary hover:underline dark:text-darkPrimary"
           key={index}
           href={part}
           target="_blank"

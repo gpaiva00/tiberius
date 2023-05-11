@@ -1,4 +1,4 @@
-const { lighten } = require('polished')
+const { lighten, darken } = require('polished')
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -7,6 +7,11 @@ export default {
     extend: {
       colors: {
         black: '#000',
+        darkBackground: '#090909',
+        darkCardBackground: '#2d2d2d',
+        darkTextGray: '#acacac',
+        darkTextLight: '#f5f5f5',
+        darkPrimary: darken(0.1, '#467cd0'),
         red: '#ef4444',
         gray: '#333',
         lightGray: '#e6e6e6',
@@ -14,7 +19,6 @@ export default {
         lightenGray2: lighten(0.5, '#333'),
         primary: '#467cd0',
         header: '#F5F5F5',
-        lightenPrimary: lighten(0.2, '#467cd0'),
         white: '#F5F5F5',
       },
       borderRadius: {
@@ -29,6 +33,7 @@ export default {
       },
       borderColor: {
         default: '#e6e6e6',
+        dark: '#969696',
         divider: '#e8e8e8',
       },
       width: {

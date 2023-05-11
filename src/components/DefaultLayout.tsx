@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom'
 
 export default function DefaultLayout() {
   return (
-    <main className="flex h-screen flex-col">
+    <main className="flex h-screen flex-col bg-white dark:bg-darkBackground">
       <div className="flex flex-1 items-center justify-center">
         <Outlet />
       </div>

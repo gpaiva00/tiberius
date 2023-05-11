@@ -5,7 +5,6 @@
 @layer base {
   html {
     font-family: Lato, system-ui, sans-serif;
-    background-color: #e6e6e6;
     user-select: none;
     font-size: 1.125rem /* 18px */;
     line-height: 1.75rem /* 28px */;
@@ -21,11 +20,11 @@
 
 @layer components {
   .primary-button {
-    @apply flex w-full items-center justify-center gap-4 rounded-md border-default bg-primary px-4 py-2 lowercase text-white transition-colors hover:bg-black hover:text-white;
+    @apply flex w-full items-center justify-center gap-4 rounded-md border-default bg-primary px-4 py-2 lowercase text-white transition-colors hover:bg-black hover:text-white dark:border-dark dark:bg-darkPrimary dark:text-darkTextLight dark:hover:bg-darkBackground dark:hover:text-darkTextLight;
   }
 
   .secondary-button {
-    @apply ml-4 rounded-sm border border-lightGray px-3 py-2 lowercase text-primary transition-all hover:bg-lightGray disabled:text-lightenGray;
+    @apply ml-4 rounded-sm border border-lightGray px-3 py-2 lowercase text-primary transition-all hover:bg-lightGray disabled:text-lightenGray dark:border-dark dark:text-darkPrimary dark:hover:bg-darkTextLight;
   }
 
   .default-icon-button {
@@ -37,7 +36,6 @@
   }
 
   .translucid {
-    /* @apply bg-white bg-opacity-50 backdrop-blur-md; */
     background-color: rgba(255, 255, 255, 0.5);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);

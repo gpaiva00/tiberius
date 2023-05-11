@@ -9,7 +9,7 @@ export default function Card({ children, size = 'lg', ...props }: DefaultCardPro
   return (
     <div
       className={classNames(
-        'flex flex-col rounded-default border-default bg-white shadow-default',
+        'flex flex-col rounded-default border-default bg-white shadow-default dark:border-dark dark:bg-darkCardBackground dark:shadow-none',
         {
           'h-72 w-72': size === 'sm',
           'h-mainCard w-mainCard': size === 'lg',

@@ -44,11 +44,14 @@ export default function DemoCard() {
 
   return (
     <Card size="demo">
-      <header className="translucid flex h-16 items-center gap-2 rounded-t-default px-4">
+      <header className="flex h-16 items-center gap-2 rounded-t-default px-4">
         <div className="flex flex-1 items-center justify-between">
           <div className="flex items-center justify-center">
             <div className="rounded-default p-2 transition-colors hover:bg-lightGray">
-              <List {...DEFAULT_ICON_PROPS} />
+              <List
+                {...DEFAULT_ICON_PROPS}
+                className="dark:text-darkTextLight"
+              />
             </div>
             <h1 className="ml-4 text-2xl font-black lowercase">para hoje</h1>
           </div>
@@ -67,7 +70,7 @@ export default function DemoCard() {
             <div className="flex flex-row items-center p-4">
               <div className="flex gap-1">
                 <DotsSixVertical
-                  className="cursor-grab text-lightenGray2"
+                  className="cursor-grab text-lightenGray2 dark:text-darkTextLight"
                   {...DEFAULT_ICON_PROPS}
                 />
                 <input
@@ -92,7 +95,10 @@ export default function DemoCard() {
                   className="rounded-default p-2 transition-colors hover:bg-lightGray"
                   onClick={() => {}}
                 >
-                  <TrashSimple {...DEFAULT_ICON_PROPS} />
+                  <TrashSimple
+                    {...DEFAULT_ICON_PROPS}
+                    className="dark:text-darkTextLight"
+                  />
                 </button>
               </div>
             </div>
