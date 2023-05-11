@@ -8,10 +8,12 @@ export default {
       colors: {
         black: '#000',
         darkBackground: '#090909',
-        darkCardBackground: '#2d2d2d',
+        darkCardBackground: '#16181c',
         darkTextGray: '#acacac',
+        darkBackgroundIconButton: '#2f3336',
         darkTextLight: '#f5f5f5',
-        darkPrimary: darken(0.1, '#467cd0'),
+        darkInputBackground: '#212327',
+        darkPrimary: '#1d9bf0',
         red: '#ef4444',
         gray: '#333',
         lightGray: '#e6e6e6',
@@ -33,7 +35,7 @@ export default {
       },
       borderColor: {
         default: '#e6e6e6',
-        dark: '#969696',
+        dark: '#2f3336',
         divider: '#e8e8e8',
       },
       width: {

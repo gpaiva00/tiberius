@@ -1,6 +1,8 @@
 import { useState } from 'react'
+
 import { FooterContainer } from '@/components/FooterContainer'
 import InputText from '@/components/InputText'
+import Divider from '@/components/Divider'
 
 interface AllListsCardFooterProps {
   handleAddList: (itemText: string) => void
@@ -25,20 +27,23 @@ export default function ListsContentFooter({ handleAddList }: AllListsCardFooter
   }
 
   return (
-    <FooterContainer>
-      <InputText
-        placeholder="digite o nome da lista"
-        onChange={handleInputTextChange}
-        onKeyDown={handleKeyDownOnInputText}
-        value={inputTextValue}
-      />
-      <button
-        className="secondary-button"
-        onClick={handleAdd}
-        disabled={!inputTextValue.length}
-      >
-        Adicionar
-      </button>
-    </FooterContainer>
+    <div>
+      <Divider />
+      <FooterContainer>
+        <InputText
+          placeholder="digite o nome da lista"
+          onChange={handleInputTextChange}
+          onKeyDown={handleKeyDownOnInputText}
+          value={inputTextValue}
+        />
+        <button
+          className="secondary-button"
+          onClick={handleAdd}
+          disabled={!inputTextValue.length}
+        >
+          Adicionar
+        </button>
+      </FooterContainer>
+    </div>
   )
 }

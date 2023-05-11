@@ -8,9 +8,10 @@ export const USER_ROUTE = '/user'
 export const LISTS_ROUTE = '/lists'
 
 export const GENERAL_LIST: Omit<ListProps, 'userId'> = {
-  id: uuidv4(),
+  id: 'general',
   items: [],
   name: 'geral',
+  position: 0,
 }
 
 // storage
@@ -23,5 +24,4 @@ export const DEFAULT_ICON_SIZE = 20
 export const DEFAULT_ICON_PROPS = {
   size: DEFAULT_ICON_SIZE,
   weight: 'bold' as IconWeight,
-  // className: 'dark:text-darkTextLight',
 }

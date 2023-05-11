@@ -24,15 +24,15 @@
   }
 
   .secondary-button {
-    @apply ml-4 rounded-sm border border-lightGray px-3 py-2 lowercase text-primary transition-all hover:bg-lightGray disabled:text-lightenGray dark:border-dark dark:text-darkPrimary dark:hover:bg-darkTextLight;
+    @apply ml-4 rounded-sm border border-lightGray px-3 py-2 lowercase text-primary transition-all hover:bg-lightGray disabled:text-lightenGray dark:border-dark dark:text-darkPrimary dark:hover:bg-darkBackgroundIconButton;
   }
 
-  .default-icon-button {
-    @apply cursor-pointer rounded-sm text-black transition-all hover:bg-lightGray;
+  .icon-button {
+    @apply rounded-default p-2 transition-colors hover:bg-lightGray dark:text-darkTextLight dark:hover:bg-darkBackgroundIconButton;
   }
 
   .drag-over {
-    @apply bg-lightGray;
+    @apply bg-lightGray dark:bg-darkBackgroundIconButton;
   }
 
   .translucid {

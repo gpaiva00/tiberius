@@ -21,25 +21,26 @@ export default function DemoCard() {
     items: [
       {
         id: 'demo-item-id-1',
-        text: 'Responder e-mails',
-        completed: false,
+        text: 'acessar o Tiberius',
+        completed: true,
       },
       {
         id: 'demo-item-id-2',
-        text: 'Preparar relatório financeiro',
+        text: 'criar minha conta',
         completed: false,
       },
       {
         id: 'demo-item-id-3',
-        text: 'Continuar leitura de "O poder do hábito"',
+        text: 'criar minha primeira lista',
         completed: false,
       },
       {
         id: 'demo-item-id-4',
-        text: 'Lavar louça',
+        text: 'ser feliz :)',
         completed: false,
       },
     ],
+    position: 0,
   }
 
   return (
@@ -47,17 +48,16 @@ export default function DemoCard() {
       <header className="flex h-16 items-center gap-2 rounded-t-default px-4">
         <div className="flex flex-1 items-center justify-between">
           <div className="flex items-center justify-center">
-            <div className="rounded-default p-2 transition-colors hover:bg-lightGray">
-              <List
-                {...DEFAULT_ICON_PROPS}
-                className="dark:text-darkTextLight"
-              />
+            <div className="icon-button">
+              <List {...DEFAULT_ICON_PROPS} />
             </div>
-            <h1 className="ml-4 text-2xl font-black lowercase">para hoje</h1>
+            <h1 className="ml-4 text-2xl font-black lowercase dark:text-darkTextLight">para hoje</h1>
           </div>
 
           <div className="flex flex-col items-end gap-1">
-            <div className="max-w-[15.625rem] truncate text-xl text-primary hover:underline">{demoList.name}</div>
+            <div className="max-w-[15.625rem] truncate text-xl text-primary hover:underline dark:text-darkPrimary">
+              {demoList.name}
+            </div>
             <ProgressBar items={demoList.items} />
           </div>
         </div>
@@ -82,7 +82,7 @@ export default function DemoCard() {
               </div>
               <div className="mx-4 flex flex-1">
                 <label
-                  className={classNames('select-text font-light transition-all', {
+                  className={classNames('select-text font-light transition-all dark:text-darkTextLight', {
                     'text-gray line-through opacity-30 hover:line-through': item.completed,
                   })}
                   onDoubleClick={() => {}}
@@ -92,13 +92,10 @@ export default function DemoCard() {
               </div>
               <div className="flex">
                 <button
-                  className="rounded-default p-2 transition-colors hover:bg-lightGray"
+                  className="icon-button"
                   onClick={() => {}}
                 >
-                  <TrashSimple
-                    {...DEFAULT_ICON_PROPS}
-                    className="dark:text-darkTextLight"
-                  />
+                  <TrashSimple {...DEFAULT_ICON_PROPS} />
                 </button>
               </div>
             </div>
@@ -107,7 +104,6 @@ export default function DemoCard() {
         ))}
       </ListContentContainer>
 
-      <Divider />
       <ListContentFooter
         handleAddItem={() => {}}
         editingItemText={''}

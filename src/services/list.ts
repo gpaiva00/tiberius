@@ -9,6 +9,7 @@ import {
   query,
   where,
   getDocs,
+  writeBatch,
 } from 'firebase/firestore'
 
 import { db } from '@services/firebase'
@@ -20,6 +21,11 @@ import { GENERAL_LIST } from '@/consts'
 
 interface SubscribeToUserListsProps {
   observer: (snapshot: QuerySnapshot<DocumentData>) => void
+  userId: UserProps['uid']
+}
+
+interface UpdateListsProps {
+  lists: ListProps[]
   userId: UserProps['uid']
 }
 
@@ -49,6 +55,21 @@ export const updateList = (list: ListProps) => {
     setDoc(listRef, list, { merge: true })
   } catch (error) {
     console.error('updateList', error)
+  }
+}
+
+export const updateUserLists = async (lists: ListProps[]) => {
+  try {
+    const batch = writeBatch(db)
+
+    lists.forEach((list) => {
+      const listRef = doc(db, 'lists', list.id)
+      batch.set(listRef, list)
+    })
+
+    await batch.commit()
+  } catch (error) {
+    console.error('updateLists', error)
   }
 }
 

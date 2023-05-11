@@ -59,6 +59,14 @@ export const ListProvider = ({ children }: ListProviderProps) => {
           newLists.push(list.data() as ListProps)
         })
 
+        // sort lists by position keeping list with id "general" at the top
+        newLists.sort((a, b) => {
+          if (a.id === 'general') return -1
+          if (b.id === 'general') return 1
+
+          return a.position - b.position
+        })
+
         setLists(newLists)
         handleSetSelectedList(newLists)
       },

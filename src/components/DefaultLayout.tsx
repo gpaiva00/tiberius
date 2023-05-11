@@ -7,7 +7,7 @@ export default function DefaultLayout() {
         <Outlet />
       </div>
       <footer className="w-full">
-        <p className="mb-4 mr-8 text-end text-sm font-light text-gray opacity-50">
+        <p className="mb-4 mr-8 text-end text-sm font-light text-gray opacity-50 dark:text-darkTextGray">
           Tiberius © {new Date().getFullYear()}
         </p>
       </footer>

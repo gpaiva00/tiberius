@@ -1,3 +1,5 @@
+import { useRef } from 'react'
+
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import classNames from 'classnames'
@@ -19,10 +21,9 @@ import { ListProps } from '@/typings/List'
 
 import { getFromStorage, setToStorage } from '@/utils/storage'
 
-import { CaretRight, TrashSimple } from '@phosphor-icons/react'
+import { CaretRight, DotsSixVertical, TrashSimple } from '@phosphor-icons/react'
 
-import { deleteList as deleteListOnDB, createList as createListOnDB } from '@services/list'
-import { useRef } from 'react'
+import { deleteList as deleteListOnDB, createList as createListOnDB, updateUserLists } from '@services/list'
 
 export default function Lists() {
   const { user } = useAuth()
@@ -41,6 +42,7 @@ export default function Lists() {
       name: listName,
       items: [],
       userId,
+      position: lists.length,
     }
 
     createListOnDB(newList)
@@ -65,28 +67,78 @@ export default function Lists() {
     navigate(LIST_ROUTE)
   }
 
+  const handleOnDragItemStart = (event: React.DragEvent<HTMLDivElement>, index: number) => {
+    event.dataTransfer.setData('text/plain', index.toString())
+  }
+
+  const handleOnDragItemOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.currentTarget.classList.add('drag-over')
+  }
+
+  const handleDragItemLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    event.currentTarget.classList.remove('drag-over')
+  }
+
+  const handleOnDropItem = async (event: React.DragEvent<HTMLDivElement>, index: number) => {
+    event.preventDefault()
+    event.currentTarget.classList.remove('drag-over')
+
+    const dragIndex = Number(event.dataTransfer.getData('text/plain'))
+    const newLists = [...lists]
+
+    if (!newLists[index].position) {
+      newLists[index].position = newLists.length
+    }
+
+    newLists[index].position = newLists[dragIndex].position
+
+    const [removed] = newLists.splice(dragIndex, 1)
+
+    newLists.splice(index, 0, removed)
+
+    console.warn({ newLists })
+    return
+
+    await updateUserLists(newLists)
+  }
+
   return (
     <Card>
       <ListsContentHeader />
-      <Divider />
-
       <ListContentContainer>
         {lists.map((list, index) => (
           <div
             key={list.id}
+            // draggable
+            // onDragStart={(event) => handleOnDragItemStart(event, index)}
+            // onDragOver={(event) => handleOnDragItemOver(event)}
+            // onDrop={(event) => handleOnDropItem(event, index)}
+            // onDragLeave={(event) => handleDragItemLeave(event)}
             ref={listRef}
           >
             <div className="flex items-center justify-between p-4">
               <div className="flex flex-1 flex-col">
-                <h1
-                  className={classNames('max-w-[86%] cursor-pointer truncate text-primary hover:underline', {
-                    'font-bold': list.id === selectedListOnStorage,
-                    'font-light': list.id !== selectedListOnStorage,
-                  })}
-                  onClick={() => handleOnChooseList(list)}
-                >
-                  {list.name}
-                </h1>
+                <div className="flex items-center gap-1">
+                  {/* {list.id !== GENERAL_LIST.id && (
+                    <DotsSixVertical
+                      className="cursor-grab text-lightenGray2 dark:text-darkTextGray"
+                      {...DEFAULT_ICON_PROPS}
+                    />
+                  )} */}
+                  <h1
+                    className={classNames(
+                      'max-w-[86%] cursor-pointer truncate text-primary hover:underline dark:text-darkPrimary',
+                      {
+                        'font-bold': list.id === selectedListOnStorage,
+                        'font-light': list.id !== selectedListOnStorage,
+                      }
+                    )}
+                    onClick={() => handleOnChooseList(list)}
+                  >
+                    {list.name}
+                  </h1>
+                </div>
                 <div className="flex items-center gap-2">
                   <ProgressBar items={list.items} />
                   <CompletedItemsCount
@@ -117,8 +169,6 @@ export default function Lists() {
           </div>
         ))}
       </ListContentContainer>
-
-      <Divider />
       <ListsContentFooter handleAddList={handleAddList} />
     </Card>
   )

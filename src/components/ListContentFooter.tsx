@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { FooterContainer } from '@/components/FooterContainer'
 import InputText from '@/components/InputText'
+import Divider from '@/components/Divider'
 
 interface ListCardFooterProps {
   handleAddItem: (itemText: string) => void
@@ -37,20 +38,23 @@ export default function ListContentFooter({ handleAddItem, editingItemText }: Li
   }, [editingItemText])
 
   return (
-    <FooterContainer>
-      <InputText
-        placeholder="digite o nome da tarefa"
-        onChange={handleInputTextChange}
-        onKeyDown={handleKeyDownOnInputText}
-        value={inputTextValue}
-      />
-      <button
-        className="secondary-button"
-        onClick={handleAdd}
-        disabled={!inputTextValue.length}
-      >
-        {editingItemText?.length ? 'Salvar' : 'Adicionar'}
-      </button>
-    </FooterContainer>
+    <div>
+      <Divider />
+      <FooterContainer>
+        <InputText
+          placeholder="digite o nome da tarefa"
+          onChange={handleInputTextChange}
+          onKeyDown={handleKeyDownOnInputText}
+          value={inputTextValue}
+        />
+        <button
+          className="secondary-button"
+          onClick={handleAdd}
+          disabled={!inputTextValue.length}
+        >
+          {editingItemText?.length ? 'Salvar' : 'Adicionar'}
+        </button>
+      </FooterContainer>
+    </div>
   )
 }

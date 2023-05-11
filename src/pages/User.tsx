@@ -43,9 +43,9 @@ export default function User() {
           referrerPolicy="no-referrer"
         />
         <div className="flex flex-col gap-4">
-          <h1 className="ml-4 text-2xl font-bold lowercase dark:text-darkTextLight">{user?.displayName}</h1>
+          <h1 className="ml-4 text-xl font-bold lowercase dark:text-darkTextLight">{user?.displayName}</h1>
           <button
-            className="rounded-default border-default bg-red px-5 py-2 lowercase text-white transition-colors hover:bg-black hover:text-rose-500 dark:border-dark dark:bg-rose-500 dark:text-darkTextLight dark:hover:bg-darkBackground"
+            className="primary-button"
             onClick={signOut}
           >
             sair da conta

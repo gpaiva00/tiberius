@@ -30,7 +30,7 @@ export default function SignIn() {
       <Divider />
       {user?.uid ? (
         <div className="flex flex-1 flex-col items-center justify-center gap-6 px-6">
-          <h1 className="font-bold dark:text-darkTextLight">
+          <h1 className="dark:text-darkTextLight">
             Seja bem-vindo, <b className="text-primary dark:text-darkTextGray">{user.firstName}</b>!
           </h1>
           <button

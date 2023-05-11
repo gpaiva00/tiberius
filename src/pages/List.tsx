@@ -87,13 +87,12 @@ export default function List() {
       return
     }
 
-    const updatedItems = [
+    const updatedItems: ListItemProps[] = [
       ...(selectedList?.items as ListItemProps[]),
       {
         id: uuidv4(),
         text: itemText,
         completed: false,
-        position: selectedList?.items.length,
       },
     ]
 
@@ -141,8 +140,6 @@ export default function List() {
   return (
     <Card>
       <ListContentHeader selectedList={selectedList} />
-      <Divider />
-
       <ListContentContainer>
         {!selectedList?.items.length && (
           <div className="flex flex-1 items-center justify-center">
@@ -160,7 +157,7 @@ export default function List() {
             ref={listRef}
           >
             <div className="flex flex-row items-center p-4">
-              <div className="flex gap-1">
+              <div className="flex items-center gap-1">
                 <DotsSixVertical
                   className="cursor-grab text-lightenGray2 dark:text-darkTextGray"
                   {...DEFAULT_ICON_PROPS}
@@ -184,13 +181,10 @@ export default function List() {
               </div>
               <div className="flex">
                 <button
-                  className="rounded-default p-2 transition-colors hover:bg-lightGray dark:hover:bg-darkTextGray"
+                  className="icon-button"
                   onClick={() => handleDeleteItem(item)}
                 >
-                  <TrashSimple
-                    {...DEFAULT_ICON_PROPS}
-                    className="dark:text-darkTextLight"
-                  />
+                  <TrashSimple {...DEFAULT_ICON_PROPS} />
                 </button>
               </div>
             </div>
@@ -198,8 +192,8 @@ export default function List() {
           </div>
         ))}
         {sortedListItems.completed.length > 0 && (
-          <div className="flex items-center gap-2 bg-lightGray px-4 py-2 dark:bg-darkTextLight">
-            <h2 className="font-bold lowercase">concluídas</h2>
+          <div className="flex items-center gap-2 bg-lightGray px-4 py-2 dark:bg-darkInputBackground">
+            <h2 className="font-bold lowercase dark:text-darkTextLight">concluídas</h2>
             <CompletedItemsCount items={selectedList?.items || []} />
           </div>
         )}
@@ -228,8 +222,6 @@ export default function List() {
           </div>
         ))}
       </ListContentContainer>
-
-      <Divider />
       <ListContentFooter
         handleAddItem={handleAddItem}
         editingItemText={editingItem?.text}
