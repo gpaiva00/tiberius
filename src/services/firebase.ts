@@ -3,13 +3,13 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, User, fetchSignInMethodsF
 import { getFirestore, initializeFirestore, persistentLocalCache } from 'firebase/firestore'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCFCNAF1y90lZ4ek-Ik59CQEbF1sDmpTgQ',
-  authDomain: 'tiberius-b5ceb.firebaseapp.com',
-  projectId: 'tiberius-b5ceb',
-  storageBucket: 'tiberius-b5ceb.appspot.com',
-  messagingSenderId: '495772983150',
-  appId: '1:495772983150:web:0778517bf42027c97b2b7f',
-  measurementId: 'G-WGQLDY7LBM',
+  apiKey: import.meta.env.VITE_APP_API_KEY,
+  authDomain: import.meta.env.VITE_APP_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_APP_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_APP_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_APP_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_APP_ID,
+  measurementId: import.meta.env.VITE_APP_MEASUREMENT_ID,
 }
 
 const app = initializeApp(firebaseConfig)
