@@ -24,11 +24,6 @@ interface SubscribeToUserListsProps {
   userId: UserProps['uid']
 }
 
-interface UpdateListsProps {
-  lists: ListProps[]
-  userId: UserProps['uid']
-}
-
 export const listCollection = collection(db, 'lists')
 
 export const subscribeToUserLists = ({ observer, userId }: SubscribeToUserListsProps) => {
@@ -49,15 +44,15 @@ export const checkIfUserHasLists = async (userId: UserProps['uid']) => {
   }
 }
 
-export const updateList = (list: ListProps) => {
+export const updateList = async (list: ListProps) => {
   try {
     const listRef = doc(db, 'lists', list.id)
-    setDoc(listRef, list, { merge: true })
+    await setDoc(listRef, list, { merge: true })
   } catch (error) {
     console.error('updateList', error)
   }
 }
-
+// TODO: test this func
 export const updateUserLists = async (lists: ListProps[]) => {
   try {
     const batch = writeBatch(db)

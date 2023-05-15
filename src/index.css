@@ -20,7 +20,7 @@
 
 @layer components {
   .primary-button {
-    @apply flex w-full items-center justify-center gap-4 rounded-md border-default bg-primary px-4 py-2 lowercase text-white transition-colors hover:bg-black hover:text-white dark:border-dark dark:bg-darkPrimary dark:text-darkTextLight dark:hover:bg-darkBackground dark:hover:text-darkTextLight;
+    @apply flex w-full items-center justify-center gap-4 rounded-md border-default bg-primary px-4 py-2 lowercase text-white transition-colors hover:bg-darkButtonHover hover:text-white dark:border-dark dark:bg-darkPrimary dark:text-darkTextLight dark:hover:bg-darkButtonHover dark:hover:text-darkTextLight;
   }
 
   .secondary-button {
@@ -33,6 +33,10 @@
 
   .drag-over {
     @apply bg-lightGray dark:bg-darkBackgroundIconButton;
+  }
+
+  .default-label {
+    @apply font-bold lowercase dark:text-darkTextLight;
   }
 
   .translucid {

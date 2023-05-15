@@ -3,15 +3,16 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import { PrivateRouter } from '@/routes/PrivateRouter'
 import { DefaultProvider } from '@/routes/DefaultProvider'
 
-import DefaultLayout from '../components/DefaultLayout'
-import Error from '../pages/Error'
-import Home from '../pages/Home'
-import List from '../pages/List'
-import SignIn from '../pages/SignIn'
-import User from '../pages/User'
-import Lists from '../pages/Lists'
+import DefaultLayout from '../shared/components/DefaultLayout'
+import Error from '../pages/error'
+import Home from '../pages/home'
+import List from '../pages/list'
+import SignIn from '../pages/signin'
+import User from '../pages/user'
+import Lists from '../pages/lists'
+import ListSettings from '@/pages/listSettings'
 
-import { LIST_ROUTE, LISTS_ROUTE, SIGN_IN_ROUTE, USER_ROUTE } from '@/consts'
+import { LIST_ROUTE, LIST_SETTINGS_ROUTE, LISTS_ROUTE, SIGN_IN_ROUTE, USER_ROUTE } from '@/consts'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -40,6 +41,11 @@ const router = createBrowserRouter(
           <Route
             path={USER_ROUTE}
             element={<User />}
+            errorElement={<Error />}
+          />
+          <Route
+            path={LIST_SETTINGS_ROUTE}
+            element={<ListSettings />}
             errorElement={<Error />}
           />
         </Route>

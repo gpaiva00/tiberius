@@ -1,12 +1,13 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react'
 
-import { subscribeToUserLists, updateList as updateListOnDB } from '@/services/list'
+import { subscribeToUserLists, updateList as updateListOnDB, deleteList as deleteListOnDB } from '@/services/list'
 
 import { useAuth } from '@/contexts/useAuth'
 
-import { STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
+import { GENERAL_LIST, STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
 
-import { getFromStorage, setToStorage } from '@/utils/storage'
+import { getFromStorage, setToStorage } from '@utils/storage'
+import { sortListsByPosition } from '@/utils/sortListsByPosition'
 
 import { ListProps } from '@/typings/List'
 
@@ -17,8 +18,9 @@ interface ListProviderProps {
 interface UseListProps {
   selectedList: ListProps | null
   lists: ListProps[]
-  updateList: (list: ListProps) => void
-  setSelectedList: (list: ListProps) => void
+  updateList: (list: ListProps) => Promise<void>
+  deleteList: (listID: ListProps['id']) => Promise<void>
+  saveSelectedList: (list: ListProps) => void
 }
 
 const listContext = createContext<UseListProps>({} as UseListProps)
@@ -34,38 +36,40 @@ export const ListProvider = ({ children }: ListProviderProps) => {
     const selectedListOnStorage = getFromStorage(STORAGE_SELECTED_LIST_ID_KEY)
 
     if (!selectedListOnStorage) {
-      setSelectedList(lists[0])
-      setToStorage(STORAGE_SELECTED_LIST_ID_KEY, lists[0].id)
+      saveSelectedList(lists[0])
       return
     }
 
     const selectedList = lists.find((list) => list.id === selectedListOnStorage)
-
-    setSelectedList(selectedList as ListProps)
+    saveSelectedList(selectedList as ListProps)
   }
 
-  const updateList = (list: ListProps) => {
-    updateListOnDB(list)
+  const updateList = async (list: ListProps) => {
     setSelectedList(list)
+    await updateListOnDB(list)
+  }
+
+  const saveSelectedList = (list: ListProps) => {
+    setSelectedList(list)
+    setToStorage(STORAGE_SELECTED_LIST_ID_KEY, list.id)
+  }
+
+  const deleteList = async (listID: ListProps['id']) => {
+    setToStorage(STORAGE_SELECTED_LIST_ID_KEY, GENERAL_LIST.id)
+    await deleteListOnDB(listID)
   }
 
   useEffect(() => {
     const unsubscribe = subscribeToUserLists({
       userId,
       observer: (lists) => {
-        const newLists: ListProps[] = []
+        let newLists: ListProps[] = []
 
         lists.forEach((list) => {
           newLists.push(list.data() as ListProps)
         })
 
-        // sort lists by position keeping list with id "general" at the top
-        newLists.sort((a, b) => {
-          if (a.id === 'general') return -1
-          if (b.id === 'general') return 1
-
-          return a.position - b.position
-        })
+        newLists = sortListsByPosition(newLists)
 
         setLists(newLists)
         handleSetSelectedList(newLists)
@@ -79,8 +83,9 @@ export const ListProvider = ({ children }: ListProviderProps) => {
     <listContext.Provider
       value={{
         selectedList,
-        setSelectedList,
+        saveSelectedList,
         lists,
+        deleteList,
         updateList,
       }}
     >
