@@ -9,7 +9,6 @@ import InputText from '@/shared/components/InputText'
 import { FooterContainer } from '@/shared/components/FooterContainer'
 import Divider from '@/shared/components/Divider'
 
-import { DeleteItemsStrategyProps } from '@/pages/listSettings/typings/Options'
 import { ListProps } from '@/typings/List'
 
 import { GENERAL_LIST } from '@/consts'
@@ -18,7 +17,6 @@ export default function ListSettings() {
   const { selectedList, updateList } = useList()
 
   const [inputText, setInputText] = useState<string>(selectedList?.name as string)
-  const [inputOption, setInputOption] = useState<DeleteItemsStrategyProps>(DeleteItemsStrategyProps.DAILY)
 
   const handleChangeInputText = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputText(event.target.value)
@@ -33,7 +31,6 @@ export default function ListSettings() {
     const updatedList: ListProps = {
       ...(selectedList as ListProps),
       name: inputText,
-      deleteItemsStrategy: inputOption,
     }
 
     await updateList(updatedList)
@@ -41,12 +38,12 @@ export default function ListSettings() {
     // navigate(-1)
   }
 
-  const getOptionDescription = {
-    [DeleteItemsStrategyProps.DAILY]: 'os itens concluídos serão apagados a cada 24 horas.',
-    [DeleteItemsStrategyProps.WEEKLY]: 'os itens concluídos serão apagados a cada 7 dias.',
-    [DeleteItemsStrategyProps.MONTHLY]: 'os itens concluídos serão apagados a cada 30 dias.',
-    [DeleteItemsStrategyProps.NEVER]: 'os itens concluídos nunca serão apagados.',
-  }
+  // const getOptionDescription = {
+  //   [DeleteItemsStrategyProps.DAILY]: 'os itens concluídos serão apagados a cada 24 horas.',
+  //   [DeleteItemsStrategyProps.WEEKLY]: 'os itens concluídos serão apagados a cada 7 dias.',
+  //   [DeleteItemsStrategyProps.MONTHLY]: 'os itens concluídos serão apagados a cada 30 dias.',
+  //   [DeleteItemsStrategyProps.NEVER]: 'os itens concluídos nunca serão apagados.',
+  // }
 
   return (
     <Card>

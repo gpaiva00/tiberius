@@ -1,5 +1,3 @@
-import { DeleteItemsStrategyProps } from '@/pages/listSettings/typings/Options'
-
 export interface ListProps {
   items: ListItemProps[]
   id: string
@@ -7,7 +5,6 @@ export interface ListProps {
   icon?: string
   userId: string
   position: number
-  deleteItemsStrategy: DeleteItemsStrategyProps
 }
 
 export interface ListItemProps {

@@ -19,12 +19,11 @@ import { useList } from '@/contexts/useList'
 
 import { ListProps } from '@/typings/List'
 
-import { getFromStorage, setToStorage } from '@utils/storage'
+import { getFromStorage } from '@utils/storage'
 
 import { CaretRight, DotsSixVertical, TrashSimple } from '@phosphor-icons/react'
 
 import { createList as createListOnDB, updateUserLists } from '@services/list'
-import { DeleteItemsStrategyProps } from '@/pages/listSettings/typings/Options'
 
 export default function Lists() {
   const { user } = useAuth()
@@ -44,7 +43,6 @@ export default function Lists() {
       items: [],
       userId,
       position: lists.length,
-      deleteItemsStrategy: DeleteItemsStrategyProps.DEFAULT,
     }
 
     await createListOnDB(newList)
