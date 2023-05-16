@@ -24,7 +24,9 @@ interface SubscribeToUserListsProps {
   userId: UserProps['uid']
 }
 
-export const listCollection = collection(db, 'lists')
+const listDocumentName = import.meta.env.VITE_LIST_DOCUMENT_NAME as string
+
+export const listCollection = collection(db, listDocumentName)
 
 export const subscribeToUserLists = ({ observer, userId }: SubscribeToUserListsProps) => {
   const userListQuery = query(listCollection, where('userId', '==', userId))
@@ -46,7 +48,7 @@ export const checkIfUserHasLists = async (userId: UserProps['uid']) => {
 
 export const updateList = async (list: ListProps) => {
   try {
-    const listRef = doc(db, 'lists', list.id)
+    const listRef = doc(db, listDocumentName, list.id)
     await setDoc(listRef, list, { merge: true })
   } catch (error) {
     console.error('updateList', error)
@@ -58,7 +60,7 @@ export const updateUserLists = async (lists: ListProps[]) => {
     const batch = writeBatch(db)
 
     lists.forEach((list) => {
-      const listRef = doc(db, 'lists', list.id)
+      const listRef = doc(db, listDocumentName, list.id)
       batch.set(listRef, list)
     })
 
@@ -70,7 +72,7 @@ export const updateUserLists = async (lists: ListProps[]) => {
 
 export const createList = async (list: ListProps) => {
   try {
-    await setDoc(doc(db, 'lists', list.id), list)
+    await setDoc(doc(db, listDocumentName, list.id), list)
   } catch (error) {
     console.error('createList', error)
   }
@@ -81,6 +83,7 @@ export const createDefaultListForNewUser = async (userId: UserProps['uid']) => {
     const list: ListProps = {
       ...GENERAL_LIST,
       userId,
+      createdAt: new Date().toISOString(),
     }
 
     await createList(list)
@@ -91,7 +94,7 @@ export const createDefaultListForNewUser = async (userId: UserProps['uid']) => {
 
 export const deleteList = async (listID: ListProps['id']) => {
   try {
-    await deleteDoc(doc(db, 'lists', listID))
+    await deleteDoc(doc(db, listDocumentName, listID))
   } catch (error) {
     console.error('deleteList', error)
   }

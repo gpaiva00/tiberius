@@ -9,7 +9,7 @@ import ProgressBar from '@/shared/components/ProgressBar'
 
 import { DEFAULT_ICON_PROPS } from '@/consts'
 
-import { ListProps } from '@/typings/List'
+import { ListProps, ListTypesProps } from '@/typings/List'
 
 import { DotsSixVertical, List, TrashSimple } from '@phosphor-icons/react'
 
@@ -41,6 +41,8 @@ export default function DemoCard() {
       },
     ],
     position: 0,
+    type: ListTypesProps.DEFAULT,
+    createdAt: new Date().toISOString(),
   }
 
   return (

@@ -17,7 +17,7 @@ import { DEFAULT_ICON_PROPS, GENERAL_LIST, LIST_ROUTE, STORAGE_SELECTED_LIST_ID_
 import { useAuth } from '@/contexts/useAuth'
 import { useList } from '@/contexts/useList'
 
-import { ListProps } from '@/typings/List'
+import { ListProps, ListTypesProps } from '@/typings/List'
 
 import { getFromStorage } from '@utils/storage'
 
@@ -43,6 +43,8 @@ export default function Lists() {
       items: [],
       userId,
       position: lists.length,
+      type: ListTypesProps.DEFAULT,
+      createdAt: new Date().toISOString(),
     }
 
     await createListOnDB(newList)
@@ -75,26 +77,25 @@ export default function Lists() {
   const handleDragItemLeave = (event: React.DragEvent<HTMLDivElement>) => {
     event.currentTarget.classList.remove('drag-over')
   }
-  // TODO test this function
-  const handleOnDropItem = async (event: React.DragEvent<HTMLDivElement>, index: number) => {
+
+  const handleOnDropItem = async (event: React.DragEvent<HTMLDivElement>, itemReceivingDraggedListIndex: number) => {
     event.preventDefault()
     event.currentTarget.classList.remove('drag-over')
 
-    const dragIndex = Number(event.dataTransfer.getData('text/plain'))
+    if (itemReceivingDraggedListIndex === 0) return
+
+    const draggedListIndex = Number(event.dataTransfer.getData('text/plain'))
     const newLists = [...lists]
 
-    if (!newLists[index].position) {
-      newLists[index].position = newLists.length
-    }
+    // get dragged list
+    const [draggedList] = newLists.splice(draggedListIndex, 1)
+    // insert dragged list on new position
+    newLists.splice(itemReceivingDraggedListIndex, 0, draggedList)
 
-    newLists[index].position = newLists[dragIndex].position
-
-    const [removed] = newLists.splice(dragIndex, 1)
-
-    newLists.splice(index, 0, removed)
-
-    console.warn({ newLists })
-    return
+    // update lists position
+    newLists.forEach((list, index) => {
+      list.position = index
+    })
 
     await updateUserLists(newLists)
   }
@@ -106,7 +107,7 @@ export default function Lists() {
         {lists.map((list, index) => (
           <div
             key={list.id}
-            draggable
+            draggable={list.type !== (ListTypesProps.GENERAL || ListTypesProps.WHATS_NEW)}
             onDragStart={(event) => handleOnDragItemStart(event, index)}
             onDragOver={(event) => handleOnDragItemOver(event)}
             onDrop={(event) => handleOnDropItem(event, index)}
@@ -116,7 +117,7 @@ export default function Lists() {
             <div className="flex items-center justify-between p-4">
               <div className="flex flex-1 flex-col">
                 <div className="flex items-center gap-1">
-                  {list.id !== GENERAL_LIST.id && (
+                  {list.type == ListTypesProps.DEFAULT && (
                     <DotsSixVertical
                       className="cursor-grab text-lightenGray2 dark:text-darkTextGray"
                       {...DEFAULT_ICON_PROPS}
@@ -126,25 +127,28 @@ export default function Lists() {
                     className={classNames(
                       'max-w-[21.875rem] cursor-pointer truncate text-primary hover:underline dark:text-darkPrimary',
                       {
-                        'font-bold': list.id === selectedListOnStorage,
+                        'font-bold': list.id === selectedListOnStorage || list.type === ListTypesProps.WHATS_NEW,
                         'font-light': list.id !== selectedListOnStorage,
                       }
                     )}
                     onClick={() => handleClickOnListName(list)}
                   >
+                    {list.type === ListTypesProps.WHATS_NEW && <span>🎉 </span>}
                     {list.name}
                   </h1>
                 </div>
-                <div className="flex items-center gap-2">
-                  <ProgressBar items={list.items} />
-                  <CompletedItemsCount
-                    size="sm"
-                    items={list.items || []}
-                  />
-                </div>
+                {list.type !== ListTypesProps.WHATS_NEW && (
+                  <div className="flex items-center gap-2">
+                    <ProgressBar items={list.items} />
+                    <CompletedItemsCount
+                      size="sm"
+                      items={list.items || []}
+                    />
+                  </div>
+                )}
               </div>
 
-              {list.id === GENERAL_LIST.id ? (
+              {list.type === ListTypesProps.GENERAL || list.type === ListTypesProps.WHATS_NEW ? (
                 <CaretRight
                   {...DEFAULT_ICON_PROPS}
                   className="dark:text-darkTextLight"
@@ -161,7 +165,7 @@ export default function Lists() {
                 </button>
               )}
             </div>
-            {(index !== lists.length - 1 || list.id === GENERAL_LIST.id) && <Divider />}
+            {(index !== lists.length - 1 || list.type === ListTypesProps.GENERAL) && <Divider />}
           </div>
         ))}
       </CardContentContainer>

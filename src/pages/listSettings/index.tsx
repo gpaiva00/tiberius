@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+import toast from 'react-hot-toast'
 import { useList } from '@/contexts/useList'
 
 import Card from '@/shared/components/Card'
@@ -9,9 +9,9 @@ import InputText from '@/shared/components/InputText'
 import { FooterContainer } from '@/shared/components/FooterContainer'
 import Divider from '@/shared/components/Divider'
 
-import { ListProps } from '@/typings/List'
+import { ListProps, ListTypesProps } from '@/typings/List'
 
-import { GENERAL_LIST } from '@/consts'
+import { DEFAULT_TOAST_PROPS } from '@/consts'
 
 export default function ListSettings() {
   const { selectedList, updateList } = useList()
@@ -34,8 +34,11 @@ export default function ListSettings() {
     }
 
     await updateList(updatedList)
-    // TODO: show success message
-    // navigate(-1)
+
+    toast('lista atualizada com sucesso!', {
+      icon: '👏',
+      ...DEFAULT_TOAST_PROPS,
+    })
   }
 
   // const getOptionDescription = {
@@ -58,7 +61,7 @@ export default function ListSettings() {
               value={inputText}
               onChange={handleChangeInputText}
               className="w-full"
-              disabled={selectedList?.id === GENERAL_LIST.id}
+              disabled={selectedList?.type === ListTypesProps.GENERAL}
             />
           </div>
 

@@ -4,12 +4,12 @@ import { subscribeToUserLists, updateList as updateListOnDB, deleteList as delet
 
 import { useAuth } from '@/contexts/useAuth'
 
-import { GENERAL_LIST, STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
+import { GENERAL_LIST, STORAGE_SELECTED_LIST_ID_KEY, WHATS_NEW_LIST } from '@/consts'
 
 import { getFromStorage, setToStorage } from '@utils/storage'
 import { sortListsByPosition } from '@/utils/sortListsByPosition'
 
-import { ListProps } from '@/typings/List'
+import { ListProps, ListTypesProps } from '@/typings/List'
 
 interface ListProviderProps {
   children: ReactNode
@@ -55,7 +55,12 @@ export const ListProvider = ({ children }: ListProviderProps) => {
   }
 
   const deleteList = async (listID: ListProps['id']) => {
-    setToStorage(STORAGE_SELECTED_LIST_ID_KEY, GENERAL_LIST.id)
+    // select user's general list as default selected list
+    if (selectedList?.id === listID) {
+      const userGeneralList = lists.find((list) => list.type === ListTypesProps.GENERAL) as ListProps
+      saveSelectedList(userGeneralList)
+    }
+
     await deleteListOnDB(listID)
   }
 
@@ -70,6 +75,7 @@ export const ListProvider = ({ children }: ListProviderProps) => {
         })
 
         newLists = sortListsByPosition(newLists)
+        console.warn({ newLists })
 
         setLists(newLists)
         handleSetSelectedList(newLists)

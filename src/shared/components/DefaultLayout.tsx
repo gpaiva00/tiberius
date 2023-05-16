@@ -8,7 +8,7 @@ export default function DefaultLayout() {
       </div>
       <footer className="absolute bottom-0 w-full">
         <p className="mb-4 mr-8 text-end text-sm font-light text-gray opacity-50 dark:text-darkTextGray">
-          Tiberius © {new Date().getFullYear()}
+          Tiberius (beta) © {new Date().getFullYear()}
         </p>
       </footer>
     </main>

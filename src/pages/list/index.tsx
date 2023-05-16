@@ -26,9 +26,12 @@ export default function List() {
 
   const sortedListItems = sortListItemsByStatus((selectedList?.items || []) as ListItemProps[])
 
-  const handleDoubleClickOnItem = (item: ListItemProps) => {
+  const handleDoubleClickOnItem = (item: ListItemProps, itemIndex: number) => {
     if (item.completed) return
-    setEditingItem(item)
+    setEditingItem({
+      ...item,
+      index: itemIndex,
+    })
   }
 
   const handleDeleteItem = async (item: ListItemProps) => {
@@ -45,18 +48,14 @@ export default function List() {
     await updateList(updatedList)
   }
 
-  const updateItem = async (item: ListItemProps) => {
-    const updatedItems = selectedList?.items.map((selectedListItem) => {
-      if (selectedListItem.id === item.id) {
-        return item
-      }
+  const updateItem = async (item: ListItemProps, itemIndex: number) => {
+    const newListItems = [...(selectedList?.items as ListItemProps[])]
 
-      return selectedListItem
-    })
+    newListItems[itemIndex] = item
 
     const updatedList = {
       ...(selectedList as ListProps),
-      items: updatedItems as ListItemProps[],
+      items: newListItems,
     }
 
     await updateList(updatedList)
@@ -68,17 +67,19 @@ export default function List() {
       text: itemText,
     }
 
-    updateItem(newItem)
+    const itemIndex = editingItem?.index as number
+
+    updateItem(newItem, itemIndex)
     setEditingItem(null)
   }
 
-  const handleCheckItem = async (item: ListItemProps) => {
+  const handleCheckItem = async (item: ListItemProps, itemIndex: number) => {
     const newItem = {
       ...item,
       completed: !item.completed,
     }
 
-    await updateItem(newItem)
+    await updateItem(newItem, itemIndex)
   }
 
   const handleAddItem = async (itemText: string) => {
@@ -127,9 +128,9 @@ export default function List() {
 
     const dragIndex = Number(event.dataTransfer.getData('text/plain'))
     const newNotCompletedItems = [...(sortedListItems?.notCompleted as ListItemProps[])]
-    const [removed] = newNotCompletedItems.splice(dragIndex, 1)
+    const [draggedItem] = newNotCompletedItems.splice(dragIndex, 1)
 
-    newNotCompletedItems.splice(index, 0, removed)
+    newNotCompletedItems.splice(index, 0, draggedItem)
 
     await updateList({
       ...(selectedList as ListProps),
@@ -166,7 +167,7 @@ export default function List() {
                   className="relative h-[1.125rem] w-[1.125rem] appearance-none rounded-default border-default border-lightenGray outline-none transition-all checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:ml-[0.315rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer dark:border-darkTextGray"
                   type="checkbox"
                   checked={item.completed}
-                  onChange={() => handleCheckItem(item)}
+                  onChange={() => handleCheckItem(item, index)}
                 />
               </div>
               <div className="flex flex-1">
@@ -174,7 +175,7 @@ export default function List() {
                   className={classNames('max-w-[92%] font-light transition-all dark:text-darkTextLight', {
                     'text-gray line-through opacity-30 hover:line-through dark:text-darkTextGray': item.completed,
                   })}
-                  onDoubleClick={() => handleDoubleClickOnItem(item)}
+                  onDoubleClick={() => handleDoubleClickOnItem(item, index)}
                 >
                   <ItemTextFormatted itemText={item.text} />
                 </label>
@@ -205,7 +206,7 @@ export default function List() {
                   className="relative h-[1.125rem] w-[1.125rem] appearance-none rounded-default border-default border-lightenGray outline-none transition-all checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:ml-[0.315rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer dark:border-darkTextGray"
                   type="checkbox"
                   checked={item.completed}
-                  onChange={() => handleCheckItem(item)}
+                  onChange={() => handleCheckItem(item, index)}
                 />
               </div>
               <div className="mx-4 flex flex-1">
