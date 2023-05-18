@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 
-import { useList } from '@/contexts/useList'
+import { useList } from '@/hooks/useList'
 import { DEFAULT_ICON_PROPS, LISTS_ROUTE, LIST_ROUTE } from '@/consts'
 
 import Divider from '@/shared/components/Divider'

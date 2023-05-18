@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import classNames from 'classnames'
 
@@ -12,10 +12,10 @@ import Card from '@/shared/components/Card'
 import ProgressBar from '@/shared/components/ProgressBar'
 import CompletedItemsCount from '@/shared/components/CompletedItemsCount'
 
-import { DEFAULT_ICON_PROPS, GENERAL_LIST, LIST_ROUTE, STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
+import { CHANGE_LOG_ROUTE, DEFAULT_ICON_PROPS, LIST_ROUTE, STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
 
-import { useAuth } from '@/contexts/useAuth'
-import { useList } from '@/contexts/useList'
+import { useAuth } from '@/hooks/useAuth'
+import { useList } from '@/hooks/useList'
 
 import { ListProps, ListTypesProps } from '@/typings/List'
 
@@ -29,7 +29,7 @@ export default function Lists() {
   const { user } = useAuth()
   const userId = user?.uid as string
 
-  const { lists, saveSelectedList, deleteList } = useList()
+  const { lists, saveSelectedList, deleteList, changeLog, haveSeenChangeLog } = useList()
   const listRef = useRef<HTMLDivElement>(null)
 
   const navigate = useNavigate()
@@ -104,6 +104,26 @@ export default function Lists() {
     <Card>
       <Header />
       <CardContentContainer>
+        {!haveSeenChangeLog && (
+          <div>
+            <div className="flex items-center justify-between bg-primary px-4 py-2 dark:bg-darkPrimary">
+              <div className="flex flex-1 flex-col">
+                <div className="flex items-center gap-1">
+                  <Link to={CHANGE_LOG_ROUTE}>
+                    <h1 className="cursor-pointer font-bold text-white hover:underline dark:text-darkTextLight">
+                      <span>🎉 novidades</span>
+                    </h1>
+                  </Link>
+                </div>
+              </div>
+              <CaretRight
+                {...DEFAULT_ICON_PROPS}
+                className="text-white dark:text-darkTextLight"
+              />
+            </div>
+            <Divider />
+          </div>
+        )}
         {lists.map((list, index) => (
           <div
             key={list.id}
@@ -127,28 +147,25 @@ export default function Lists() {
                     className={classNames(
                       'max-w-[21.875rem] cursor-pointer truncate text-primary hover:underline dark:text-darkPrimary',
                       {
-                        'font-bold': list.id === selectedListOnStorage || list.type === ListTypesProps.WHATS_NEW,
+                        'font-bold': list.id === selectedListOnStorage,
                         'font-light': list.id !== selectedListOnStorage,
                       }
                     )}
                     onClick={() => handleClickOnListName(list)}
                   >
-                    {list.type === ListTypesProps.WHATS_NEW && <span>🎉 </span>}
                     {list.name}
                   </h1>
                 </div>
-                {list.type !== ListTypesProps.WHATS_NEW && (
-                  <div className="flex items-center gap-2">
-                    <ProgressBar items={list.items} />
-                    <CompletedItemsCount
-                      size="sm"
-                      items={list.items || []}
-                    />
-                  </div>
-                )}
+                <div className="flex items-center gap-2">
+                  <ProgressBar items={list.items} />
+                  <CompletedItemsCount
+                    size="sm"
+                    items={list.items || []}
+                  />
+                </div>
               </div>
 
-              {list.type === ListTypesProps.GENERAL || list.type === ListTypesProps.WHATS_NEW ? (
+              {list.type === ListTypesProps.GENERAL ? (
                 <CaretRight
                   {...DEFAULT_ICON_PROPS}
                   className="dark:text-darkTextLight"

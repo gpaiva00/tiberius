@@ -22,12 +22,17 @@ export interface ListItemProps {
   index?: number
 }
 
-interface ChangeLogListProps {
+export interface ChangeLogListProps {
   id: string
-  name: string
   description: string
   icon?: string
   version: string
   createdAt: string
-  lastVersion: string
+  items: ChangeLogListItemProps[]
+}
+
+export interface ChangeLogListItemProps {
+  id: string
+  text: string
+  completed: boolean
 }

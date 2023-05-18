@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 import { Outlet } from 'react-router-dom'
-import { AuthProvider } from '../contexts/useAuth'
-import { ListProvider } from '@/contexts/useList'
+import { AuthProvider } from '../hooks/useAuth'
+import { ListProvider } from '@/hooks/useList'
 
 export const DefaultProvider = ({ children }: { children?: ReactElement }) => {
   return (

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { useAuth } from '@/contexts/useAuth'
+import { useAuth } from '@/hooks/useAuth'
 
 import DemoCard from '@/pages/home/components/DemoCard'
 

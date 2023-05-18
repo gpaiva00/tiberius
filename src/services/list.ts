@@ -54,7 +54,7 @@ export const updateList = async (list: ListProps) => {
     console.error('updateList', error)
   }
 }
-// TODO: test this func
+
 export const updateUserLists = async (lists: ListProps[]) => {
   try {
     const batch = writeBatch(db)

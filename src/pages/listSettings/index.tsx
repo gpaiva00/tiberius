@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { useList } from '@/contexts/useList'
+import { useList } from '@/hooks/useList'
 
 import Card from '@/shared/components/Card'
 import { CardContentContainer } from '@/shared/components/CardContentContainer'

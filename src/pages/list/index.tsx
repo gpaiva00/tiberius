@@ -11,7 +11,7 @@ import Card from '@/shared/components/Card'
 import { CardContentContainer } from '@/shared/components/CardContentContainer'
 import ItemTextFormatted from '@/pages/list/components/ItemTextFormatted'
 
-import { useList } from '@/contexts/useList'
+import { useList } from '@/hooks/useList'
 import { DEFAULT_ICON_PROPS } from '@/consts'
 import { sortListItemsByStatus } from '@utils/sortListItemsByStatus'
 

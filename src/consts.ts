@@ -8,6 +8,7 @@ export const SIGN_IN_ROUTE = '/sign-in'
 export const USER_ROUTE = '/user'
 export const LISTS_ROUTE = '/lists'
 export const LIST_SETTINGS_ROUTE = '/list-settings'
+export const CHANGE_LOG_ROUTE = '/change-log'
 
 export const GENERAL_LIST: Omit<ListProps, 'userId' | 'createdAt'> = {
   id: uuidv4(),
@@ -29,6 +30,7 @@ export const WHATS_NEW_LIST: Omit<ListProps, 'userId'> = {
 // storage
 export const STORAGE_USER_KEY = '@tiberius/user'
 export const STORAGE_SELECTED_LIST_ID_KEY = '@tiberius/selectedList'
+export const HAVE_SEEN_CHANGE_LOG_KEY = '@tiberius/haveSeenChangeLog'
 
 export const DEFAULT_ICON_SIZE = 20
 

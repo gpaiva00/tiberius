@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom'
 
-import { useAuth } from '@/contexts/useAuth'
+import { useAuth } from '@/hooks/useAuth'
 
 import { SIGN_IN_ROUTE } from '@/consts'
 
