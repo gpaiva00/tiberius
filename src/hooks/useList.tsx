@@ -4,7 +4,7 @@ import { subscribeToUserLists, updateList as updateListOnDB, deleteList as delet
 
 import { useAuth } from '@/hooks/useAuth'
 
-import { STORAGE_SELECTED_LIST_ID_KEY, WHATS_NEW_LIST } from '@/consts'
+import { STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
 
 import { getFromStorage, setToStorage } from '@utils/storage'
 import { sortListsByPosition } from '@/utils/sortListsByPosition'

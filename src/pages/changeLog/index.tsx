@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { setToStorage } from '@/utils/storage'
 
 import { useList } from '@/hooks/useList'
 
@@ -8,7 +7,7 @@ import Card from '@/shared/components/Card'
 import { CardContentContainer } from '@/shared/components/CardContentContainer'
 import Divider from '@/shared/components/Divider'
 
-import { LIST_ROUTE, DEFAULT_ICON_PROPS, HAVE_SEEN_CHANGE_LOG_KEY } from '@/consts'
+import { LIST_ROUTE, DEFAULT_ICON_PROPS } from '@/consts'
 
 import { HouseSimple } from '@phosphor-icons/react'
 import classNames from 'classnames'
