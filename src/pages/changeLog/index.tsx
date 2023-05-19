@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import classNames from 'classnames'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { useList } from '@/hooks/useList'
@@ -6,12 +7,10 @@ import { useList } from '@/hooks/useList'
 import Card from '@/shared/components/Card'
 import { CardContentContainer } from '@/shared/components/CardContentContainer'
 import Divider from '@/shared/components/Divider'
-
-import { LIST_ROUTE, DEFAULT_ICON_PROPS } from '@/consts'
-
-import { HouseSimple } from '@phosphor-icons/react'
-import classNames from 'classnames'
 import ItemTextFormatted from '@/pages/list/components/ItemTextFormatted'
+import { FooterContainer } from '@/shared/components/FooterContainer'
+
+import { LISTS_ROUTE } from '@/consts'
 
 export default function ChangeLog() {
   const { changeLog, handleSetHaveSeenChangeLog } = useList()
@@ -23,7 +22,7 @@ export default function ChangeLog() {
       return
     }
 
-    handleSetHaveSeenChangeLog()
+    handleSetHaveSeenChangeLog(true)
   }, [])
 
   return (
@@ -32,15 +31,10 @@ export default function ChangeLog() {
       <div>
         <header className="flex h-16 items-center gap-2 rounded-t-default px-4">
           <div className="flex flex-1 items-center justify-between">
-            <div className="flex items-center">
-              <Link
-                to={LIST_ROUTE}
-                className="icon-button"
-              >
-                <HouseSimple {...DEFAULT_ICON_PROPS} />
-              </Link>
-              <h1 className="ml-4 text-2xl font-black lowercase dark:text-darkTextLight">🎉 novidades</h1>
-            </div>
+            <h1 className="ml-4 text-2xl font-black lowercase dark:text-darkTextLight">
+              <span className="mr-4">🎉</span>
+              novidades
+            </h1>
           </div>
         </header>
         <Divider />
@@ -48,7 +42,7 @@ export default function ChangeLog() {
 
       <CardContentContainer>
         <div className="p-4 pb-2">
-          <h1 className="text-xl dark:text-darkTextLight">veja o que há de novo nessa nova versão do Tiberius</h1>
+          <h1 className="text-xl dark:text-darkTextLight">veja o que há de novo nessa nova versão do Tiberius!</h1>
         </div>
         {!!changeLog?.items &&
           changeLog.items.map((item, index) => (
@@ -76,16 +70,16 @@ export default function ChangeLog() {
           ))}
       </CardContentContainer>
       <Divider />
-      {/* <FooterContainer>
-         <div className="flex flex-1 items-center justify-center">
-           <button
-             className="primary-button"
-             onClick={handleSave}
-           >
-             Salvar alterações
-           </button>
-         </div>
-       </FooterContainer> */}
+      <FooterContainer>
+        <div className="flex flex-1 items-center justify-center">
+          <Link
+            to={LISTS_ROUTE}
+            className="primary-button"
+          >
+            começar a usar
+          </Link>
+        </div>
+      </FooterContainer>
     </Card>
   )
 }

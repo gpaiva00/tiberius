@@ -212,7 +212,7 @@ export default function List() {
               <div className="mx-4 flex flex-1">
                 <label
                   className={classNames('select-text font-light transition-all dark:text-darkTextGray', {
-                    'text-gray line-through opacity-30 hover:line-through': item.completed,
+                    'text-gray line-through opacity-30 hover:line-through dark:text-darkTextGray': item.completed,
                   })}
                 >
                   {item.text}

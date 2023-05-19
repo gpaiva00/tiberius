@@ -15,7 +15,8 @@ interface ListContentHeaderProps {
 }
 
 export default function Header({ selectedList }: ListContentHeaderProps) {
-  const { changeLog, haveSeenChangeLog } = useList()
+  const { haveSeenChangeLog } = useList()
+  console.warn({ haveSeenChangeLog })
 
   return (
     <div>

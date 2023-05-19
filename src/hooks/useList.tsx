@@ -25,7 +25,7 @@ interface UseListProps {
   saveSelectedList: (list: ListProps) => void
   changeLog: ChangeLogListProps | null
   haveSeenChangeLog: boolean
-  handleSetHaveSeenChangeLog: () => void
+  handleSetHaveSeenChangeLog: (value?: boolean) => void
 }
 
 const listContext = createContext<UseListProps>({} as UseListProps)
@@ -34,7 +34,7 @@ export const ListProvider = ({ children }: ListProviderProps) => {
   const [selectedList, setSelectedList] = useState<ListProps | null>(null)
   const [lists, setLists] = useState<ListProps[]>([])
   const [changeLog, setChangeLog] = useState<ChangeLogListProps | null>(null)
-  const [haveSeenChangeLog, setHaveSeenChangeLog] = useState<boolean>(false)
+  const [haveSeenChangeLog, setHaveSeenChangeLog] = useState<boolean>(true)
 
   const { user } = useAuth()
   const userId = user?.uid || ''
@@ -73,16 +73,14 @@ export const ListProvider = ({ children }: ListProviderProps) => {
 
   const getChangeLog = async () => {
     const changeLog = await getChangeLogService()
-
-    setHaveSeenChangeLog(haveSeenChangeLog)
-
     setChangeLog(changeLog)
-    setToStorage(HAVE_SEEN_CHANGE_LOG_KEY, true)
+    handleSetHaveSeenChangeLog()
   }
 
-  const handleSetHaveSeenChangeLog = () => {
-    setHaveSeenChangeLog(true)
-    setToStorage(HAVE_SEEN_CHANGE_LOG_KEY, true)
+  const handleSetHaveSeenChangeLog = (value?: boolean) => {
+    const newValue = value ?? getFromStorage(HAVE_SEEN_CHANGE_LOG_KEY) ?? false
+    setHaveSeenChangeLog(newValue)
+    setToStorage(HAVE_SEEN_CHANGE_LOG_KEY, newValue)
   }
 
   useEffect(() => {
