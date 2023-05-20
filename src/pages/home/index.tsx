@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 
 import DemoCard from '@/pages/home/components/DemoCard'
+import Footer from '@/shared/components/Footer'
 
 import { DEFAULT_ICON_PROPS, LIST_ROUTE, SIGN_IN_ROUTE } from '@/consts'
 
-import { GithubLogo, User } from '@phosphor-icons/react'
-
+import { User } from '@phosphor-icons/react'
 import ArrowIcon from '@assets/images/arrow.png'
 
 export default function Home() {
@@ -68,18 +68,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <footer className="absolute bottom-0 flex w-full items-center justify-end gap-4 bg-white p-4 dark:bg-darkBackground">
-        <p className="text-sm font-light text-gray opacity-50 dark:text-darkTextGray">
-          Tiberius © {new Date().getFullYear()}
-        </p>
-        <a href="https://github.com/gpaiva00/tiberius">
-          <GithubLogo
-            weight="fill"
-            size={23}
-            className="mr-4 hover:text-lightenGray dark:text-darkTextGray"
-          />
-        </a>
-      </footer>
+      <Footer />
     </main>
   )
 }
