@@ -7,6 +7,7 @@
     font-family: Lato, system-ui, sans-serif;
     user-select: none;
     font-size: 1.125rem /* 18px */;
+    font-weight: 300;
     line-height: 1.75rem /* 28px */;
     color: #000;
   }

@@ -13,6 +13,7 @@ export interface ListProps {
   position: number
   type: ListTypesProps
   createdAt: string
+  completedAt?: string
 }
 
 export interface ListItemProps {
@@ -20,6 +21,8 @@ export interface ListItemProps {
   text: string
   completed: boolean
   index?: number
+  createdAt: string
+  completedAt?: string
 }
 
 export interface ChangeLogListProps {

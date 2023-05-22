@@ -12,8 +12,9 @@ import User from '../pages/user'
 import Lists from '../pages/lists'
 import ListSettings from '@/pages/listSettings'
 import ChangeLog from '@/pages/changeLog'
+import TermsOfUse from '@/pages/termsOfUse'
 
-import { LIST_ROUTE, LIST_SETTINGS_ROUTE, LISTS_ROUTE, SIGN_IN_ROUTE, USER_ROUTE } from '@/consts'
+import { LIST_ROUTE, LIST_SETTINGS_ROUTE, LISTS_ROUTE, SIGN_IN_ROUTE, TERMOS_OF_USE_ROUTE, USER_ROUTE } from '@/consts'
 import { CHANGE_LOG_ROUTE } from '@/consts'
 
 const router = createBrowserRouter(
@@ -60,6 +61,11 @@ const router = createBrowserRouter(
         <Route
           path={SIGN_IN_ROUTE}
           element={<SignIn />}
+          errorElement={<Error />}
+        />
+        <Route
+          path={TERMOS_OF_USE_ROUTE}
+          element={<TermsOfUse />}
           errorElement={<Error />}
         />
       </Route>

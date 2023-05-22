@@ -134,37 +134,37 @@ export default function Lists() {
             onDragLeave={(event) => handleDragItemLeave(event)}
             ref={listRef}
           >
-            <div className="flex items-center justify-between p-4">
+            <div className="flex items-center justify-between px-4 py-3">
               <div className="flex flex-1 flex-col">
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-2">
                   {list.type == ListTypesProps.DEFAULT && (
                     <DotsSixVertical
                       className="cursor-grab text-lightenGray2 dark:text-darkTextGray"
                       {...DEFAULT_ICON_PROPS}
                     />
                   )}
-                  <h1
-                    className={classNames(
-                      'max-w-[21.875rem] cursor-pointer truncate text-primary hover:underline dark:text-darkPrimary',
-                      {
-                        'font-bold': list.id === selectedListOnStorage,
-                        'font-light': list.id !== selectedListOnStorage,
-                      }
-                    )}
-                    onClick={() => handleClickOnListName(list)}
-                  >
-                    {list.name}
-                  </h1>
-                </div>
-                <div className="flex items-center gap-2">
-                  <ProgressBar items={list.items} />
-                  <CompletedItemsCount
-                    size="sm"
-                    items={list.items || []}
-                  />
+                  <div className="flex flex-col items-start">
+                    <h1
+                      className={classNames(
+                        'max-w-[21.875rem] cursor-pointer truncate text-primary hover:underline dark:text-darkPrimary',
+                        {
+                          'font-bold': list.id === selectedListOnStorage,
+                        }
+                      )}
+                      onClick={() => handleClickOnListName(list)}
+                    >
+                      {list.name}
+                    </h1>
+                    <div className="flex items-center gap-2">
+                      <ProgressBar items={list.items} />
+                      <CompletedItemsCount
+                        size="sm"
+                        items={list.items || []}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-
               {list.type === ListTypesProps.GENERAL ? (
                 <CaretRight
                   {...DEFAULT_ICON_PROPS}

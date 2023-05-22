@@ -49,6 +49,7 @@ export const checkIfUserHasLists = async (userId: UserProps['uid']) => {
 export const updateList = async (list: ListProps) => {
   try {
     const listRef = doc(db, listDocumentName, list.id)
+    // TODO: force update even if field is unsupported by firestore
     await setDoc(listRef, list, { merge: true })
   } catch (error) {
     console.error('updateList', error)
