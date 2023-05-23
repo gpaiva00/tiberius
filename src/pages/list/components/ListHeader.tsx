@@ -9,6 +9,7 @@ import { ListProps } from '@/typings/List'
 import { List } from '@phosphor-icons/react'
 import { useList } from '@/hooks/useList'
 import classNames from 'classnames'
+import CompletedItemsCount from '@/shared/components/CompletedItemsCount'
 
 interface ListContentHeaderProps {
   selectedList: ListProps | null
@@ -37,17 +38,25 @@ export default function Header({ selectedList }: ListContentHeaderProps) {
                 )}
               </span>
             </Link>
-            <h1 className="ml-4 text-2xl font-black lowercase dark:text-darkTextLight">para hoje</h1>
+            <h1 className="ml-4 text-2xl font-black lowercase dark:text-darkTextLight">
+              {selectedList?.type === 'default' ? 'para hoje' : 'itens gerais'}
+            </h1>
           </div>
 
-          <div className="flex flex-col items-end gap-1">
+          <div className="flex flex-col items-end">
             <Link
               to={LIST_SETTINGS_ROUTE}
               className="max-w-[15.625rem] truncate text-xl text-primary hover:underline dark:text-darkPrimary"
             >
               {selectedList?.name}
             </Link>
-            <ProgressBar items={selectedList?.items || []} />
+            <div className="flex items-center gap-2">
+              <ProgressBar items={selectedList?.items || []} />
+              <CompletedItemsCount
+                size="sm"
+                items={selectedList?.items || []}
+              />
+            </div>
           </div>
         </div>
       </header>

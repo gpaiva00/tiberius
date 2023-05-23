@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react'
-import classNames from 'classnames'
 import { v4 as uuidv4 } from 'uuid'
 
 import { ListItemProps, ListProps } from '@typings/List'
@@ -11,12 +10,14 @@ import Card from '@/shared/components/Card'
 import { CardContentContainer } from '@/shared/components/CardContentContainer'
 import ItemTextFormatted from '@/pages/list/components/ItemTextFormatted'
 
+import Confetti from 'react-confetti'
 import { useList } from '@/hooks/useList'
 import { DEFAULT_ICON_PROPS } from '@/consts'
 import { sortListItemsByStatus } from '@utils/sortListItemsByStatus'
+import { getDayFromDateString } from '@/utils/getDayFromDateString'
+import { getRandomQuote } from '@/utils/getRandomQuote'
 
 import { DotsSixVertical, TrashSimple } from '@phosphor-icons/react'
-import CompletedItemsCount from '@/shared/components/CompletedItemsCount'
 
 export default function List() {
   const [editingItem, setEditingItem] = useState<ListItemProps | null>(null)
@@ -25,6 +26,7 @@ export default function List() {
   const listRef = useRef<HTMLDivElement>(null)
 
   const sortedListItems = sortListItemsByStatus((selectedList?.items || []) as ListItemProps[])
+  const isListCompleted = sortedListItems.notCompleted.length === 0 && sortedListItems.completed.length > 0
 
   const handleDoubleClickOnItem = (item: ListItemProps) => {
     if (item.completed) return
@@ -51,7 +53,6 @@ export default function List() {
     const newListItems = [...(selectedList?.items as ListItemProps[])]
 
     const itemIndex = newListItems.findIndex((listItem) => listItem.id === item.id)
-    console.warn({ item })
 
     newListItems[itemIndex] = item
 
@@ -142,11 +143,18 @@ export default function List() {
 
   return (
     <Card>
+      {isListCompleted && (
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          recycle={false}
+        />
+      )}
       <Header selectedList={selectedList} />
       <CardContentContainer>
         {!selectedList?.items.length && (
           <div className="flex flex-1 items-center justify-center">
-            <p className="lowercase text-lightenGray">sem itens por enquanto</p>
+            <p className="lowercase italic text-lightenGray">{getRandomQuote()}</p>
           </div>
         )}
         {sortedListItems.notCompleted.map((item, index) => (
@@ -194,8 +202,9 @@ export default function List() {
         ))}
         {sortedListItems.completed.length > 0 && (
           <div className="flex items-center gap-2 bg-lightGray px-4 py-2 dark:bg-darkInputBackground">
-            <h2 className="font-bold lowercase dark:text-darkTextLight">concluídas</h2>
-            <CompletedItemsCount items={selectedList?.items || []} />
+            <h2 className="font-bold lowercase dark:text-darkTextLight">
+              {sortedListItems.completed.length} concluídas
+            </h2>
           </div>
         )}
         {sortedListItems.completed.map((item, index) => (
@@ -214,8 +223,8 @@ export default function List() {
                   {item.text}
                 </label>
               </div>
-              <span className="text-xs text-lightenGray opacity-50 dark:text-darkTextGray">
-                {new Date(item.completedAt as string).toLocaleDateString()} às{' '}
+              <span className="text-[0.625rem] text-lightenGray opacity-50 dark:text-darkTextGray">
+                feito {getDayFromDateString(item.completedAt as string)} às{' '}
                 {new Date(item.completedAt as string).toLocaleTimeString(navigator.language, {
                   hour: '2-digit',
                   minute: '2-digit',

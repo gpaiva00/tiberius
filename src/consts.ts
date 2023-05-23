@@ -47,3 +47,17 @@ export const DEFAULT_ICON_PROPS = {
 export const DEFAULT_TOAST_PROPS = {
   position: 'top-center' as ToastPosition,
 }
+
+// random quotes
+export const QUOTES = [
+  'A jornada de mil passos começa com um único item concluído.',
+  'Cada tarefa concluída é um passo em direção ao sucesso.',
+  'Grandes realizações começam com pequenas tarefas.',
+  'A produtividade é a chave para desbloquear seu potencial.',
+  'Acredite no poder de suas listas para alcançar seus objetivos.',
+  'O sucesso está na ação, não na inação.',
+  'Transforme suas tarefas em conquistas notáveis.',
+  'Faça cada momento contar em direção à realização.',
+  'O caminho para o sucesso é pavimentado com tarefas bem feitas.',
+  'Você está um passo mais perto de seus sonhos com cada item concluído.',
+]

@@ -16,14 +16,14 @@ import { CHANGE_LOG_ROUTE, DEFAULT_ICON_PROPS, LIST_ROUTE, STORAGE_SELECTED_LIST
 
 import { useAuth } from '@/hooks/useAuth'
 import { useList } from '@/hooks/useList'
+import { createList as createListOnDB, updateUserLists } from '@services/list'
 
 import { ListProps, ListTypesProps } from '@/typings/List'
 
 import { getFromStorage } from '@utils/storage'
+import { getRandomQuote } from '@/utils/getRandomQuote'
 
 import { CaretRight, DotsSixVertical, TrashSimple } from '@phosphor-icons/react'
-
-import { createList as createListOnDB, updateUserLists } from '@services/list'
 
 export default function Lists() {
   const { user } = useAuth()
@@ -122,6 +122,11 @@ export default function Lists() {
               />
             </div>
             <Divider />
+          </div>
+        )}
+        {!lists.length && (
+          <div className="flex flex-1 items-center justify-center">
+            <p className="lowercase italic text-lightenGray">{getRandomQuote()}</p>
           </div>
         )}
         {lists.map((list, index) => (
