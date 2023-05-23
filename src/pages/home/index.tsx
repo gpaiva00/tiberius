@@ -15,7 +15,7 @@ export default function Home() {
 
   return (
     <main className="flex h-screen flex-col bg-white dark:bg-darkBackground">
-      <div className="flex h-screen flex-1 flex-col px-40">
+      <div className="flex h-screen flex-1 flex-col px-6 md:px-40">
         <header className="flex items-center justify-between py-10">
           <h1 className="text-2xl font-black dark:text-darkTextLight">Tiberius</h1>
           {user ? (
@@ -24,7 +24,7 @@ export default function Home() {
               className="icon-button flex items-center gap-2"
             >
               <User {...DEFAULT_ICON_PROPS} />
-              {user.firstName}
+              <span className="hidden md:inline">{user.firstName}</span>
             </Link>
           ) : (
             <Link
@@ -35,24 +35,24 @@ export default function Home() {
             </Link>
           )}
         </header>
-        <div className="flex flex-1 flex-col items-center justify-center gap-4 pb-10">
-          <div className="grid grid-cols-2">
+        <div className="flex flex-1 flex-col items-center gap-4 pb-10 md:justify-center">
+          <div className="flex md:grid md:grid-cols-2">
             <div className="flex flex-col gap-4">
-              <h1 className="text-6xl font-black dark:text-darkTextLight">lista de tarefas simples.</h1>
-              <h2 className="text-3xl font-semibold text-lightenGray dark:text-darkTextGray">
+              <h1 className="text-5xl font-black dark:text-darkTextLight md:text-6xl">lista de tarefas simples.</h1>
+              <h2 className="text-2xl font-semibold text-lightenGray dark:text-darkTextGray md:text-3xl">
                 minimalista e só com o necessário.
               </h2>
-              <p className="mt-8 w-[25rem] text-xl leading-relaxed text-zinc-700 dark:text-zinc-500">
+              <p className="mt-8 text-lg leading-relaxed text-zinc-700 dark:text-zinc-500 md:w-[25rem] md:text-xl">
                 Apenas funcionalidades que você espera para manter o foco no que realmente importa.
               </p>
               <Link
                 to={SIGN_IN_ROUTE}
-                className="primary-button w-[20rem]"
+                className="primary-button md:w-[20rem]"
               >
                 começar
               </Link>
             </div>
-            <div className="flex flex-col items-center justify-end">
+            <div className="hidden flex-col items-center justify-end md:flex">
               <DemoCard />
               <div className="flex w-full items-end">
                 <span className="align-bottom text-sm text-lightenGray">Apenas tarefas. Nada mais.</span>

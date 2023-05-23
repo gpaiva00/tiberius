@@ -39,8 +39,8 @@ export default function Footer() {
         >
           ajuda
         </a>
-        <span className="mx-1">•</span>
-        <span>
+        <span className="mx-1 hidden md:inline">•</span>
+        <span className="mt-2 block md:mt-0 md:inline">
           © {new Date().getFullYear()}{' '}
           <a
             href="/"
