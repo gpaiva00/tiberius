@@ -4,9 +4,9 @@ import { DEFAULT_ICON_PROPS, LISTS_ROUTE, LIST_SETTINGS_ROUTE } from '@/consts'
 
 import Divider from '@/shared/components/Divider'
 import ProgressBar from '@/shared/components/ProgressBar'
-import { ListProps } from '@/typings/List'
+import { ListProps, ListTypesProps } from '@/typings/List'
 
-import { List } from '@phosphor-icons/react'
+import { Archive, List } from '@phosphor-icons/react'
 import { useList } from '@/hooks/useList'
 import classNames from 'classnames'
 import CompletedItemsCount from '@/shared/components/CompletedItemsCount'
@@ -20,7 +20,7 @@ export default function Header({ selectedList }: ListContentHeaderProps) {
 
   return (
     <div>
-      <header className="flex h-16 items-center gap-2 rounded-t-default px-4">
+      <header className="flex h-16 items-center gap-2 rounded-t-default px-2 md:px-4">
         <div className="flex flex-1 items-center justify-between">
           <div className="flex items-center justify-center">
             <Link
@@ -38,7 +38,7 @@ export default function Header({ selectedList }: ListContentHeaderProps) {
                 )}
               </span>
             </Link>
-            <h1 className="ml-4 text-2xl font-black lowercase dark:text-darkTextLight">
+            <h1 className="ml-2 text-xl font-black lowercase dark:text-darkTextLight md:ml-4 md:text-2xl">
               {selectedList?.type === 'default' ? 'para hoje' : 'itens gerais'}
             </h1>
           </div>
@@ -46,11 +46,17 @@ export default function Header({ selectedList }: ListContentHeaderProps) {
           <div className="flex flex-col items-end">
             <Link
               to={LIST_SETTINGS_ROUTE}
-              className="max-w-[15.625rem] truncate text-xl text-primary hover:underline dark:text-darkPrimary"
+              className="flex max-w-xs items-center truncate text-base text-primary hover:underline dark:text-darkPrimary md:max-w-[15.625rem] md:text-xl"
             >
+              {selectedList?.type === ListTypesProps.GENERAL && (
+                <Archive
+                  {...DEFAULT_ICON_PROPS}
+                  className="mr-1 md:mr-2"
+                />
+              )}
               {selectedList?.name}
             </Link>
-            <div className="flex items-center gap-2">
+            <div className="flex h-[1rem] items-center gap-2">
               <ProgressBar items={selectedList?.items || []} />
               <CompletedItemsCount
                 size="sm"

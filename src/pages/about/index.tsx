@@ -43,7 +43,7 @@ export default function About() {
           </div>
           {/* why tiberius */}
           <div className="my-4">
-            <h1 className="mb-1 text-xl font-black dark:text-darkTextLight">por que Tiberius?</h1>
+            <h1 className="mb-1 text-xl font-black dark:text-darkTextLight">Por que Tiberius?</h1>
             <Divider />
             <p className="my-2 dark:text-darkTextLight">
               O nome Tiberius foi inspirado no nome do imperador romano Tibério Júlio César Augusto, que governou o
@@ -73,7 +73,7 @@ export default function About() {
           </div>
           {/* who am i */}
           <div className="my-4">
-            <h1 className="mb-1 text-xl font-black dark:text-darkTextLight">quem sou eu?</h1>
+            <h1 className="mb-1 text-xl font-black dark:text-darkTextLight">Quem sou eu?</h1>
             <Divider />
             <p className="my-2 dark:text-darkTextLight">
               Meu nome é <span className="font-bold">Gabriel</span>, tenho {new Date().getFullYear() - 1998} anos e sou

@@ -24,7 +24,7 @@ import { ListProps, ListTypesProps } from '@/typings/List'
 import { getFromStorage } from '@utils/storage'
 import { getRandomQuote } from '@/utils/getRandomQuote'
 
-import { CaretRight, DotsSixVertical, TrashSimple } from '@phosphor-icons/react'
+import { Archive, CaretRight, DotsSixVertical, TrashSimple } from '@phosphor-icons/react'
 
 export default function Lists() {
   const { user } = useAuth()
@@ -153,16 +153,22 @@ export default function Lists() {
                     <div className="flex flex-col items-start">
                       <h1
                         className={classNames(
-                          'max-w-[21.875rem] cursor-pointer truncate text-primary hover:underline dark:text-darkPrimary',
+                          'flex max-w-[21.875rem] cursor-pointer items-center truncate text-primary hover:underline dark:text-darkPrimary',
                           {
                             'font-bold': list.id === selectedListOnStorage,
                           }
                         )}
                         onClick={() => handleClickOnListName(list)}
                       >
+                        {list.type === ListTypesProps.GENERAL && (
+                          <Archive
+                            {...DEFAULT_ICON_PROPS}
+                            className="mr-2"
+                          />
+                        )}
                         {list.name}
                       </h1>
-                      <div className="flex items-center gap-2">
+                      <div className="flex h-[1rem] items-center gap-2">
                         <ProgressBar items={list.items} />
                         <CompletedItemsCount
                           size="sm"

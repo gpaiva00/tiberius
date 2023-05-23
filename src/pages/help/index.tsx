@@ -32,7 +32,7 @@ export default function Help() {
           </h4>
           {/* lists */}
           <div className="my-4">
-            <h1 className="mb-1 text-xl font-black dark:text-darkTextLight">listas de tarefas</h1>
+            <h1 className="mb-1 text-xl font-black dark:text-darkTextLight">Listas de tarefas</h1>
             <Divider />
             <ol className="my-2 list-inside list-decimal dark:text-darkTextLight">
               <li>
@@ -52,7 +52,7 @@ export default function Help() {
               <li>
                 <span className="font-bold">Ordenar listas:</span> para ordenar as listas, clique no botão
                 <DotsSixVertical
-                  className="m-0 mx-1 inline-block p-0 text-lightenGray2 dark:text-darkTextGray"
+                  className="m-0 mx-1 inline-block p-0 dark:text-darkTextGray"
                   {...DEFAULT_ICON_PROPS}
                 />
                 e arraste a lista para a posição desejada.
@@ -60,14 +60,16 @@ export default function Help() {
               <li>
                 <span className="font-bold">Lista "geral":</span> a lista "geral" é a lista padrão do Tiberius. Ela não
                 pode ser excluída e não pode ser renomeada. Ela também não pode ser movida para outra posição. O
-                objetivo dessa lista é servir como uma lista de tarefas não categorizada, onde você pode colocar itens
-                que não se encaixam em nenhuma outra lista.
+                objetivo dessa lista é servir como uma lista de tarefas não categorizadas, onde você pode criar itens
+                que não se encaixam em nenhuma outra lista e que não serão concluídos no dia atual. Ela também pode ser
+                usada como um "arquivo", onde os itens de outras listas podem ser movidos para ela caso não sejam
+                concluídos no dia atual.
               </li>
             </ol>
           </div>
           {/* items */}
           <div className="my-4">
-            <h1 className="mb-1 text-xl font-black dark:text-darkTextLight">itens</h1>
+            <h1 className="mb-1 text-xl font-black dark:text-darkTextLight">Itens</h1>
             <Divider />
             <ol className="my-2 list-inside list-decimal dark:text-darkTextLight">
               <li>
@@ -94,7 +96,7 @@ export default function Help() {
               <li>
                 <span className="font-bold">Ordenar itens:</span> para ordenar os itens, clique no botão
                 <DotsSixVertical
-                  className="m-0 mx-1 inline-block p-0 text-lightenGray2 dark:text-darkTextGray"
+                  className="m-0 mx-1 inline-block p-0 dark:text-darkTextGray"
                   {...DEFAULT_ICON_PROPS}
                 />
                 e arraste o item para a posição desejada.
@@ -103,20 +105,20 @@ export default function Help() {
           </div>
           {/* profile */}
           <div className="my-4">
-            <h1 className="mb-1 text-xl font-black dark:text-darkTextLight">perfil</h1>
+            <h1 className="mb-1 text-xl font-black dark:text-darkTextLight">Perfil</h1>
             <Divider />
             <ol className="my-2 list-inside list-decimal dark:text-darkTextLight">
               <li>
                 <span className="font-bold">Acessar o perfil:</span> para acessar o perfil, vá para a tela de listas e
                 clique no ícone{' '}
                 <User
-                  className="m-0 mx-1 inline-block p-0 text-lightenGray2 dark:text-darkTextGray"
+                  className="m-0 mx-1 inline-block p-0 dark:text-darkTextGray"
                   {...DEFAULT_ICON_PROPS}
                 />
                 .
               </li>
               <li>
-                <span className="font-bold">sair da conta:</span> para sair da conta, vá para a tela de perfil e clique
+                <span className="font-bold">Sair da conta:</span> para sair da conta, vá para a tela de perfil e clique
                 no botão <span className="font-bold">sair da conta</span>.
               </li>
             </ol>

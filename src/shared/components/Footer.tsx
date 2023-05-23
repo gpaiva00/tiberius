@@ -2,7 +2,7 @@ import { ABOUT_ROUTE, CONTACT_ROUTE, HELP_ROUTE, TERMOS_OF_USE_ROUTE } from '@/c
 
 export default function Footer() {
   return (
-    <footer className="w-full pb-4">
+    <footer className="mt-6 w-full pb-4 md:mt-0">
       <p className="text-center text-sm text-gray opacity-50 dark:text-darkTextGray">
         <a
           href={TERMOS_OF_USE_ROUTE}
@@ -10,21 +10,21 @@ export default function Footer() {
         >
           termos de uso
         </a>
-        <span className="mx-1">•</span>
+        <span className="mx-1 md:mx-2">•</span>
         <a
           href={ABOUT_ROUTE}
           className="hover:underline"
         >
           sobre
         </a>
-        <span className="mx-1">•</span>
+        <span className="mx-1 md:mx-2">•</span>
         <a
           href={CONTACT_ROUTE}
           className="hover:underline"
         >
           contato
         </a>
-        <span className="mx-1">•</span>
+        <span className="mx-1 md:mx-2">•</span>
         <a
           href="https://github.com/gpaiva00/tiberius"
           target="_blank"
@@ -32,15 +32,15 @@ export default function Footer() {
         >
           github
         </a>
-        <span className="mx-1">•</span>
+        <span className="mx-1 md:mx-2">•</span>
         <a
           href={HELP_ROUTE}
           className="hover:underline"
         >
           ajuda
         </a>
-        <span className="mx-1 hidden md:inline">•</span>
-        <span className="mt-2 block md:mt-0 md:inline">
+        <span className="mx-1 hidden md:mx-2 md:inline">•</span>
+        <span className="mt-1 block md:mt-0 md:inline">
           © {new Date().getFullYear()}{' '}
           <a
             href="/"

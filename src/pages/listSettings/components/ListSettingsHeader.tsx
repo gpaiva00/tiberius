@@ -4,9 +4,9 @@ import { useList } from '@/hooks/useList'
 import { DEFAULT_ICON_PROPS, LISTS_ROUTE, LIST_ROUTE } from '@/consts'
 
 import Divider from '@/shared/components/Divider'
-import { ListProps } from '@/typings/List'
+import { ListProps, ListTypesProps } from '@/typings/List'
 
-import { CaretLeft, Dot, TrashSimple } from '@phosphor-icons/react'
+import { Archive, CaretLeft, Dot, TrashSimple } from '@phosphor-icons/react'
 
 interface ListContentHeaderProps {
   selectedList: ListProps | null
@@ -42,7 +42,13 @@ export default function Header({ selectedList }: ListContentHeaderProps) {
               size={25}
               className="dark:text-darkTextGray"
             />
-            <h1 className="max-w-[15.625rem] truncate text-2xl font-semibold text-lightenGray dark:text-darkTextGray">
+            <h1 className="flex max-w-[15.625rem] items-center truncate text-2xl font-semibold text-lightenGray dark:text-darkTextGray">
+              {selectedList?.type === ListTypesProps.GENERAL && (
+                <Archive
+                  {...DEFAULT_ICON_PROPS}
+                  className="mr-2"
+                />
+              )}
               {selectedList?.name}
             </h1>
           </div>

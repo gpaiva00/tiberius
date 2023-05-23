@@ -26,9 +26,9 @@ import {
   SIGN_IN_ROUTE,
   TERMOS_OF_USE_ROUTE,
   USER_ROUTE,
+  CHANGE_LOG_ROUTE,
+  CONTACT_ROUTE,
 } from '@/consts'
-import { CHANGE_LOG_ROUTE } from '@/consts'
-import { CONTACT_ROUTE } from '@/consts'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
