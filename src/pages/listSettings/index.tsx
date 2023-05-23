@@ -54,7 +54,7 @@ export default function ListSettings() {
       <CardContentContainer>
         <div className="flex flex-1 flex-col">
           {/* input container */}
-          <div className="flex flex-col gap-4 p-4">
+          <div className="flex flex-col gap-2 p-2 md:gap-4 md:p-4">
             <label className="default-label">nome da lista</label>
             <InputText
               placeholder="Nome da lista"

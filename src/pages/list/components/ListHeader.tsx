@@ -46,7 +46,7 @@ export default function Header({ selectedList }: ListContentHeaderProps) {
           <div className="flex flex-col items-end">
             <Link
               to={LIST_SETTINGS_ROUTE}
-              className="flex max-w-xs items-center truncate text-base text-primary hover:underline dark:text-darkPrimary md:max-w-[15.625rem] md:text-xl"
+              className="flex max-w-xs items-center truncate text-base font-bold text-primary hover:underline dark:text-darkPrimary md:max-w-[15.625rem]"
             >
               {selectedList?.type === ListTypesProps.GENERAL && (
                 <Archive

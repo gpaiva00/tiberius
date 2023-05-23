@@ -107,11 +107,11 @@ export default function Lists() {
       <CardContentContainer>
         {!haveSeenChangeLog && (
           <div>
-            <div className="flex items-center justify-between bg-primary px-4 py-2 dark:bg-darkPrimary">
+            <div className="flex items-center justify-between bg-primary p-2 dark:bg-darkPrimary md:px-4 md:py-3">
               <div className="flex flex-1 flex-col">
                 <div className="flex items-center gap-1">
                   <Link to={CHANGE_LOG_ROUTE}>
-                    <h1 className="cursor-pointer font-bold text-white hover:underline dark:text-darkTextLight">
+                    <h1 className="font-bold text-white hover:underline dark:text-darkTextLight">
                       <span>🎉 novidades</span>
                     </h1>
                   </Link>
@@ -141,59 +141,57 @@ export default function Lists() {
               onDragLeave={(event) => handleDragItemLeave(event)}
               ref={listRef}
             >
-              <div className="flex items-center justify-between px-4 py-3">
-                <div className="flex flex-1 flex-col">
-                  <div className="flex items-center gap-2">
-                    {list.type == ListTypesProps.DEFAULT && (
-                      <DotsSixVertical
-                        className="cursor-grab text-lightenGray2 dark:text-darkTextGray"
+              <div className="flex flex-row items-center p-2 md:px-4 md:py-3">
+                {list.type == ListTypesProps.DEFAULT && (
+                  <div className="mr-2 flex items-center gap-1 md:mr-4">
+                    <DotsSixVertical
+                      className="cursor-grab text-lightenGray2 dark:text-darkTextGray"
+                      {...DEFAULT_ICON_PROPS}
+                    />
+                  </div>
+                )}
+                {/* list text */}
+                <div className="flex flex-1 flex-col items-start">
+                  <h1
+                    className={classNames(
+                      'flex max-w-[21.875rem] cursor-pointer items-center truncate text-primary hover:underline dark:text-darkPrimary',
+                      {
+                        'font-bold': list.id === selectedListOnStorage,
+                      }
+                    )}
+                    onClick={() => handleClickOnListName(list)}
+                  >
+                    {list.type === ListTypesProps.GENERAL && (
+                      <Archive
                         {...DEFAULT_ICON_PROPS}
+                        className="mr-1 md:mr-2"
                       />
                     )}
-                    <div className="flex flex-col items-start">
-                      <h1
-                        className={classNames(
-                          'flex max-w-[21.875rem] cursor-pointer items-center truncate text-primary hover:underline dark:text-darkPrimary',
-                          {
-                            'font-bold': list.id === selectedListOnStorage,
-                          }
-                        )}
-                        onClick={() => handleClickOnListName(list)}
-                      >
-                        {list.type === ListTypesProps.GENERAL && (
-                          <Archive
-                            {...DEFAULT_ICON_PROPS}
-                            className="mr-2"
-                          />
-                        )}
-                        {list.name}
-                      </h1>
-                      <div className="flex h-[1rem] items-center gap-2">
-                        <ProgressBar items={list.items} />
-                        <CompletedItemsCount
-                          size="sm"
-                          items={list.items || []}
-                        />
-                      </div>
-                    </div>
+                    {list.name}
+                  </h1>
+                  <div className="flex h-[1rem] items-center gap-2">
+                    <ProgressBar items={list.items} />
+                    <CompletedItemsCount
+                      size="sm"
+                      items={list.items || []}
+                    />
                   </div>
                 </div>
-                {list.type === ListTypesProps.GENERAL ? (
-                  <CaretRight
-                    {...DEFAULT_ICON_PROPS}
-                    className="dark:text-darkTextLight"
-                  />
-                ) : (
-                  <button
-                    className="rounded-default p-2 transition-colors hover:bg-lightGray dark:hover:bg-darkTextGray"
-                    onClick={() => handleDeleteList(list.id)}
-                  >
-                    <TrashSimple
+                <div className="flex">
+                  {list.type === ListTypesProps.GENERAL ? (
+                    <CaretRight
                       {...DEFAULT_ICON_PROPS}
                       className="dark:text-darkTextLight"
                     />
-                  </button>
-                )}
+                  ) : (
+                    <button
+                      className="icon-button"
+                      onClick={() => handleDeleteList(list.id)}
+                    >
+                      <TrashSimple {...DEFAULT_ICON_PROPS} />
+                    </button>
+                  )}
+                </div>
               </div>
               {(index !== lists.length - 1 || list.type === ListTypesProps.GENERAL) && <Divider />}
             </div>

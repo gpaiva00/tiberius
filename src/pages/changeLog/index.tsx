@@ -16,51 +16,45 @@ export default function ChangeLog() {
   const { changeLog, handleSetHaveSeenChangeLog } = useList()
   const navigate = useNavigate()
 
-  useEffect(() => {
-    if (!changeLog) {
-      navigate(-1)
-      return
-    }
+  // useEffect(() => {
+  //   if (!changeLog) {
+  //     navigate(-1)
+  //     return
+  //   }
 
-    handleSetHaveSeenChangeLog(true)
-  }, [])
+  //   handleSetHaveSeenChangeLog(true)
+  // }, [])
 
   return (
     <Card>
       {/* header */}
-      <div>
-        <header className="flex h-16 items-center gap-2 rounded-t-default px-4">
-          <div className="flex flex-1 items-center justify-between">
-            <h1 className="ml-4 text-2xl font-black lowercase dark:text-darkTextLight">
-              <span className="mr-4">🎉</span>
-              novidades
-            </h1>
-          </div>
-        </header>
-        <Divider />
-      </div>
+      <header className="flex h-16 items-center gap-2 rounded-t-default px-2 md:px-4">
+        <div className="flex flex-1 items-center justify-between">
+          <h1 className="ml-2 text-xl font-black lowercase dark:text-darkTextLight md:ml-4 md:text-2xl">
+            <span className="mr-2 md:mr-4">🎉</span>
+            novidades
+          </h1>
+        </div>
+      </header>
+      <Divider />
 
       <CardContentContainer>
-        <div className="p-4 pb-2">
-          <h1 className="text-xl dark:text-darkTextLight">veja o que há de novo nessa nova versão do Tiberius!</h1>
+        <div className="p-2 pb-2 md:p-4">
+          <h4 className="dark:text-darkTextLight">veja o que há de novo nessa nova versão do Tiberius!</h4>
         </div>
         {!!changeLog?.items &&
           changeLog.items.map((item, index) => (
             <div key={item.id}>
-              <div className="flex flex-row items-center p-4">
-                <div className="mr-4 flex items-center gap-1">
+              <div className="flex flex-row items-center p-2 md:p-4">
+                <div className="mr-2 flex items-center gap-1 md:mr-4">
                   <input
-                    className="relative h-[1.125rem] w-[1.125rem] appearance-none rounded-default border-default border-lightenGray outline-none transition-all checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:ml-[0.315rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] dark:border-darkTextGray"
+                    className="default-checkbox"
                     type="checkbox"
                     checked={item.completed}
                   />
                 </div>
                 <div className="flex flex-1">
-                  <label
-                    className={classNames('max-w-[92%] font-light transition-all dark:text-darkTextLight', {
-                      'text-gray line-through opacity-30 hover:line-through dark:text-darkTextGray': item.completed,
-                    })}
-                  >
+                  <label className="select-text text-sm text-lightenGray line-through opacity-50 transition-all dark:text-darkTextGray md:max-w-[92%] md:text-base">
                     <ItemTextFormatted itemText={item.text} />
                   </label>
                 </div>

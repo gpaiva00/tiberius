@@ -5,7 +5,7 @@ import Footer from '@/shared/components/Footer'
 export default function DefaultLayout() {
   return (
     <main className="flex h-screen flex-col bg-white dark:bg-darkBackground">
-      <div className="flex h-screen flex-1 items-center md:justify-center">
+      <div className="flex h-screen flex-1 items-center justify-center">
         <Outlet />
       </div>
       <Footer />

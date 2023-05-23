@@ -11,7 +11,7 @@ export default function Card({ children, size = 'lg', ...props }: DefaultCardPro
       className={classNames(
         'flex flex-col border-default bg-white dark:border-dark dark:bg-darkCardBackground dark:shadow-none md:rounded-default md:shadow-default',
         {
-          'h-72 w-72': size === 'sm',
+          'h-screen w-full md:h-72 md:w-72': size === 'sm',
           'h-screen w-full md:h-[37.5rem] md:w-[40.625rem]': size === 'lg',
           'h-[25rem] w-[25rem]': size === 'demo',
         },

@@ -27,7 +27,7 @@ export default function Header({ selectedList }: ListContentHeaderProps) {
 
   return (
     <div>
-      <header className="flex h-16 items-center gap-2 rounded-t-default px-4">
+      <header className="flex h-16 items-center gap-2 rounded-t-default px-2 md:px-4">
         <div className="flex flex-1 items-center justify-between">
           <div className="flex items-center">
             <Link
@@ -36,13 +36,15 @@ export default function Header({ selectedList }: ListContentHeaderProps) {
             >
               <CaretLeft {...DEFAULT_ICON_PROPS} />
             </Link>
-            <h1 className="ml-4 text-2xl font-black lowercase dark:text-darkTextLight">configurações</h1>
+            <h1 className="ml-2 max-w-[5.25rem] truncate text-xl font-black lowercase dark:text-darkTextLight md:ml-4 md:max-w-fit md:text-2xl">
+              configurações
+            </h1>
             <Dot
               {...DEFAULT_ICON_PROPS}
               size={25}
               className="dark:text-darkTextGray"
             />
-            <h1 className="flex max-w-[15.625rem] items-center truncate text-2xl font-semibold text-lightenGray dark:text-darkTextGray">
+            <h1 className="flex max-w-xs items-center truncate text-xl font-semibold text-lightenGray dark:text-darkTextGray md:max-w-[15.625rem] md:text-2xl">
               {selectedList?.type === ListTypesProps.GENERAL && (
                 <Archive
                   {...DEFAULT_ICON_PROPS}

@@ -154,11 +154,13 @@ export default function List() {
       )}
       <Header selectedList={selectedList} />
       <CardContentContainer>
+        {/* quotation */}
         {!selectedList?.items.length && (
-          <div className="flex flex-1 items-center justify-center">
-            <p className="lowercase italic text-lightenGray">{getRandomQuote()}</p>
+          <div className="flex flex-1 items-center justify-center px-4 md:px-0">
+            <p className="text-center lowercase italic text-lightenGray">{getRandomQuote()}</p>
           </div>
         )}
+        {/* uncompleted iem */}
         <div ref={parent}>
           {sortedListItems.notCompleted.map((item, index) => (
             <div
@@ -177,7 +179,7 @@ export default function List() {
                     {...DEFAULT_ICON_PROPS}
                   />
                   <input
-                    className="relative h-4 w-4 appearance-none rounded-default border-default border-lightenGray outline-none transition-all checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:ml-[0.315rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer dark:border-darkTextGray md:h-[1.125rem] md:w-[1.125rem]"
+                    className="default-checkbox"
                     type="checkbox"
                     checked={item.completed}
                     onChange={() => handleCompleteItem(item)}
@@ -191,6 +193,7 @@ export default function List() {
                     <ItemTextFormatted itemText={item.text} />
                   </label>
                 </div>
+                {/* item option */}
                 <div className="flex">
                   <button
                     className="icon-button"
@@ -218,7 +221,7 @@ export default function List() {
               <div className="flex flex-row items-center gap-2 px-4 py-2 md:gap-4">
                 <div className="flex">
                   <input
-                    className="relative h-4 w-4 appearance-none rounded-default border-default border-lightenGray outline-none transition-all checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:ml-[0.315rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer dark:border-darkTextGray md:h-[1.125rem] md:w-[1.125rem]"
+                    className="default-checkbox"
                     type="checkbox"
                     checked={item.completed}
                     onChange={() => handleCompleteItem(item)}

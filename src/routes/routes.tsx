@@ -64,13 +64,13 @@ const router = createBrowserRouter(
             element={<ListSettings />}
             errorElement={<Error />}
           />
-          <Route
-            path={CHANGE_LOG_ROUTE}
-            element={<ChangeLog />}
-            errorElement={<Error />}
-          />
         </Route>
 
+        <Route
+          path={CHANGE_LOG_ROUTE}
+          element={<ChangeLog />}
+          errorElement={<Error />}
+        />
         <Route
           path={SIGN_IN_ROUTE}
           element={<SignIn />}

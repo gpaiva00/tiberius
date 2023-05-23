@@ -19,7 +19,7 @@ export default function User() {
 
   return (
     <Card size="sm">
-      <header className="flex h-16 items-center gap-2 rounded-t-default bg-header px-4 dark:bg-darkCardBackground">
+      <header className="flex h-16 items-center gap-2 rounded-t-default px-2 md:px-4">
         <div className="flex items-center">
           <button
             className="rounded-default p-2 transition-colors hover:bg-lightGray dark:hover:bg-darkTextGray"
@@ -30,7 +30,7 @@ export default function User() {
               className="dark:text-darkTextLight"
             />
           </button>
-          <h1 className="ml-4 text-2xl font-black lowercase dark:text-darkTextLight">Perfil</h1>
+          <h1 className="ml-2 text-xl font-black lowercase dark:text-darkTextLight md:ml-4 md:text-2xl">Perfil</h1>
         </div>
       </header>
       <Divider />
