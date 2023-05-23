@@ -3,6 +3,7 @@ import { useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import classNames from 'classnames'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import Divider from '@/shared/components/Divider'
 import { CardContentContainer } from '@/shared/components/CardContentContainer'
@@ -29,10 +30,10 @@ export default function Lists() {
   const { user } = useAuth()
   const userId = user?.uid as string
 
-  const { lists, saveSelectedList, deleteList, changeLog, haveSeenChangeLog } = useList()
-  const listRef = useRef<HTMLDivElement>(null)
-
+  const { lists, saveSelectedList, deleteList, haveSeenChangeLog } = useList()
   const navigate = useNavigate()
+  const listRef = useRef<HTMLDivElement>(null)
+  const [parent] = useAutoAnimate()
 
   const selectedListOnStorage = getFromStorage(STORAGE_SELECTED_LIST_ID_KEY)
 
@@ -129,67 +130,69 @@ export default function Lists() {
             <p className="lowercase italic text-lightenGray">{getRandomQuote()}</p>
           </div>
         )}
-        {lists.map((list, index) => (
-          <div
-            key={list.id}
-            draggable={list.type !== (ListTypesProps.GENERAL || ListTypesProps.WHATS_NEW)}
-            onDragStart={(event) => handleOnDragItemStart(event, index)}
-            onDragOver={(event) => handleOnDragItemOver(event)}
-            onDrop={(event) => handleOnDropItem(event, index)}
-            onDragLeave={(event) => handleDragItemLeave(event)}
-            ref={listRef}
-          >
-            <div className="flex items-center justify-between px-4 py-3">
-              <div className="flex flex-1 flex-col">
-                <div className="flex items-center gap-2">
-                  {list.type == ListTypesProps.DEFAULT && (
-                    <DotsSixVertical
-                      className="cursor-grab text-lightenGray2 dark:text-darkTextGray"
-                      {...DEFAULT_ICON_PROPS}
-                    />
-                  )}
-                  <div className="flex flex-col items-start">
-                    <h1
-                      className={classNames(
-                        'max-w-[21.875rem] cursor-pointer truncate text-primary hover:underline dark:text-darkPrimary',
-                        {
-                          'font-bold': list.id === selectedListOnStorage,
-                        }
-                      )}
-                      onClick={() => handleClickOnListName(list)}
-                    >
-                      {list.name}
-                    </h1>
-                    <div className="flex items-center gap-2">
-                      <ProgressBar items={list.items} />
-                      <CompletedItemsCount
-                        size="sm"
-                        items={list.items || []}
+        <div ref={parent}>
+          {lists.map((list, index) => (
+            <div
+              key={list.id}
+              draggable={list.type !== (ListTypesProps.GENERAL || ListTypesProps.WHATS_NEW)}
+              onDragStart={(event) => handleOnDragItemStart(event, index)}
+              onDragOver={(event) => handleOnDragItemOver(event)}
+              onDrop={(event) => handleOnDropItem(event, index)}
+              onDragLeave={(event) => handleDragItemLeave(event)}
+              ref={listRef}
+            >
+              <div className="flex items-center justify-between px-4 py-3">
+                <div className="flex flex-1 flex-col">
+                  <div className="flex items-center gap-2">
+                    {list.type == ListTypesProps.DEFAULT && (
+                      <DotsSixVertical
+                        className="cursor-grab text-lightenGray2 dark:text-darkTextGray"
+                        {...DEFAULT_ICON_PROPS}
                       />
+                    )}
+                    <div className="flex flex-col items-start">
+                      <h1
+                        className={classNames(
+                          'max-w-[21.875rem] cursor-pointer truncate text-primary hover:underline dark:text-darkPrimary',
+                          {
+                            'font-bold': list.id === selectedListOnStorage,
+                          }
+                        )}
+                        onClick={() => handleClickOnListName(list)}
+                      >
+                        {list.name}
+                      </h1>
+                      <div className="flex items-center gap-2">
+                        <ProgressBar items={list.items} />
+                        <CompletedItemsCount
+                          size="sm"
+                          items={list.items || []}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              {list.type === ListTypesProps.GENERAL ? (
-                <CaretRight
-                  {...DEFAULT_ICON_PROPS}
-                  className="dark:text-darkTextLight"
-                />
-              ) : (
-                <button
-                  className="rounded-default p-2 transition-colors hover:bg-lightGray dark:hover:bg-darkTextGray"
-                  onClick={() => handleDeleteList(list.id)}
-                >
-                  <TrashSimple
+                {list.type === ListTypesProps.GENERAL ? (
+                  <CaretRight
                     {...DEFAULT_ICON_PROPS}
                     className="dark:text-darkTextLight"
                   />
-                </button>
-              )}
+                ) : (
+                  <button
+                    className="rounded-default p-2 transition-colors hover:bg-lightGray dark:hover:bg-darkTextGray"
+                    onClick={() => handleDeleteList(list.id)}
+                  >
+                    <TrashSimple
+                      {...DEFAULT_ICON_PROPS}
+                      className="dark:text-darkTextLight"
+                    />
+                  </button>
+                )}
+              </div>
+              {(index !== lists.length - 1 || list.type === ListTypesProps.GENERAL) && <Divider />}
             </div>
-            {(index !== lists.length - 1 || list.type === ListTypesProps.GENERAL) && <Divider />}
-          </div>
-        ))}
+          ))}
+        </div>
       </CardContentContainer>
       <Footer handleAddList={handleAddList} />
     </Card>
