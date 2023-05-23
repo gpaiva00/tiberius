@@ -13,9 +13,22 @@ import Lists from '../pages/lists'
 import ListSettings from '@/pages/listSettings'
 import ChangeLog from '@/pages/changeLog'
 import TermsOfUse from '@/pages/termsOfUse'
+import Contact from '@/pages/contact'
+import About from '@/pages/about'
+import Help from '@/pages/help'
 
-import { LIST_ROUTE, LIST_SETTINGS_ROUTE, LISTS_ROUTE, SIGN_IN_ROUTE, TERMOS_OF_USE_ROUTE, USER_ROUTE } from '@/consts'
+import {
+  ABOUT_ROUTE,
+  HELP_ROUTE,
+  LIST_ROUTE,
+  LIST_SETTINGS_ROUTE,
+  LISTS_ROUTE,
+  SIGN_IN_ROUTE,
+  TERMOS_OF_USE_ROUTE,
+  USER_ROUTE,
+} from '@/consts'
 import { CHANGE_LOG_ROUTE } from '@/consts'
+import { CONTACT_ROUTE } from '@/consts'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -66,6 +79,21 @@ const router = createBrowserRouter(
         <Route
           path={TERMOS_OF_USE_ROUTE}
           element={<TermsOfUse />}
+          errorElement={<Error />}
+        />
+        <Route
+          path={CONTACT_ROUTE}
+          element={<Contact />}
+          errorElement={<Error />}
+        />
+        <Route
+          path={ABOUT_ROUTE}
+          element={<About />}
+          errorElement={<Error />}
+        />
+        <Route
+          path={HELP_ROUTE}
+          element={<Help />}
           errorElement={<Error />}
         />
       </Route>

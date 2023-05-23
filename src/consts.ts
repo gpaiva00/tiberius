@@ -10,6 +10,9 @@ export const LISTS_ROUTE = '/lists'
 export const LIST_SETTINGS_ROUTE = '/list-settings'
 export const CHANGE_LOG_ROUTE = '/change-log'
 export const TERMOS_OF_USE_ROUTE = '/terms-of-use'
+export const CONTACT_ROUTE = '/contact'
+export const ABOUT_ROUTE = '/about'
+export const HELP_ROUTE = '/help'
 
 export const GENERAL_LIST: Omit<ListProps, 'userId' | 'createdAt'> = {
   id: uuidv4(),

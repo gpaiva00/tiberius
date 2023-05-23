@@ -1,4 +1,4 @@
-import { TERMOS_OF_USE_ROUTE } from '@/consts'
+import { ABOUT_ROUTE, CONTACT_ROUTE, HELP_ROUTE, TERMOS_OF_USE_ROUTE } from '@/consts'
 
 export default function Footer() {
   return (
@@ -12,14 +12,14 @@ export default function Footer() {
         </a>
         <span className="mx-1">•</span>
         <a
-          href=""
+          href={ABOUT_ROUTE}
           className="hover:underline"
         >
           sobre
         </a>
         <span className="mx-1">•</span>
         <a
-          href=""
+          href={CONTACT_ROUTE}
           className="hover:underline"
         >
           contato
@@ -34,13 +34,21 @@ export default function Footer() {
         </a>
         <span className="mx-1">•</span>
         <a
-          href=""
+          href={HELP_ROUTE}
           className="hover:underline"
         >
           ajuda
         </a>
         <span className="mx-1">•</span>
-        <span>© {new Date().getFullYear()} Tiberius (beta)</span>
+        <span>
+          © {new Date().getFullYear()}{' '}
+          <a
+            href="/"
+            className="hover:underline"
+          >
+            Tiberius (beta)
+          </a>
+        </span>
       </p>
     </footer>
   )

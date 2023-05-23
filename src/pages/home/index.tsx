@@ -15,7 +15,7 @@ export default function Home() {
 
   return (
     <main className="flex h-screen flex-col bg-white dark:bg-darkBackground">
-      <div className="flex h-screen flex-col px-40">
+      <div className="flex h-screen flex-1 flex-col px-40">
         <header className="flex items-center justify-between py-10">
           <h1 className="text-2xl font-black dark:text-darkTextLight">Tiberius</h1>
           {user ? (
