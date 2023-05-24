@@ -4,12 +4,12 @@ import { PrivateRouter } from '@/routes/PrivateRouter'
 import { DefaultProvider } from '@/routes/DefaultProvider'
 
 import DefaultLayout from '../shared/components/DefaultLayout'
-import Error from '../pages/error'
-import Home from '../pages/home'
-import List from '../pages/list'
-import SignIn from '../pages/signin'
-import User from '../pages/user'
-import Lists from '../pages/lists'
+import Error from '@/pages/error'
+import Home from '@/pages/home'
+import List from '@/pages/list'
+import SignIn from '@/pages/signin'
+import User from '@/pages/user'
+import Lists from '@/pages/lists'
 import ListSettings from '@/pages/listSettings'
 import ChangeLog from '@/pages/changeLog'
 import TermsOfUse from '@/pages/termsOfUse'
@@ -42,6 +42,10 @@ const router = createBrowserRouter(
         path="/"
         element={<Home />}
         errorElement={<Error />}
+      />
+      <Route
+        path="*"
+        element={<Error />}
       />
       <Route element={<DefaultLayout />}>
         <Route element={<PrivateRouter />}>
