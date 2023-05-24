@@ -1,22 +1,22 @@
+import classNames from 'classnames'
 import { Link } from 'react-router-dom'
-
-import { DEFAULT_ICON_PROPS, LISTS_ROUTE, LIST_SETTINGS_ROUTE } from '@/consts'
 
 import Divider from '@/shared/components/Divider'
 import ProgressBar from '@/shared/components/ProgressBar'
+import CompletedItemsCount from '@/shared/components/CompletedItemsCount'
+
+import { useChangeLog } from '@/hooks/useChangeLog'
+
+import { DEFAULT_ICON_PROPS, LISTS_ROUTE, LIST_SETTINGS_ROUTE } from '@/consts'
 import { ListProps, ListTypesProps } from '@/typings/List'
 
 import { Archive, List } from '@phosphor-icons/react'
-import { useList } from '@/hooks/useList'
-import classNames from 'classnames'
-import CompletedItemsCount from '@/shared/components/CompletedItemsCount'
-
 interface ListContentHeaderProps {
   selectedList: ListProps | null
 }
 
 export default function Header({ selectedList }: ListContentHeaderProps) {
-  const { haveSeenChangeLog } = useList()
+  const { haveSeenChangeLog } = useChangeLog()
 
   return (
     <div>

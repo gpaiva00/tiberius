@@ -16,7 +16,6 @@ export const getChangeLog = async () => {
     const changeLogDocs = await getDocs(changeLogListsQuery)
 
     const changeLogList = changeLogDocs.docs[0].data()
-
     return changeLogList as ChangeLogListProps
   } catch (error) {
     console.error('getChangelog', error)

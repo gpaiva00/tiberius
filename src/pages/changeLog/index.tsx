@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
-import classNames from 'classnames'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { useList } from '@/hooks/useList'
+import { useChangeLog } from '@/hooks/useChangeLog'
 
 import Card from '@/shared/components/Card'
 import { CardContentContainer } from '@/shared/components/CardContentContainer'
@@ -13,17 +12,17 @@ import { FooterContainer } from '@/shared/components/FooterContainer'
 import { LISTS_ROUTE } from '@/consts'
 
 export default function ChangeLog() {
-  const { changeLog, handleSetHaveSeenChangeLog } = useList()
+  const { haveSeenChangeLog, markChangeLogAsSeen, changeLog } = useChangeLog()
   const navigate = useNavigate()
 
-  // useEffect(() => {
-  //   if (!changeLog) {
-  //     navigate(-1)
-  //     return
-  //   }
+  useEffect(() => {
+    if (haveSeenChangeLog) {
+      navigate(-1)
+      return
+    }
 
-  //   handleSetHaveSeenChangeLog(true)
-  // }, [])
+    markChangeLogAsSeen()
+  }, [])
 
   return (
     <Card>
@@ -40,7 +39,7 @@ export default function ChangeLog() {
 
       <CardContentContainer>
         <div className="p-2 pb-2 md:p-4">
-          <h4 className="dark:text-darkTextLight">veja o que há de novo nessa nova versão do Tiberius!</h4>
+          <h4 className="dark:text-darkTextLight">{changeLog?.description}</h4>
         </div>
         {!!changeLog?.items &&
           changeLog.items.map((item, index) => (
@@ -54,7 +53,7 @@ export default function ChangeLog() {
                   />
                 </div>
                 <div className="flex flex-1">
-                  <label className="select-text text-sm text-lightenGray line-through opacity-50 transition-all dark:text-darkTextGray md:max-w-[92%] md:text-base">
+                  <label className="text-sm dark:text-darkTextLight md:max-w-[92%] md:text-base">
                     <ItemTextFormatted itemText={item.text} />
                   </label>
                 </div>
@@ -70,7 +69,7 @@ export default function ChangeLog() {
             to={LISTS_ROUTE}
             className="primary-button"
           >
-            começar a usar
+            vamos explorar!
           </Link>
         </div>
       </FooterContainer>

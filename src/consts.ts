@@ -34,7 +34,7 @@ export const WHATS_NEW_LIST: Omit<ListProps, 'userId'> = {
 // storage
 export const STORAGE_USER_KEY = '@tiberius/user'
 export const STORAGE_SELECTED_LIST_ID_KEY = '@tiberius/selectedList'
-export const HAVE_SEEN_CHANGE_LOG_KEY = '@tiberius/haveSeenChangeLog'
+export const HAVE_SEEN_CHANGE_LOG_DATE_KEY = '@tiberius/haveSeenChangeLogDate'
 
 export const DEFAULT_ICON_SIZE = 20
 

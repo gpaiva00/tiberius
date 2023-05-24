@@ -13,12 +13,12 @@ import Card from '@/shared/components/Card'
 import ProgressBar from '@/shared/components/ProgressBar'
 import CompletedItemsCount from '@/shared/components/CompletedItemsCount'
 
-import { CHANGE_LOG_ROUTE, DEFAULT_ICON_PROPS, LIST_ROUTE, QUOTES, STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
-
 import { useAuth } from '@/hooks/useAuth'
 import { useList } from '@/hooks/useList'
+import { useChangeLog } from '@/hooks/useChangeLog'
 import { createList as createListOnDB, updateUserLists } from '@services/list'
 
+import { CHANGE_LOG_ROUTE, DEFAULT_ICON_PROPS, LIST_ROUTE, QUOTES, STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
 import { ListProps, ListTypesProps } from '@/typings/List'
 
 import { getFromStorage } from '@utils/storage'
@@ -30,7 +30,10 @@ export default function Lists() {
   const { user } = useAuth()
   const userId = user?.uid as string
 
-  const { lists, saveSelectedList, deleteList, haveSeenChangeLog } = useList()
+  const { lists, saveSelectedList, deleteList } = useList()
+  const { haveSeenChangeLog } = useChangeLog()
+  console.warn({ haveSeenChangeLog })
+
   const navigate = useNavigate()
   const listRef = useRef<HTMLDivElement>(null)
   const [parent] = useAutoAnimate()

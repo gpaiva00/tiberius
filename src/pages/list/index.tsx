@@ -172,7 +172,7 @@ export default function List() {
             <p className="text-center italic text-lightenGray">{getRandomQuote(QUOTES)}</p>
           </div>
         )}
-        {/* uncompleted iem */}
+        {/* uncompleted items */}
         <div ref={parent}>
           {sortedListItems.notCompleted.map((item, index) => (
             <div
