@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import toast from 'react-hot-toast'
 
 import { ListItemProps, ListProps } from '@typings/List'
 
@@ -13,7 +14,7 @@ import ItemTextFormatted from '@/pages/list/components/ItemTextFormatted'
 
 import Confetti from 'react-confetti'
 import { useList } from '@/hooks/useList'
-import { DEFAULT_ICON_PROPS, QUOTES } from '@/consts'
+import { COMPLETE_MESSAGES, CONGRATS_EMOJIS, DEFAULT_ICON_PROPS, DEFAULT_TOAST_PROPS, QUOTES } from '@/consts'
 import { sortListItemsByStatus } from '@utils/sortListItemsByStatus'
 import { getDayFromDateString } from '@/utils/getDayFromDateString'
 import { getRandomQuote } from '@/utils/getRandomQuote'
@@ -84,6 +85,17 @@ export default function List() {
     }
 
     await updateItem(newItem)
+
+    if (!item.completed) {
+      toast(getRandomQuote(COMPLETE_MESSAGES), {
+        icon: getRandomQuote(CONGRATS_EMOJIS),
+        ...DEFAULT_TOAST_PROPS,
+        duration: 6000,
+        style: {
+          width: '800px',
+        },
+      })
+    }
   }
 
   const handleAddItem = async (itemText: string) => {

@@ -13,6 +13,12 @@ inject()
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <AppRoutes />
-    <Toaster />
+    <Toaster
+      toastOptions={{
+        style: {
+          borderRadius: '0.375rem',
+        },
+      }}
+    />
   </React.StrictMode>
 )
