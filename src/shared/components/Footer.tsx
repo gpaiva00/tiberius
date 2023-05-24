@@ -2,7 +2,7 @@ import { ABOUT_ROUTE, CONTACT_ROUTE, HELP_ROUTE, TERMOS_OF_USE_ROUTE } from '@/c
 
 export default function Footer() {
   return (
-    <footer className="mt-6 w-full pb-4 md:mt-0">
+    <footer className="w-full pb-4 pt-6 dark:bg-darkBackground md:pt-0">
       <p className="text-center text-sm text-gray opacity-50 dark:text-darkTextGray">
         <a
           href={TERMOS_OF_USE_ROUTE}

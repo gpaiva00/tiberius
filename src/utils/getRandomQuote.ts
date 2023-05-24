@@ -1,6 +1,4 @@
-import { QUOTES } from '@/consts'
-
-export const getRandomQuote = () => {
-  const randomIndex = Math.floor(Math.random() * QUOTES.length)
-  return QUOTES[randomIndex]
+export const getRandomQuote = (quotes: string[]): string => {
+  const randomIndex = Math.floor(Math.random() * quotes.length)
+  return quotes[randomIndex]
 }

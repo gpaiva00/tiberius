@@ -1,17 +1,29 @@
+import Footer from '@/shared/components/Footer'
+
+import { getRandomQuote } from '@/utils/getRandomQuote'
+
+import { ERROR_MESSAGES, LISTS_ROUTE, QUOTES } from '@/consts'
+import { Link } from 'react-router-dom'
+
 export default function Error() {
   return (
-    <main className="flex min-h-screen flex-1 items-center justify-center px-40 py-10">
-      <div className="flex flex-1 flex-col items-center justify-center gap-3">
-        {/* replace this image for a minimalist 404 error image */}
-        <img
-          src="https://i.imgur.com/qIufhof.png"
-          alt="404 error"
-          width={300}
-        />
-
-        <h1 className="text-4xl font-extrabold ">Oops!</h1>
-        <p className="text-base text-gray">Ocorreu um erro, tente de novo mais tarde.</p>
+    <main className="flex h-screen flex-col bg-white dark:bg-darkBackground">
+      <div className="flex h-screen flex-1 flex-col justify-center gap-6 px-6 md:px-40">
+        <div className="flex flex-col gap-4">
+          <h1 className="text-4xl font-bold dark:text-darkTextLight">{getRandomQuote(ERROR_MESSAGES)}</h1>
+          <h4 className="text-2xl font-bold dark:text-darkTextGray">
+            Aproveite para tomar uma água e voltar em breve.
+          </h4>
+        </div>
+        <p className="text-lg italic text-primary">{getRandomQuote(QUOTES)}</p>
+        <Link
+          to={LISTS_ROUTE}
+          className="primary-button md:w-[20rem]"
+        >
+          Voltar para as listas
+        </Link>
       </div>
+      <Footer />
     </main>
   )
 }

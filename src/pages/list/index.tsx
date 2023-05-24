@@ -13,7 +13,7 @@ import ItemTextFormatted from '@/pages/list/components/ItemTextFormatted'
 
 import Confetti from 'react-confetti'
 import { useList } from '@/hooks/useList'
-import { DEFAULT_ICON_PROPS } from '@/consts'
+import { DEFAULT_ICON_PROPS, QUOTES } from '@/consts'
 import { sortListItemsByStatus } from '@utils/sortListItemsByStatus'
 import { getDayFromDateString } from '@/utils/getDayFromDateString'
 import { getRandomQuote } from '@/utils/getRandomQuote'
@@ -157,7 +157,7 @@ export default function List() {
         {/* quotation */}
         {!selectedList?.items.length && (
           <div className="flex flex-1 items-center justify-center px-4 md:px-0">
-            <p className="text-center lowercase italic text-lightenGray">{getRandomQuote()}</p>
+            <p className="text-center italic text-lightenGray">{getRandomQuote(QUOTES)}</p>
           </div>
         )}
         {/* uncompleted iem */}

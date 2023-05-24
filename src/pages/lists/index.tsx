@@ -13,7 +13,7 @@ import Card from '@/shared/components/Card'
 import ProgressBar from '@/shared/components/ProgressBar'
 import CompletedItemsCount from '@/shared/components/CompletedItemsCount'
 
-import { CHANGE_LOG_ROUTE, DEFAULT_ICON_PROPS, LIST_ROUTE, STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
+import { CHANGE_LOG_ROUTE, DEFAULT_ICON_PROPS, LIST_ROUTE, QUOTES, STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
 
 import { useAuth } from '@/hooks/useAuth'
 import { useList } from '@/hooks/useList'
@@ -127,7 +127,7 @@ export default function Lists() {
         )}
         {!lists.length && (
           <div className="flex flex-1 items-center justify-center">
-            <p className="lowercase italic text-lightenGray">{getRandomQuote()}</p>
+            <p className="italic text-lightenGray">{getRandomQuote(QUOTES)}</p>
           </div>
         )}
         <div ref={parent}>
