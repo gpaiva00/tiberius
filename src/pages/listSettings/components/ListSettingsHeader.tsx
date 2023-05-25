@@ -1,9 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom'
 
-import { useList } from '@/hooks/useList'
-import { DEFAULT_ICON_PROPS, LISTS_ROUTE, LIST_ROUTE } from '@/consts'
+import { useList } from '@/hooks'
 
-import Divider from '@/shared/components/Divider'
+import { Divider } from '@/shared/components'
+
+import { DEFAULT_ICON_PROPS, LISTS_ROUTE, LIST_ROUTE } from '@/consts'
 import { ListProps, ListTypesProps } from '@/typings/List'
 
 import { Archive, CaretLeft, Dot, TrashSimple } from '@phosphor-icons/react'

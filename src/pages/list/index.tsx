@@ -1,23 +1,20 @@
 import { useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import Confetti from 'react-confetti'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import toast from 'react-hot-toast'
 
-import { ListItemProps, ListProps } from '@typings/List'
+import { useList } from '@/hooks'
 
-import Divider from '@/shared/components/Divider'
+import { Card, CardContentContainer, Divider } from '@/shared/components'
 import Footer from '@/pages/list/components/ListFooter'
 import Header from '@/pages/list/components/ListHeader'
-import Card from '@/shared/components/Card'
-import { CardContentContainer } from '@/shared/components/CardContentContainer'
-import ItemTextFormatted from '@/pages/list/components/ItemTextFormatted'
+import { formattedItemText } from '@/pages/list/components/ItemTextFormatted'
 
-import Confetti from 'react-confetti'
-import { useList } from '@/hooks/useList'
+import { ListItemProps, ListProps } from '@typings/List'
 import { COMPLETE_MESSAGES, CONGRATS_EMOJIS, DEFAULT_ICON_PROPS, DEFAULT_TOAST_PROPS, QUOTES } from '@/consts'
 import { sortListItemsByStatus } from '@utils/sortListItemsByStatus'
-import { getDayFromDateString } from '@/utils/getDayFromDateString'
-import { getRandomQuote } from '@/utils/getRandomQuote'
+import { getDayFromDateString, getRandomQuote } from '@/utils'
 
 import { DotsSixVertical, TrashSimple } from '@phosphor-icons/react'
 
@@ -187,7 +184,7 @@ export default function List() {
               <div className="flex flex-row items-center p-2 md:px-4 md:py-3">
                 <div className="mr-2 flex items-center gap-1 md:mr-4">
                   <DotsSixVertical
-                    className="cursor-grab text-lightenGray2 dark:text-darkTextGray"
+                    className="cursor-grab text-lightenGray dark:text-darkTextGray"
                     {...DEFAULT_ICON_PROPS}
                   />
                   <input
@@ -198,12 +195,12 @@ export default function List() {
                   />
                 </div>
                 <div className="flex flex-1">
-                  <label
-                    className="max-w-[92%] text-sm transition-all dark:text-darkTextLight md:text-base"
+                  <div
                     onDoubleClick={() => handleDoubleClickOnItem(item)}
+                    className="max-w-[92%] "
                   >
-                    <ItemTextFormatted itemText={item.text} />
-                  </label>
+                    {formattedItemText(item.text)}
+                  </div>
                 </div>
                 {/* item option */}
                 <div className="flex">
@@ -260,6 +257,7 @@ export default function List() {
       <Footer
         handleAddItem={handleAddItem}
         editingItemText={editingItem?.text}
+        hasEmojiPicker
       />
     </Card>
   )

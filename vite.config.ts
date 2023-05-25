@@ -22,4 +22,7 @@ export default defineConfig({
       { find: '@shared', replacement: path.resolve(__dirname, 'src/shared/') },
     ],
   },
+  optimizeDeps: {
+    exclude: ['emoji-picker-react'],
+  },
 })

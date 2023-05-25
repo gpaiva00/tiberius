@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 export default function Footer() {
   return (
     <footer className="w-full pb-4 pt-6 dark:bg-darkBackground md:pt-0">
-      <p className="text-center text-sm text-gray opacity-50 dark:text-darkTextGray">
+      <p className="text-center text-sm text-lightenGray dark:text-darkTextGray">
         <Link
           to={TERMOS_OF_USE_ROUTE}
           className="hover:underline"

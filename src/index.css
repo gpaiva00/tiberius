@@ -17,6 +17,11 @@
     padding: 0;
     box-sizing: border-box;
   }
+
+  b,
+  strong {
+    font-weight: 700;
+  }
 }
 
 @layer components {
@@ -29,7 +34,7 @@
   }
 
   .icon-button {
-    @apply rounded-default p-2 transition-colors hover:bg-lightGray dark:text-darkTextLight dark:hover:bg-darkBackgroundIconButton;
+    @apply rounded-default p-2 transition-colors hover:bg-lightGray disabled:text-lightGray disabled:hover:bg-transparent dark:text-darkTextLight dark:hover:bg-darkBackgroundIconButton;
   }
 
   .drag-over {
@@ -44,9 +49,45 @@
     @apply relative h-4 w-4 appearance-none rounded-default border-default border-lightenGray outline-none transition-all checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:ml-[0.315rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer dark:border-darkTextGray md:h-[1.125rem] md:w-[1.125rem];
   }
 
+  .default-input-text {
+    @apply w-full rounded-sm border-default bg-lightGray p-2 outline-none disabled:text-lightenGray dark:border-dark dark:bg-darkInputBackground dark:text-darkTextLight dark:placeholder:text-darkTextGray disabled:dark:text-darkTextGray;
+  }
+
   .translucid {
     background-color: rgba(255, 255, 255, 0.5);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
   }
+}
+
+.default-link {
+  @apply text-primary hover:underline dark:text-darkPrimary;
+}
+
+/* emoji picker styles */
+.EmojiPickerReact {
+}
+
+aside.EmojiPickerReact.epr-main {
+  @apply z-50 w-full md:absolute md:bottom-40;
+}
+
+/* quill input text */
+.ql-editor {
+  @apply max-h-64 w-full rounded-b-md bg-lightGray p-2 text-sm outline-none disabled:text-lightenGray dark:border-dark dark:bg-darkInputBackground dark:text-darkTextLight disabled:dark:text-darkTextGray md:text-base;
+}
+
+/* quill toolbar */
+.ql-toolbar.ql-snow {
+  @apply rounded-t-md border-default dark:border-dark dark:bg-darkInputBackground;
+}
+
+/* quill container */
+.ql-container.ql-snow {
+  @apply rounded-b-md border-default dark:border-dark dark:bg-darkInputBackground;
+}
+
+/* quill placeholder */
+.ql-editor.ql-blank::before {
+  @apply not-italic text-lightenGray dark:text-darkTextGray;
 }

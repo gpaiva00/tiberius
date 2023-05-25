@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks'
 
+import { Footer } from '@/shared/components'
 import DemoCard from '@/pages/home/components/DemoCard'
-import Footer from '@/shared/components/Footer'
 
 import { DEFAULT_ICON_PROPS, LIST_ROUTE, SIGN_IN_ROUTE } from '@/consts'
 

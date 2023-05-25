@@ -1,28 +1,19 @@
 import { useRef } from 'react'
-
 import { Link, useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import classNames from 'classnames'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
-import Divider from '@/shared/components/Divider'
-import { CardContentContainer } from '@/shared/components/CardContentContainer'
+import { Card, CardContentContainer, CompletedItemsCount, Divider, ProgressBar } from '@/shared/components'
 import Footer from '@/pages/lists/components/ListsFooter'
 import Header from '@/pages/lists/components/ListsHeader'
-import Card from '@/shared/components/Card'
-import ProgressBar from '@/shared/components/ProgressBar'
-import CompletedItemsCount from '@/shared/components/CompletedItemsCount'
 
-import { useAuth } from '@/hooks/useAuth'
-import { useList } from '@/hooks/useList'
-import { useChangeLog } from '@/hooks/useChangeLog'
 import { createList as createListOnDB, updateUserLists } from '@services/list'
+import { useAuth, useChangeLog, useList } from '@/hooks'
 
 import { CHANGE_LOG_ROUTE, DEFAULT_ICON_PROPS, LIST_ROUTE, QUOTES, STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
 import { ListProps, ListTypesProps } from '@/typings/List'
-
-import { getFromStorage } from '@utils/storage'
-import { getRandomQuote } from '@/utils/getRandomQuote'
+import { getRandomQuote, getFromStorage } from '@/utils'
 
 import { Archive, CaretRight, DotsSixVertical, TrashSimple } from '@phosphor-icons/react'
 
@@ -32,7 +23,6 @@ export default function Lists() {
 
   const { lists, saveSelectedList, deleteList } = useList()
   const { haveSeenChangeLog } = useChangeLog()
-  console.warn({ haveSeenChangeLog })
 
   const navigate = useNavigate()
   const listRef = useRef<HTMLDivElement>(null)
@@ -148,7 +138,7 @@ export default function Lists() {
                 {list.type == ListTypesProps.DEFAULT && (
                   <div className="mr-2 flex items-center gap-1 md:mr-4">
                     <DotsSixVertical
-                      className="cursor-grab text-lightenGray2 dark:text-darkTextGray"
+                      className="cursor-grab text-lightenGray dark:text-darkTextGray"
                       {...DEFAULT_ICON_PROPS}
                     />
                   </div>

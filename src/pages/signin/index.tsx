@@ -1,8 +1,7 @@
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks'
 
-import Card from '@/shared/components/Card'
-import Divider from '@/shared/components/Divider'
+import { Card, Divider } from '@/shared/components'
 
 import { ReactComponent as GoogleIcon } from '@assets/icons/google-icon.svg'
 

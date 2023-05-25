@@ -1,13 +1,13 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react'
 
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks'
 
 import { subscribeToUserLists, updateList as updateListOnDB, deleteList as deleteListOnDB } from '@/services/list'
 
 import { STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
 
 import { getFromStorage, setToStorage } from '@utils/storage'
-import { sortListsByPosition } from '@/utils/sortListsByPosition'
+import { sortListsByPosition } from '@/utils'
 
 import { ListProps, ListTypesProps } from '@/typings/List'
 
@@ -32,26 +32,21 @@ export const ListProvider = ({ children }: ListProviderProps) => {
   const { user } = useAuth()
   const userId = user?.uid || ''
 
+  const saveSelectedList = (list: ListProps) => {
+    setSelectedList(list)
+    setToStorage(STORAGE_SELECTED_LIST_ID_KEY, list.id)
+  }
+
   const handleSetSelectedList = (lists: ListProps[]) => {
     const selectedListOnStorage = getFromStorage(STORAGE_SELECTED_LIST_ID_KEY)
 
-    if (!selectedListOnStorage) {
-      saveSelectedList(lists[0])
-      return
-    }
-
-    const selectedList = lists.find((list) => list.id === selectedListOnStorage)
-    saveSelectedList(selectedList as ListProps)
+    const selectedList = lists.find((list) => list.id === selectedListOnStorage) || lists[0]
+    saveSelectedList(selectedList)
   }
 
   const updateList = async (list: ListProps) => {
     setSelectedList(list)
     await updateListOnDB(list)
-  }
-
-  const saveSelectedList = (list: ListProps) => {
-    setSelectedList(list)
-    setToStorage(STORAGE_SELECTED_LIST_ID_KEY, list.id)
   }
 
   const deleteList = async (listID: ListProps['id']) => {
@@ -67,17 +62,12 @@ export const ListProvider = ({ children }: ListProviderProps) => {
   useEffect(() => {
     const unsubscribe = subscribeToUserLists({
       userId,
-      observer: (lists) => {
-        let newLists: ListProps[] = []
+      observer: (querySnapshot) => {
+        const newLists = querySnapshot.docs.map((doc) => doc.data() as ListProps)
+        const sortedLists = sortListsByPosition(newLists)
 
-        lists.forEach((list) => {
-          newLists.push(list.data() as ListProps)
-        })
-
-        newLists = sortListsByPosition(newLists)
-
-        setLists(newLists)
-        handleSetSelectedList(newLists)
+        setLists(sortedLists)
+        handleSetSelectedList(sortedLists)
       },
     })
 

@@ -1,14 +1,10 @@
 import classNames from 'classnames'
 
-import Card from '@/shared/components/Card'
-import Divider from '@/shared/components/Divider'
-import ItemTextFormatted from '@/pages/list/components/ItemTextFormatted'
-import { CardContentContainer } from '@/shared/components/CardContentContainer'
+import { Card, CardContentContainer, Divider, ProgressBar } from '@/shared/components'
+
 import Footer from '@/pages/list/components/ListFooter'
-import ProgressBar from '@/shared/components/ProgressBar'
 
 import { DEFAULT_ICON_PROPS } from '@/consts'
-
 import { ListProps, ListTypesProps } from '@/typings/List'
 
 import { DotsSixVertical, List, TrashSimple } from '@phosphor-icons/react'
@@ -76,7 +72,7 @@ export default function DemoCard() {
             <div className="flex flex-row items-center p-4">
               <div className="flex gap-1">
                 <DotsSixVertical
-                  className="cursor-grab text-lightenGray2 dark:text-darkTextLight"
+                  className="cursor-grab text-lightenGray dark:text-darkTextLight"
                   {...DEFAULT_ICON_PROPS}
                 />
                 <input
@@ -93,7 +89,7 @@ export default function DemoCard() {
                   })}
                   onDoubleClick={() => {}}
                 >
-                  <ItemTextFormatted itemText={item.text} />
+                  {item.text}
                 </label>
               </div>
               <div className="flex">

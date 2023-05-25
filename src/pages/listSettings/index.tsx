@@ -1,17 +1,13 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { useList } from '@/hooks/useList'
 
-import Card from '@/shared/components/Card'
-import { CardContentContainer } from '@/shared/components/CardContentContainer'
+import { useList } from '@/hooks'
+
+import { Card, CardContentContainer, Divider, FooterContainer, InputText } from '@/shared/components'
 import Header from './components/ListSettingsHeader'
-import InputText from '@/shared/components/InputText'
-import { FooterContainer } from '@/shared/components/FooterContainer'
-import Divider from '@/shared/components/Divider'
-
-import { ListProps, ListTypesProps } from '@/typings/List'
 
 import { DEFAULT_TOAST_PROPS } from '@/consts'
+import { ListProps, ListTypesProps } from '@/typings/List'
 
 export default function ListSettings() {
   const { selectedList, updateList } = useList()

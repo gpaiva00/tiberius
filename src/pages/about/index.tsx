@@ -2,9 +2,7 @@ import { Link } from 'react-router-dom'
 
 import { DEFAULT_ICON_PROPS, LISTS_ROUTE } from '@/consts'
 
-import Card from '@/shared/components/Card'
-import { CardContentContainer } from '@/shared/components/CardContentContainer'
-import Divider from '@/shared/components/Divider'
+import { Card, CardContentContainer, Divider } from '@/shared/components'
 
 import { HouseSimple } from '@phosphor-icons/react'
 

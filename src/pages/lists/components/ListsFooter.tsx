@@ -1,9 +1,6 @@
 import { useState } from 'react'
 
-import { FooterContainer } from '@/shared/components/FooterContainer'
-import InputText from '@/shared/components/InputText'
-import Divider from '@/shared/components/Divider'
-
+import { Divider, FooterContainer, InputText } from '@/shared/components'
 interface AllListsCardFooterProps {
   handleAddList: (itemText: string) => void
 }

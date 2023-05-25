@@ -7,7 +7,7 @@ export default function InputText({ placeholder, onChange, onKeyDown, value, cla
     <input
       type="text"
       className={classNames(
-        'h-inputControl w-full rounded-sm border-default bg-lightGray px-2 py-4 outline-none dark:border-dark dark:bg-darkInputBackground dark:text-darkTextLight dark:placeholder:text-darkTextGray',
+        'h-inputControl w-full rounded-sm border-default bg-lightGray p-2 outline-none dark:border-dark dark:bg-darkInputBackground dark:text-darkTextLight dark:placeholder:text-darkTextGray',
         {
           'text-lightenGray dark:text-darkTextGray': props.disabled,
         },

@@ -1,9 +1,10 @@
-import Footer from '@/shared/components/Footer'
+import { Link } from 'react-router-dom'
 
-import { getRandomQuote } from '@/utils/getRandomQuote'
+import { Footer } from '@/shared/components'
+
+import { getRandomQuote } from '@/utils'
 
 import { ERROR_MESSAGES, LISTS_ROUTE, QUOTES } from '@/consts'
-import { Link } from 'react-router-dom'
 
 export default function Error() {
   return (

@@ -1,11 +1,9 @@
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks'
 
-import Card from '@/shared/components/Card'
+import { Card, Divider } from '@/shared/components'
 
 import { DEFAULT_ICON_PROPS } from '@/consts'
-
-import Divider from '@/shared/components/Divider'
 
 import { CaretLeft } from '@phosphor-icons/react'
 

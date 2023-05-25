@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import Divider from '@/shared/components/Divider'
+import { Divider } from '@/shared/components'
 
 import { DEFAULT_ICON_PROPS, LIST_ROUTE, USER_ROUTE } from '@/consts'
 

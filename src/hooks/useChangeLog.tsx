@@ -2,10 +2,10 @@ import { createContext, useContext, useEffect, useState } from 'react'
 
 import { getChangeLog as getChangeLogService } from '@/services/changelog'
 
-import { getFromStorage, setToStorage } from '@/utils/storage'
+import { getFromStorage, setToStorage } from '@/utils'
 
-import { ChangeLogListProps } from '@/typings/List'
 import { HAVE_SEEN_CHANGE_LOG_DATE_KEY } from '@/consts'
+import { ChangeLogListProps } from '@/pages/changeLog/typings/ChangeLog'
 
 interface ChangeLogProps {
   children: React.ReactNode

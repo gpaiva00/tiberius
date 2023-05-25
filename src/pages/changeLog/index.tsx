@@ -1,13 +1,10 @@
 import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { useChangeLog } from '@/hooks/useChangeLog'
+import { useChangeLog } from '@/hooks'
 
-import Card from '@/shared/components/Card'
-import { CardContentContainer } from '@/shared/components/CardContentContainer'
-import Divider from '@/shared/components/Divider'
-import ItemTextFormatted from '@/pages/list/components/ItemTextFormatted'
-import { FooterContainer } from '@/shared/components/FooterContainer'
+import { formattedItemText } from '@/pages/list/components/ItemTextFormatted'
+import { Card, CardContentContainer, Divider, FooterContainer } from '@/shared/components'
 
 import { LISTS_ROUTE } from '@/consts'
 
@@ -52,11 +49,7 @@ export default function ChangeLog() {
                     checked={item.completed}
                   />
                 </div>
-                <div className="flex flex-1">
-                  <label className="text-sm dark:text-darkTextLight md:max-w-[92%] md:text-base">
-                    <ItemTextFormatted itemText={item.text} />
-                  </label>
-                </div>
+                <div className="flex flex-1">{formattedItemText(item.text)}</div>
               </div>
               {index !== changeLog?.items.length - 1 && <Divider />}
             </div>
