@@ -3,18 +3,18 @@ import { v4 as uuidv4 } from 'uuid'
 import Confetti from 'react-confetti'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import toast from 'react-hot-toast'
+import classNames from 'classnames'
 
 import { useList } from '@/hooks'
 
-import { Card, CardContentContainer, Divider } from '@/shared/components'
+import { Card, CardContentContainer, Divider, FormattedItemText } from '@/shared/components'
 import Footer from '@/pages/list/components/ListFooter'
 import Header from '@/pages/list/components/ListHeader'
-import { formattedItemText } from '@/pages/list/components/ItemTextFormatted'
 
 import { ListItemProps, ListProps } from '@typings/List'
 import { COMPLETE_MESSAGES, CONGRATS_EMOJIS, DEFAULT_ICON_PROPS, DEFAULT_TOAST_PROPS, QUOTES } from '@/consts'
 import { sortListItemsByStatus } from '@utils/sortListItemsByStatus'
-import { getDayFromDateString, getRandomQuote } from '@/utils'
+import { getDayFromDateString, getRandomQuote, ifTextHasLink } from '@/utils'
 
 import { DotsSixVertical, TrashSimple } from '@phosphor-icons/react'
 
@@ -87,10 +87,6 @@ export default function List() {
       toast(getRandomQuote(COMPLETE_MESSAGES), {
         icon: getRandomQuote(CONGRATS_EMOJIS),
         ...DEFAULT_TOAST_PROPS,
-        duration: 6000,
-        style: {
-          width: '800px',
-        },
       })
     }
   }
@@ -181,7 +177,7 @@ export default function List() {
               onDragLeave={(event) => handleDragItemLeave(event)}
               ref={listRef}
             >
-              <div className="flex flex-row items-center p-2 md:px-4 md:py-3">
+              <div className="flex flex-row items-center p-2">
                 <div className="mr-2 flex items-center gap-1 md:mr-4">
                   <DotsSixVertical
                     className="cursor-grab text-lightenGray dark:text-darkTextGray"
@@ -194,12 +190,16 @@ export default function List() {
                     onChange={() => handleCompleteItem(item)}
                   />
                 </div>
-                <div className="flex flex-1">
+                <div
+                  className="w-full"
+                  onDoubleClick={() => handleDoubleClickOnItem(item)}
+                >
                   <div
-                    onDoubleClick={() => handleDoubleClickOnItem(item)}
-                    className="max-w-[92%] "
+                    className={classNames('max-w-[92%] break-words', {
+                      'break-all': ifTextHasLink(item.text),
+                    })}
                   >
-                    {formattedItemText(item.text)}
+                    {FormattedItemText(item.text)}
                   </div>
                 </div>
                 {/* item option */}
@@ -218,7 +218,7 @@ export default function List() {
         </div>
         {sortedListItems.completed.length > 0 && (
           <div className="flex items-center gap-2 bg-lightGray px-2 py-2 dark:bg-darkInputBackground md:px-4">
-            <h2 className="text-sm font-bold lowercase dark:text-darkTextLight md:text-base">
+            <h2 className="text-sm font-bold dark:text-darkTextLight md:text-base">
               {sortedListItems.completed.length} concluídas
             </h2>
           </div>
@@ -238,7 +238,7 @@ export default function List() {
                 </div>
                 <div className="flex flex-1">
                   <label className="select-text text-sm text-lightenGray line-through opacity-50 transition-all dark:text-darkTextGray md:max-w-[92%] md:text-base">
-                    {item.text}
+                    {FormattedItemText(item.text)}
                   </label>
                 </div>
                 <span className="text-[0.5rem] text-lightenGray opacity-70 dark:text-darkTextGray md:text-[0.625rem]">
@@ -257,7 +257,6 @@ export default function List() {
       <Footer
         handleAddItem={handleAddItem}
         editingItemText={editingItem?.text}
-        hasEmojiPicker
       />
     </Card>
   )

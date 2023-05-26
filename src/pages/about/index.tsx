@@ -25,20 +25,18 @@ export default function About() {
       <Divider />
       <CardContentContainer>
         <main className="p-4">
-          <div className="my-4">
-            <p className="my-2 dark:text-darkTextLight">
-              O Tiberius é um app de listas de tarefas simples e minimalista. Ele nasceu em Abril de 2023, partindo de
-              uma necessidade pessoal de ter um app de listas de tarefas que tivesse apenas o essencial, sem distrações.
-              No meu dia a dia, gosto de organizar minhas tarefas em bullet points ou checklists, e de fato existem
-              muitas opções de apps que fazem isso, mas nenhum deles me agradava completamente, pois todos tinham muito
-              mais do que eu precisava, e isso me distraía e me deixava ansioso.
-              <br />
-              <br />
-              Para diminuir minha ansiedade de fazer muitas coisas, decidir criar um app que me ajudasse a{' '}
-              <span className="font-bold">concentrar apenas no presente</span>, ou seja, que me ajudasse a focar apenas
-              nas tarefas do dia atual.
-            </p>
-          </div>
+          <p className="dark:text-darkTextLight">
+            O Tiberius é um app de listas de tarefas simples e minimalista. Ele nasceu em Abril de 2023, partindo de uma
+            necessidade pessoal de ter um app de listas de tarefas que tivesse apenas o essencial, sem distrações. No
+            meu dia a dia, gosto de organizar minhas tarefas em bullet points ou checklists, e de fato existem muitas
+            opções de apps que fazem isso, mas nenhum deles me agradava completamente, pois todos tinham muito mais do
+            que eu precisava, e isso me distraía e me deixava ansioso.
+            <br />
+            <br />
+            Para diminuir minha ansiedade de fazer muitas coisas, decidir criar um app que me ajudasse a{' '}
+            <span className="font-bold">concentrar apenas no presente</span>, ou seja, que me ajudasse a focar apenas
+            nas tarefas do dia atual.
+          </p>
           {/* why tiberius */}
           <div className="my-4">
             <h1 className="mb-1 text-xl font-black dark:text-darkTextLight">Por que Tiberius?</h1>
@@ -62,7 +60,7 @@ export default function About() {
               <br />
               <br />
               {/* quotation */}
-              <span className="rounded-default bg-lightGray p-2 font-bold dark:bg-darkInputBackground dark:text-darkTextLight">
+              <span className="rounded-default bg-lightGray p-2 dark:bg-darkInputBackground dark:text-darkTextLight">
                 <span className="italic">"concentre-se no presente, pois é um presente que você recebeu."</span>
               </span>
               <br />

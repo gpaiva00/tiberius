@@ -3,7 +3,14 @@ import toast from 'react-hot-toast'
 
 import { useList } from '@/hooks'
 
-import { Card, CardContentContainer, Divider, FooterContainer, InputText } from '@/shared/components'
+import {
+  Card,
+  CardContentContainer,
+  Divider,
+  FooterContainer,
+  InputText,
+  InputTextWithFormatting,
+} from '@/shared/components'
 import Header from './components/ListSettingsHeader'
 
 import { DEFAULT_TOAST_PROPS } from '@/consts'
@@ -20,7 +27,10 @@ export default function ListSettings() {
 
   const handleSave = async () => {
     if (!inputText) {
-      alert('o nome da lista não pode ficar vazio')
+      toast('o nome da lista não pode ficar vazio', {
+        icon: '⚠️',
+        ...DEFAULT_TOAST_PROPS,
+      })
       return
     }
 
@@ -37,13 +47,6 @@ export default function ListSettings() {
     })
   }
 
-  // const getOptionDescription = {
-  //   [DeleteItemsStrategyProps.DAILY]: 'os itens concluídos serão apagados a cada 24 horas.',
-  //   [DeleteItemsStrategyProps.WEEKLY]: 'os itens concluídos serão apagados a cada 7 dias.',
-  //   [DeleteItemsStrategyProps.MONTHLY]: 'os itens concluídos serão apagados a cada 30 dias.',
-  //   [DeleteItemsStrategyProps.NEVER]: 'os itens concluídos nunca serão apagados.',
-  // }
-
   return (
     <Card>
       <Header selectedList={selectedList} />
@@ -51,13 +54,14 @@ export default function ListSettings() {
         <div className="flex flex-1 flex-col">
           {/* input container */}
           <div className="flex flex-col gap-2 p-2 md:gap-4 md:p-4">
-            <label className="default-label">nome da lista</label>
-            <InputText
+            <label className="default-label">Nome da lista</label>
+            <InputTextWithFormatting
               placeholder="Nome da lista"
-              value={inputText}
-              onChange={handleChangeInputText}
-              className="w-full"
+              inputTextValue={inputText}
+              setInputTextValue={setInputText}
               disabled={selectedList?.type === ListTypesProps.GENERAL}
+              formats={['italic']}
+              handleSubmit={handleSave}
             />
           </div>
 

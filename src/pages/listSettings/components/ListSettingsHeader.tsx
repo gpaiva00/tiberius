@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { useList } from '@/hooks'
 
-import { Divider } from '@/shared/components'
+import { Divider, FormattedItemText } from '@/shared/components'
 
 import { DEFAULT_ICON_PROPS, LISTS_ROUTE, LIST_ROUTE } from '@/consts'
 import { ListProps, ListTypesProps } from '@/typings/List'
@@ -28,43 +28,41 @@ export default function Header({ selectedList }: ListContentHeaderProps) {
 
   return (
     <div>
-      <header className="flex h-16 items-center gap-2 rounded-t-default px-2 md:px-4">
-        <div className="flex flex-1 items-center justify-between">
-          <div className="flex items-center">
-            <Link
-              to={LIST_ROUTE}
-              className="icon-button"
-            >
-              <CaretLeft {...DEFAULT_ICON_PROPS} />
-            </Link>
-            <h1 className="ml-2 max-w-[5.25rem] truncate text-xl font-black lowercase dark:text-darkTextLight md:ml-4 md:max-w-fit md:text-2xl">
-              configurações
-            </h1>
-            <Dot
-              {...DEFAULT_ICON_PROPS}
-              size={25}
-              className="dark:text-darkTextGray"
-            />
-            <h1 className="flex max-w-xs items-center truncate text-xl font-semibold text-lightenGray dark:text-darkTextGray md:max-w-[15.625rem] md:text-2xl">
-              {selectedList?.type === ListTypesProps.GENERAL && (
-                <Archive
-                  {...DEFAULT_ICON_PROPS}
-                  className="mr-2"
-                />
-              )}
-              {selectedList?.name}
-            </h1>
-          </div>
-          <button
-            className="rounded-default p-2 transition-colors hover:bg-lightGray dark:hover:bg-darkTextGray"
-            onClick={() => handleDeleteList(selectedList?.id as ListProps['id'])}
+      <header className="flex items-center justify-between gap-2 rounded-t-default p-2">
+        <div className="flex items-center">
+          <Link
+            to={LIST_ROUTE}
+            className="icon-button"
           >
-            <TrashSimple
-              {...DEFAULT_ICON_PROPS}
-              className="dark:text-darkTextLight"
-            />
-          </button>
+            <CaretLeft {...DEFAULT_ICON_PROPS} />
+          </Link>
+          <h1 className="ml-2 max-w-[5.25rem] truncate text-xl font-black dark:text-darkTextLight md:ml-4 md:max-w-fit">
+            Configurações
+          </h1>
+          <Dot
+            {...DEFAULT_ICON_PROPS}
+            size={25}
+            className="dark:text-darkTextGray"
+          />
+          <h1 className="flex max-w-xs items-center truncate text-xl font-semibold text-lightenGray dark:text-darkTextGray md:max-w-[15.625rem]">
+            {selectedList?.type === ListTypesProps.GENERAL && (
+              <Archive
+                {...DEFAULT_ICON_PROPS}
+                className="mr-2"
+              />
+            )}
+            {FormattedItemText(selectedList?.name)}
+          </h1>
         </div>
+        <button
+          className="rounded-default p-2 transition-colors hover:bg-lightGray dark:hover:bg-darkTextGray"
+          onClick={() => handleDeleteList(selectedList?.id as ListProps['id'])}
+        >
+          <TrashSimple
+            {...DEFAULT_ICON_PROPS}
+            className="dark:text-darkTextLight"
+          />
+        </button>
       </header>
       <Divider />
     </div>

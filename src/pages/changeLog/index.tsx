@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { useChangeLog } from '@/hooks'
 
-import { formattedItemText } from '@/pages/list/components/ItemTextFormatted'
+import FormattedItemText from '@/shared/components/ItemTextFormatted'
 import { Card, CardContentContainer, Divider, FooterContainer } from '@/shared/components'
 
 import { LISTS_ROUTE } from '@/consts'
@@ -26,7 +26,7 @@ export default function ChangeLog() {
       {/* header */}
       <header className="flex h-16 items-center gap-2 rounded-t-default px-2 md:px-4">
         <div className="flex flex-1 items-center justify-between">
-          <h1 className="ml-2 text-xl font-black lowercase dark:text-darkTextLight md:ml-4 md:text-2xl">
+          <h1 className="ml-2 text-xl font-black dark:text-darkTextLight md:ml-4 md:text-2xl">
             <span className="mr-2 md:mr-4">🎉</span>
             novidades
           </h1>
@@ -49,7 +49,7 @@ export default function ChangeLog() {
                     checked={item.completed}
                   />
                 </div>
-                <div className="flex flex-1">{formattedItemText(item.text)}</div>
+                <div className="flex flex-1">{FormattedItemText(item.text)}</div>
               </div>
               {index !== changeLog?.items.length - 1 && <Divider />}
             </div>

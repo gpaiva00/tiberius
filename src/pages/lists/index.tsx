@@ -4,7 +4,14 @@ import { v4 as uuidv4 } from 'uuid'
 import classNames from 'classnames'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
-import { Card, CardContentContainer, CompletedItemsCount, Divider, ProgressBar } from '@/shared/components'
+import {
+  Card,
+  CardContentContainer,
+  CompletedItemsCount,
+  Divider,
+  ProgressBar,
+  FormattedItemText,
+} from '@/shared/components'
 import Footer from '@/pages/lists/components/ListsFooter'
 import Header from '@/pages/lists/components/ListsHeader'
 
@@ -100,7 +107,7 @@ export default function Lists() {
       <CardContentContainer>
         {!haveSeenChangeLog && (
           <div>
-            <div className="flex items-center justify-between bg-primary p-2 dark:bg-darkPrimary md:px-4 md:py-3">
+            <div className="flex items-center justify-between bg-primary p-2 dark:bg-darkPrimary">
               <div className="flex flex-1 flex-col">
                 <div className="flex items-center gap-1">
                   <Link to={CHANGE_LOG_ROUTE}>
@@ -134,7 +141,11 @@ export default function Lists() {
               onDragLeave={(event) => handleDragItemLeave(event)}
               ref={listRef}
             >
-              <div className="flex flex-row items-center p-2 md:px-4 md:py-3">
+              <div
+                className={classNames('flex flex-row items-center p-2', {
+                  'px-4': list.type === ListTypesProps.GENERAL,
+                })}
+              >
                 {list.type == ListTypesProps.DEFAULT && (
                   <div className="mr-2 flex items-center gap-1 md:mr-4">
                     <DotsSixVertical
@@ -160,8 +171,9 @@ export default function Lists() {
                         className="mr-1 md:mr-2"
                       />
                     )}
-                    {list.name}
+                    {FormattedItemText(list.name)}
                   </h1>
+                  {/* progress bar */}
                   <div className="flex h-[1rem] items-center gap-2">
                     <ProgressBar items={list.items} />
                     <CompletedItemsCount

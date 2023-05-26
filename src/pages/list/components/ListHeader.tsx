@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { CompletedItemsCount, Divider, ProgressBar } from '@/shared/components'
+import { CompletedItemsCount, Divider, ProgressBar, FormattedItemText } from '@/shared/components'
 
 import { useChangeLog } from '@/hooks'
 
@@ -18,49 +18,47 @@ export default function Header({ selectedList }: ListContentHeaderProps) {
 
   return (
     <div>
-      <header className="flex h-16 items-center gap-2 rounded-t-default px-2 md:px-4">
-        <div className="flex flex-1 items-center justify-between">
-          <div className="flex items-center justify-center">
-            <Link
-              to={LISTS_ROUTE}
-              className="icon-button"
+      <header className="flex items-center justify-between gap-2 rounded-t-default p-2">
+        <div className="flex items-center gap-2 md:gap-4">
+          <Link
+            to={LISTS_ROUTE}
+            className="icon-button"
+          >
+            <span
+              className={classNames({
+                'relative inline-block': !haveSeenChangeLog,
+              })}
             >
-              <span
-                className={classNames({
-                  'relative inline-block': !haveSeenChangeLog,
-                })}
-              >
-                <ListDashes {...DEFAULT_ICON_PROPS} />
-                {!haveSeenChangeLog && (
-                  <span className="absolute right-0 top-0 inline-block h-2 w-2 -translate-y-1/2 translate-x-1/2 transform  rounded-full bg-primary"></span>
-                )}
-              </span>
-            </Link>
-            <h1 className="ml-2 text-xl font-black lowercase dark:text-darkTextLight md:ml-4 md:text-2xl">
-              {selectedList?.type === 'default' ? 'para hoje' : 'itens gerais'}
-            </h1>
-          </div>
-
-          <div className="flex flex-col items-end">
-            <Link
-              to={LIST_SETTINGS_ROUTE}
-              className="flex max-w-xs items-center truncate text-base font-bold text-primary hover:underline dark:text-darkPrimary md:max-w-[15.625rem]"
-            >
-              {selectedList?.type === ListTypesProps.GENERAL && (
-                <Archive
-                  {...DEFAULT_ICON_PROPS}
-                  className="mr-1 md:mr-2"
-                />
+              <ListDashes {...DEFAULT_ICON_PROPS} />
+              {!haveSeenChangeLog && (
+                <span className="absolute right-0 top-0 inline-block h-2 w-2 -translate-y-1/2 translate-x-1/2 transform  rounded-full bg-primary"></span>
               )}
-              {selectedList?.name}
-            </Link>
-            <div className="flex h-[1rem] items-center gap-2">
-              <ProgressBar items={selectedList?.items || []} />
-              <CompletedItemsCount
-                size="sm"
-                items={selectedList?.items || []}
+            </span>
+          </Link>
+          <h1 className="text-xl font-black dark:text-darkTextLight">
+            {selectedList?.type === 'default' ? 'Para hoje' : 'Itens gerais'}
+          </h1>
+        </div>
+
+        <div className="flex flex-col items-end">
+          <Link
+            to={LIST_SETTINGS_ROUTE}
+            className="flex max-w-xs items-center truncate text-base font-bold text-primary hover:underline dark:text-darkPrimary md:max-w-[15.625rem]"
+          >
+            {selectedList?.type === ListTypesProps.GENERAL && (
+              <Archive
+                {...DEFAULT_ICON_PROPS}
+                className="mr-1 md:mr-2"
               />
-            </div>
+            )}
+            {FormattedItemText(selectedList?.name)}
+          </Link>
+          <div className="flex h-[1rem] items-center gap-2">
+            <ProgressBar items={selectedList?.items || []} />
+            <CompletedItemsCount
+              size="sm"
+              items={selectedList?.items || []}
+            />
           </div>
         </div>
       </header>

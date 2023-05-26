@@ -18,7 +18,7 @@ export default function TermsOfUse() {
             >
               <HouseSimple {...DEFAULT_ICON_PROPS} />
             </Link>
-            <h1 className="ml-4 text-2xl font-black lowercase dark:text-darkTextLight">termos de uso</h1>
+            <h1 className="ml-4 text-2xl font-black dark:text-darkTextLight">termos de uso</h1>
           </div>
         </div>
       </header>

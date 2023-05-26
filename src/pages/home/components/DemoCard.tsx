@@ -53,7 +53,7 @@ export default function DemoCard() {
             <div className="icon-button">
               <List {...DEFAULT_ICON_PROPS} />
             </div>
-            <h1 className="ml-4 text-2xl font-black lowercase dark:text-darkTextLight">para hoje</h1>
+            <h1 className="ml-4 text-2xl font-black dark:text-darkTextLight">para hoje</h1>
           </div>
 
           <div className="flex flex-col items-end gap-1">

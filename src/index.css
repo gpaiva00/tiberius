@@ -26,15 +26,15 @@
 
 @layer components {
   .primary-button {
-    @apply flex w-full items-center justify-center gap-4 rounded-md border-default bg-primary px-4 py-2 lowercase text-white transition-colors hover:bg-darkButtonHover hover:text-white dark:border-dark dark:bg-darkPrimary dark:text-darkTextLight dark:hover:bg-darkButtonHover dark:hover:text-darkTextLight;
+    @apply flex w-full items-center justify-center gap-4 rounded-md border-default bg-primary px-4 py-2 text-white transition-colors hover:bg-darkButtonHover hover:text-white dark:border-dark dark:bg-darkPrimary dark:text-darkTextLight dark:hover:bg-darkButtonHover dark:hover:text-darkTextLight;
   }
 
   .secondary-button {
-    @apply ml-4 rounded-sm border border-lightGray px-3 py-2 lowercase text-primary transition-all hover:bg-lightGray disabled:text-lightenGray dark:border-dark dark:text-darkPrimary dark:hover:bg-darkBackgroundIconButton;
+    @apply ml-4 rounded-sm border border-lightGray px-3 py-2 text-primary transition-all hover:bg-lightGray disabled:text-lightenGray dark:border-dark dark:text-darkPrimary dark:hover:bg-darkBackgroundIconButton;
   }
 
   .icon-button {
-    @apply rounded-default p-2 transition-colors hover:bg-lightGray disabled:text-lightGray disabled:hover:bg-transparent dark:text-darkTextLight dark:hover:bg-darkBackgroundIconButton;
+    @apply rounded-default p-2 transition-colors hover:bg-lightGray disabled:text-lightGray disabled:hover:bg-transparent dark:text-darkTextLight dark:hover:bg-darkBackgroundIconButton disabled:dark:text-gray;
   }
 
   .drag-over {
@@ -42,7 +42,7 @@
   }
 
   .default-label {
-    @apply font-bold lowercase dark:text-darkTextLight;
+    @apply font-bold dark:text-darkTextLight;
   }
 
   .default-checkbox {
@@ -65,26 +65,23 @@
 }
 
 /* emoji picker styles */
-.EmojiPickerReact {
-}
-
 aside.EmojiPickerReact.epr-main {
-  @apply z-50 w-full md:absolute md:bottom-40;
+  @apply z-50 w-full md:absolute md:bottom-48;
 }
 
 /* quill input text */
 .ql-editor {
-  @apply max-h-64 w-full rounded-b-md bg-lightGray p-2 text-sm outline-none disabled:text-lightenGray dark:border-dark dark:bg-darkInputBackground dark:text-darkTextLight disabled:dark:text-darkTextGray md:text-base;
+  @apply max-h-64 rounded-b-md bg-lightGray p-2 text-sm outline-none disabled:text-lightenGray dark:border-dark dark:bg-darkInputBackground dark:text-darkTextLight disabled:dark:text-darkTextGray md:text-base;
 }
 
 /* quill toolbar */
 .ql-toolbar.ql-snow {
-  @apply rounded-t-md border-default dark:border-dark dark:bg-darkInputBackground;
+  @apply max-w-[637px] rounded-t-md border-default p-1 dark:border-dark dark:bg-darkInputBackground;
 }
 
 /* quill container */
 .ql-container.ql-snow {
-  @apply rounded-b-md border-default dark:border-dark dark:bg-darkInputBackground;
+  @apply h-auto max-w-[637px] rounded-b-md border-default dark:border-dark dark:bg-darkInputBackground;
 }
 
 /* quill placeholder */

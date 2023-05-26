@@ -23,8 +23,8 @@ export default function SignIn() {
 
   return (
     <Card size="sm">
-      <header className="flex h-16 items-center gap-2 rounded-t-default px-2 md:px-4">
-        <h1 className="text-xl font-black lowercase dark:text-darkTextLight md:text-2xl">entrar ou criar conta</h1>
+      <header className="flex items-center gap-2 rounded-t-default p-2">
+        <h1 className="text-xl font-black dark:text-darkTextLight">Entrar ou criar conta</h1>
       </header>
       <Divider />
       {user?.uid ? (

@@ -18,7 +18,7 @@ export default function Help() {
             >
               <HouseSimple {...DEFAULT_ICON_PROPS} />
             </Link>
-            <h1 className="ml-4 text-2xl font-black lowercase dark:text-darkTextLight">ajuda</h1>
+            <h1 className="ml-4 text-2xl font-black dark:text-darkTextLight">ajuda</h1>
           </div>
         </div>
       </header>

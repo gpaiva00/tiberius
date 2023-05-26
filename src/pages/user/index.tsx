@@ -17,7 +17,7 @@ export default function User() {
 
   return (
     <Card size="sm">
-      <header className="flex h-16 items-center gap-2 rounded-t-default px-2 md:px-4">
+      <header className="flex items-center justify-between gap-2 rounded-t-default p-2">
         <div className="flex items-center">
           <button
             className="rounded-default p-2 transition-colors hover:bg-lightGray dark:hover:bg-darkTextGray"
@@ -28,7 +28,7 @@ export default function User() {
               className="dark:text-darkTextLight"
             />
           </button>
-          <h1 className="ml-2 text-xl font-black lowercase dark:text-darkTextLight md:ml-4 md:text-2xl">Perfil</h1>
+          <h1 className="ml-2 text-xl font-black dark:text-darkTextLight md:ml-4">Perfil</h1>
         </div>
       </header>
       <Divider />
@@ -41,7 +41,7 @@ export default function User() {
           referrerPolicy="no-referrer"
         />
         <div className="flex w-full flex-col items-center gap-4">
-          <h1 className="ml-4 text-xl font-bold lowercase dark:text-darkTextLight">{user?.displayName}</h1>
+          <h1 className="ml-4 text-xl font-bold dark:text-darkTextLight">{user?.displayName}</h1>
           <button
             className="primary-button"
             onClick={signOut}

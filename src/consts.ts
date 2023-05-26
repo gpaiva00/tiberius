@@ -31,6 +31,8 @@ export const WHATS_NEW_LIST: Omit<ListProps, 'userId'> = {
   createdAt: new Date().toISOString(),
 }
 
+export const URL_REGEX = /(https?:\/\/[^\s]+)/g
+
 // storage
 export const STORAGE_USER_KEY = '@tiberius/user'
 export const STORAGE_SELECTED_LIST_ID_KEY = '@tiberius/selectedList'
@@ -46,6 +48,11 @@ export const DEFAULT_ICON_PROPS = {
 
 export const DEFAULT_TOAST_PROPS = {
   position: 'top-center' as ToastPosition,
+  duration: 6000,
+  style: {
+    width: '900px',
+    fontSize: '0.875rem',
+  },
 }
 
 // random quotes

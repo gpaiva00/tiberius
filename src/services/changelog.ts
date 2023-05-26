@@ -1,7 +1,7 @@
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '@services/firebase'
 
-import { ChangeLogListProps } from '@/typings/List'
+import { ChangeLogListProps } from '@/pages/changeLog/typings/ChangeLog'
 
 import packageJson from '../../package.json'
 

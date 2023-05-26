@@ -11,25 +11,21 @@ interface ListsContentHeaderProps {}
 export default function Header({}: ListsContentHeaderProps) {
   return (
     <div>
-      <header className="flex h-16 items-center gap-2 rounded-t-default px-2 md:px-4">
-        <div className="flex flex-1 items-center justify-between">
-          <div className="flex items-center">
-            <Link
-              to={LIST_ROUTE}
-              className="icon-button"
-            >
-              <CaretLeft {...DEFAULT_ICON_PROPS} />
-            </Link>
-            <h1 className="ml-2 text-xl font-black lowercase dark:text-darkTextLight md:ml-4 md:text-2xl">Listas</h1>
-          </div>
-          <div>
-            <Link to={USER_ROUTE}>
-              <button className="icon-button">
-                <User {...DEFAULT_ICON_PROPS} />
-              </button>
-            </Link>
-          </div>
+      <header className="flex items-center justify-between gap-2 rounded-t-default p-2">
+        <div className="flex items-center gap-2 md:gap-4">
+          <Link
+            to={LIST_ROUTE}
+            className="icon-button"
+          >
+            <CaretLeft {...DEFAULT_ICON_PROPS} />
+          </Link>
+          <h1 className="text-xl font-black dark:text-darkTextLight">Listas</h1>
         </div>
+        <Link to={USER_ROUTE}>
+          <button className="icon-button">
+            <User {...DEFAULT_ICON_PROPS} />
+          </button>
+        </Link>
       </header>
       <Divider />
     </div>
