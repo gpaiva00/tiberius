@@ -17,10 +17,5 @@ export default function FormattedItemText(itemText: string | undefined) {
   // sanitize the html string
   const sanitizedHTML = DOMPurify.sanitize(htmlWithLinks)
 
-  return (
-    <div
-      className="text-sm dark:text-darkTextLight md:text-base"
-      dangerouslySetInnerHTML={{ __html: sanitizedHTML }}
-    />
-  )
+  return <div dangerouslySetInnerHTML={{ __html: sanitizedHTML }} />
 }

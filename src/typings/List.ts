@@ -23,7 +23,7 @@ export interface ListItemProps {
   index?: number
   updatedAt: string
   completedAt?: string
-  markColor?: ListItemMarksProps
+  markColor: ListItemMarksProps | ''
 }
 
 export type ListItemMarksProps = 'blue' | 'red' | 'yellow' | 'green'

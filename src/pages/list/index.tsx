@@ -79,10 +79,13 @@ export default function List() {
   }
 
   const handleCompleteItem = async (item: ListItemProps) => {
-    const newItem = {
+    const newItemCompleteValue = !item.completed
+
+    const newItem: ListItemProps = {
       ...item,
-      completed: !item.completed,
-      completedAt: item.completed ? '' : new Date().toISOString(),
+      completed: newItemCompleteValue,
+      completedAt: newItemCompleteValue ? new Date().toISOString() : '',
+      markColor: newItemCompleteValue ? '' : item.markColor,
     }
 
     await updateItem(newItem)
@@ -110,6 +113,7 @@ export default function List() {
         text: validatedItemText,
         completed: false,
         updatedAt: new Date().toISOString(),
+        markColor: '',
       },
     ]
 
@@ -155,7 +159,7 @@ export default function List() {
   const handleMarkItem = async (item: ListItemProps, markOption: ListItemMarksProps) => {
     const newItem: ListItemProps = {
       ...item,
-      markColor: markOption === item.markColor ? undefined : markOption,
+      markColor: markOption === item.markColor ? '' : markOption,
     }
 
     await updateItem(newItem)
@@ -211,7 +215,7 @@ export default function List() {
           className={classNames(
             'h-4 w-4 rounded-full bg-green-400 transition-colors hover:bg-green-500 hover:opacity-100',
             {
-              'border border-black opacity-100': item.markColor === 'green',
+              'border border-black opacity-100 dark:border-darkTextLight': item.markColor === 'green',
               'opacity-25': item.markColor && item.markColor !== 'green',
             }
           )}
@@ -225,7 +229,7 @@ export default function List() {
           className={classNames(
             'h-4 w-4 rounded-full bg-yellow-400 transition-colors hover:bg-yellow-500 hover:opacity-100',
             {
-              'border border-black opacity-100': item.markColor === 'yellow',
+              'border border-black opacity-100 dark:border-darkTextLight': item.markColor === 'yellow',
               'opacity-25': item.markColor && item.markColor !== 'yellow',
             }
           )}
@@ -239,7 +243,7 @@ export default function List() {
           className={classNames(
             'h-4 w-4 rounded-full bg-rose-400 transition-colors hover:bg-rose-500 hover:opacity-100',
             {
-              'border border-black opacity-100': item.markColor === 'red',
+              'border border-black opacity-100 dark:border-darkTextLight': item.markColor === 'red',
               'opacity-25': item.markColor && item.markColor !== 'red',
             }
           )}
@@ -253,7 +257,7 @@ export default function List() {
           className={classNames(
             'h-4 w-4 rounded-full bg-blue-400 transition-colors hover:bg-blue-500 hover:opacity-100',
             {
-              'border border-black opacity-100': item.markColor === 'blue',
+              'border border-black opacity-100 dark:border-darkTextLight': item.markColor === 'blue',
               'opacity-25': item.markColor && item.markColor !== 'blue',
             }
           )}
@@ -310,7 +314,7 @@ export default function List() {
                 {/* item text */}
                 <div className="w-full">
                   {item.updatedAt && (
-                    <small className="text-[0.5rem] text-lightenGray dark:text-darkTextGray">
+                    <small className="text-[0.5rem] text-lightenGray opacity-70 dark:text-darkTextGray md:text-[0.625rem]">
                       {getDayFromDateString(item.updatedAt as string)} às{' '}
                       {new Date(item.updatedAt as string).toLocaleTimeString(navigator.language, {
                         hour: '2-digit',
@@ -319,7 +323,7 @@ export default function List() {
                     </small>
                   )}
                   <div
-                    className={classNames('max-w-[92%] break-words', {
+                    className={classNames('max-w-[92%] break-words dark:text-darkTextLight', {
                       'break-all': ifTextHasLink(item.text),
                     })}
                   >
@@ -391,26 +395,31 @@ export default function List() {
           {sortedListItems.completed.map((item, index) => (
             <div key={item.id}>
               <div className="flex flex-row items-center gap-2 px-4 py-2 md:gap-4">
-                <div className="flex">
-                  <input
-                    className="default-checkbox"
-                    type="checkbox"
-                    checked={item.completed}
-                    onChange={() => handleCompleteItem(item)}
-                  />
-                </div>
-                <div className="flex flex-1">
-                  <label className="select-text text-sm text-lightenGray line-through opacity-50 transition-all dark:text-darkTextGray dark:opacity-20 md:max-w-[92%] md:text-base">
+                <input
+                  className="default-checkbox"
+                  type="checkbox"
+                  checked={item.completed}
+                  onChange={() => handleCompleteItem(item)}
+                />
+                <div className="w-full">
+                  <small className="text-[0.5rem] text-lightenGray opacity-70 dark:text-darkTextGray md:text-[0.625rem]">
+                    feito {getDayFromDateString(item.completedAt as string)} às{' '}
+                    {new Date(item.completedAt as string).toLocaleTimeString(navigator.language, {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </small>
+                  <div
+                    className={classNames(
+                      'max-w-[92%] break-words text-lightenGray opacity-70 dark:text-darkTextGray dark:opacity-30',
+                      {
+                        'break-all': ifTextHasLink(item.text),
+                      }
+                    )}
+                  >
                     {FormattedItemText(item.text)}
-                  </label>
+                  </div>
                 </div>
-                <small className="text-[0.5rem] text-lightenGray opacity-70 dark:text-darkTextGray md:text-[0.625rem]">
-                  feito {getDayFromDateString(item.completedAt as string)} às{' '}
-                  {new Date(item.completedAt as string).toLocaleTimeString(navigator.language, {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </small>
               </div>
               {index !== sortedListItems.completed.length - 1 && <Divider />}
             </div>
