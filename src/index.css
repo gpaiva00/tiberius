@@ -37,6 +37,14 @@
     @apply rounded-default p-2 transition-colors hover:bg-lightGray disabled:text-lightGray disabled:hover:bg-transparent dark:text-darkTextLight dark:hover:bg-darkBackgroundIconButton disabled:dark:text-gray;
   }
 
+  .popover-button {
+    @apply flex w-full items-center gap-2 rounded-default p-2 transition-colors hover:bg-lightGray disabled:text-lightGray disabled:hover:bg-transparent dark:text-darkTextLight dark:hover:bg-darkBackgroundIconButton disabled:dark:text-gray;
+  }
+
+  .menu-items {
+    @apply absolute right-0 z-50 mt-2 origin-top-right rounded-default border-default bg-white p-2 shadow-lg dark:border-dark dark:bg-darkCardBackground;
+  }
+
   .drag-over {
     @apply bg-lightGray dark:bg-darkBackgroundIconButton;
   }

@@ -4,6 +4,7 @@ import Confetti from 'react-confetti'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import toast from 'react-hot-toast'
 import classNames from 'classnames'
+import { Menu } from '@headlessui/react'
 
 import { useList } from '@/hooks'
 
@@ -11,12 +12,12 @@ import { Card, CardContentContainer, Divider, FormattedItemText } from '@/shared
 import Footer from '@/pages/list/components/ListFooter'
 import Header from '@/pages/list/components/ListHeader'
 
-import { ListItemProps, ListProps } from '@typings/List'
+import { ListItemMarksProps, ListItemProps, ListProps } from '@typings/List'
 import { COMPLETE_MESSAGES, CONGRATS_EMOJIS, DEFAULT_ICON_PROPS, DEFAULT_TOAST_PROPS, QUOTES } from '@/consts'
 import { sortListItemsByStatus } from '@utils/sortListItemsByStatus'
-import { getDayFromDateString, getRandomQuote, ifTextHasLink } from '@/utils'
+import { copyToClipboard, getDayFromDateString, getRandomQuote, ifTextHasLink } from '@/utils'
 
-import { DotsSixVertical, TrashSimple } from '@phosphor-icons/react'
+import { Copy, CursorText, DotsThreeVertical, PencilSimple, TrashSimple } from '@phosphor-icons/react'
 
 export default function List() {
   const [editingItem, setEditingItem] = useState<ListItemProps | null>(null)
@@ -28,7 +29,7 @@ export default function List() {
   const sortedListItems = sortListItemsByStatus((selectedList?.items || []) as ListItemProps[])
   const isListCompleted = sortedListItems.notCompleted.length === 0 && sortedListItems.completed.length > 0
 
-  const handleDoubleClickOnItem = (item: ListItemProps) => {
+  const handleEditItem = (item: ListItemProps) => {
     if (item.completed) return
     setEditingItem({
       ...item,
@@ -54,7 +55,10 @@ export default function List() {
 
     const itemIndex = newListItems.findIndex((listItem) => listItem.id === item.id)
 
-    newListItems[itemIndex] = item
+    newListItems[itemIndex] = {
+      ...item,
+      updatedAt: new Date().toISOString(),
+    }
 
     const updatedList = {
       ...(selectedList as ListProps),
@@ -65,7 +69,7 @@ export default function List() {
   }
 
   const renameItem = (itemText: string) => {
-    const newItem = {
+    const newItem: ListItemProps = {
       ...(editingItem as ListItemProps),
       text: itemText,
     }
@@ -105,7 +109,7 @@ export default function List() {
         id: uuidv4(),
         text: validatedItemText,
         completed: false,
-        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       },
     ]
 
@@ -148,6 +152,117 @@ export default function List() {
     })
   }
 
+  const handleMarkItem = async (item: ListItemProps, markOption: ListItemMarksProps) => {
+    const newItem: ListItemProps = {
+      ...item,
+      markColor: markOption === item.markColor ? undefined : markOption,
+    }
+
+    await updateItem(newItem)
+  }
+
+  const ITEM_OPTIONS = (item: ListItemProps) => [
+    {
+      text: 'Editar',
+      icon: (
+        <PencilSimple
+          className="text-lightenGray dark:text-darkTextGray"
+          {...DEFAULT_ICON_PROPS}
+        />
+      ),
+      action: () => handleEditItem(item),
+    },
+    {
+      text: 'Excluir',
+      icon: (
+        <TrashSimple
+          className="text-lightenGray dark:text-darkTextGray"
+          {...DEFAULT_ICON_PROPS}
+        />
+      ),
+      action: () => handleDeleteItem(item),
+    },
+    {
+      text: 'Copiar',
+      icon: (
+        <CursorText
+          className="text-lightenGray dark:text-darkTextGray"
+          {...DEFAULT_ICON_PROPS}
+        />
+      ),
+      action: () => copyToClipboard(item.text),
+    },
+    {
+      text: 'Duplicar',
+      icon: (
+        <Copy
+          className="text-lightenGray dark:text-darkTextGray"
+          {...DEFAULT_ICON_PROPS}
+        />
+      ),
+      action: () => handleAddItem(item.text),
+    },
+  ]
+
+  const MARK_OPTIONS = (item: ListItemProps) => [
+    {
+      mark: (
+        <div
+          className={classNames(
+            'h-4 w-4 rounded-full bg-green-400 transition-colors hover:bg-green-500 hover:opacity-100',
+            {
+              'border border-black opacity-100': item.markColor === 'green',
+              'opacity-25': item.markColor && item.markColor !== 'green',
+            }
+          )}
+        />
+      ),
+      action: () => handleMarkItem(item, 'green'),
+    },
+    {
+      mark: (
+        <div
+          className={classNames(
+            'h-4 w-4 rounded-full bg-yellow-400 transition-colors hover:bg-yellow-500 hover:opacity-100',
+            {
+              'border border-black opacity-100': item.markColor === 'yellow',
+              'opacity-25': item.markColor && item.markColor !== 'yellow',
+            }
+          )}
+        />
+      ),
+      action: () => handleMarkItem(item, 'yellow'),
+    },
+    {
+      mark: (
+        <div
+          className={classNames(
+            'h-4 w-4 rounded-full bg-rose-400 transition-colors hover:bg-rose-500 hover:opacity-100',
+            {
+              'border border-black opacity-100': item.markColor === 'red',
+              'opacity-25': item.markColor && item.markColor !== 'red',
+            }
+          )}
+        />
+      ),
+      action: () => handleMarkItem(item, 'red'),
+    },
+    {
+      mark: (
+        <div
+          className={classNames(
+            'h-4 w-4 rounded-full bg-blue-400 transition-colors hover:bg-blue-500 hover:opacity-100',
+            {
+              'border border-black opacity-100': item.markColor === 'blue',
+              'opacity-25': item.markColor && item.markColor !== 'blue',
+            }
+          )}
+        />
+      ),
+      action: () => handleMarkItem(item, 'blue'),
+    },
+  ]
+
   return (
     <Card>
       {isListCompleted && (
@@ -177,12 +292,14 @@ export default function List() {
               onDragLeave={(event) => handleDragItemLeave(event)}
               ref={listRef}
             >
-              <div className="flex flex-row items-center p-2">
-                <div className="mr-2 flex items-center gap-1 md:mr-4">
-                  <DotsSixVertical
-                    className="cursor-grab text-lightenGray dark:text-darkTextGray"
-                    {...DEFAULT_ICON_PROPS}
-                  />
+              <div
+                className={classNames('flex flex-row items-center', {
+                  'px-2 pb-2': item.updatedAt,
+                  'p-2': !item.updatedAt,
+                })}
+              >
+                {/* checkbox */}
+                <div className="ml-2 mr-2 flex items-center gap-1 md:mr-4">
                   <input
                     className="default-checkbox"
                     type="checkbox"
@@ -190,10 +307,17 @@ export default function List() {
                     onChange={() => handleCompleteItem(item)}
                   />
                 </div>
-                <div
-                  className="w-full"
-                  onDoubleClick={() => handleDoubleClickOnItem(item)}
-                >
+                {/* item text */}
+                <div className="w-full">
+                  {item.updatedAt && (
+                    <small className="text-[0.5rem] text-lightenGray dark:text-darkTextGray">
+                      {getDayFromDateString(item.updatedAt as string)} às{' '}
+                      {new Date(item.updatedAt as string).toLocaleTimeString(navigator.language, {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </small>
+                  )}
                   <div
                     className={classNames('max-w-[92%] break-words', {
                       'break-all': ifTextHasLink(item.text),
@@ -203,13 +327,52 @@ export default function List() {
                   </div>
                 </div>
                 {/* item option */}
-                <div className="flex">
-                  <button
-                    className="icon-button"
-                    onClick={() => handleDeleteItem(item)}
+                <div className="flex items-center gap-2">
+                  <div
+                    className={classNames('h-4 w-4 rounded-full transition-all', {
+                      'bg-green-400': item.markColor === 'green',
+                      'bg-yellow-400': item.markColor === 'yellow',
+                      'bg-rose-400': item.markColor === 'red',
+                      'bg-blue-400': item.markColor === 'blue',
+                      'bg-transparent': !item.markColor,
+                    })}
+                  />
+                  <Menu
+                    as="div"
+                    className="relative inline-block"
                   >
-                    <TrashSimple {...DEFAULT_ICON_PROPS} />
-                  </button>
+                    <Menu.Button className="inline-flex">
+                      <button className="icon-button">
+                        <DotsThreeVertical
+                          className="text-lightenGray dark:text-darkTextGray"
+                          {...DEFAULT_ICON_PROPS}
+                        />
+                      </button>
+                    </Menu.Button>
+                    <Menu.Items className="menu-items">
+                      {ITEM_OPTIONS(item).map((option, index) => (
+                        <Menu.Item key={index}>
+                          <button
+                            className="popover-button"
+                            onClick={option.action}
+                          >
+                            {option.icon}
+                            {option.text}
+                          </button>
+                        </Menu.Item>
+                      ))}
+                      <Menu.Items>
+                        <Divider />
+                        <div className="flex w-full items-center justify-between pt-3">
+                          {MARK_OPTIONS(item).map((option, index) => (
+                            <Menu.Item key={index}>
+                              <button onClick={option.action}>{option.mark}</button>
+                            </Menu.Item>
+                          ))}
+                        </div>
+                      </Menu.Items>
+                    </Menu.Items>
+                  </Menu>
                 </div>
               </div>
               {index !== sortedListItems.notCompleted.length - 1 && <Divider />}
@@ -237,17 +400,17 @@ export default function List() {
                   />
                 </div>
                 <div className="flex flex-1">
-                  <label className="select-text text-sm text-lightenGray line-through opacity-50 transition-all dark:text-darkTextGray md:max-w-[92%] md:text-base">
+                  <label className="select-text text-sm text-lightenGray line-through opacity-50 transition-all dark:text-darkTextGray dark:opacity-20 md:max-w-[92%] md:text-base">
                     {FormattedItemText(item.text)}
                   </label>
                 </div>
-                <span className="text-[0.5rem] text-lightenGray opacity-70 dark:text-darkTextGray md:text-[0.625rem]">
+                <small className="text-[0.5rem] text-lightenGray opacity-70 dark:text-darkTextGray md:text-[0.625rem]">
                   feito {getDayFromDateString(item.completedAt as string)} às{' '}
                   {new Date(item.completedAt as string).toLocaleTimeString(navigator.language, {
                     hour: '2-digit',
                     minute: '2-digit',
                   })}
-                </span>
+                </small>
               </div>
               {index !== sortedListItems.completed.length - 1 && <Divider />}
             </div>

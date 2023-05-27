@@ -18,11 +18,19 @@ import Header from '@/pages/lists/components/ListsHeader'
 import { createList as createListOnDB, updateUserLists } from '@services/list'
 import { useAuth, useChangeLog, useList } from '@/hooks'
 
-import { CHANGE_LOG_ROUTE, DEFAULT_ICON_PROPS, LIST_ROUTE, QUOTES, STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
+import {
+  CHANGE_LOG_ROUTE,
+  DEFAULT_ICON_PROPS,
+  LIST_ROUTE,
+  LIST_SETTINGS_ROUTE,
+  QUOTES,
+  STORAGE_SELECTED_LIST_ID_KEY,
+} from '@/consts'
 import { ListProps, ListTypesProps } from '@/typings/List'
 import { getRandomQuote, getFromStorage } from '@/utils'
 
-import { Archive, CaretRight, DotsSixVertical, TrashSimple } from '@phosphor-icons/react'
+import { Archive, CaretRight, DotsSixVertical, DotsThreeVertical, GearSix, TrashSimple } from '@phosphor-icons/react'
+import { Menu } from '@headlessui/react'
 
 export default function Lists() {
   const { user } = useAuth()
@@ -66,6 +74,11 @@ export default function Lists() {
     navigate(LIST_ROUTE)
   }
 
+  const handleGoToSettings = (list: ListProps) => {
+    saveSelectedList(list)
+    navigate(LIST_SETTINGS_ROUTE)
+  }
+
   const handleOnDragItemStart = (event: React.DragEvent<HTMLDivElement>, index: number) => {
     event.dataTransfer.setData('text/plain', index.toString())
   }
@@ -100,6 +113,29 @@ export default function Lists() {
 
     await updateUserLists(newLists)
   }
+
+  const LIST_OPTIONS = (list: ListProps) => [
+    {
+      text: 'Configurar',
+      icon: (
+        <GearSix
+          className="text-lightenGray dark:text-darkTextGray"
+          {...DEFAULT_ICON_PROPS}
+        />
+      ),
+      action: () => handleGoToSettings(list),
+    },
+    {
+      text: 'Excluir',
+      icon: (
+        <TrashSimple
+          className="text-lightenGray dark:text-darkTextGray"
+          {...DEFAULT_ICON_PROPS}
+        />
+      ),
+      action: () => handleDeleteList(list.id),
+    },
+  ]
 
   return (
     <Card>
@@ -182,21 +218,40 @@ export default function Lists() {
                     />
                   </div>
                 </div>
-                <div className="flex">
-                  {list.type === ListTypesProps.GENERAL ? (
-                    <CaretRight
-                      {...DEFAULT_ICON_PROPS}
-                      className="dark:text-darkTextLight"
-                    />
-                  ) : (
-                    <button
-                      className="icon-button"
-                      onClick={() => handleDeleteList(list.id)}
-                    >
-                      <TrashSimple {...DEFAULT_ICON_PROPS} />
-                    </button>
-                  )}
-                </div>
+
+                {list.type === ListTypesProps.GENERAL ? (
+                  <CaretRight
+                    {...DEFAULT_ICON_PROPS}
+                    className="dark:text-darkTextLight"
+                  />
+                ) : (
+                  <Menu
+                    as="div"
+                    className="relative inline-block"
+                  >
+                    <Menu.Button className="inline-flex">
+                      <button className="icon-button">
+                        <DotsThreeVertical
+                          className="text-lightenGray dark:text-darkTextGray"
+                          {...DEFAULT_ICON_PROPS}
+                        />
+                      </button>
+                    </Menu.Button>
+                    <Menu.Items className="menu-items">
+                      {LIST_OPTIONS(list).map((option) => (
+                        <Menu.Item key={option.text}>
+                          <button
+                            className="popover-button"
+                            onClick={option.action}
+                          >
+                            {option.icon}
+                            {option.text}
+                          </button>
+                        </Menu.Item>
+                      ))}
+                    </Menu.Items>
+                  </Menu>
+                )}
               </div>
               {(index !== lists.length - 1 || list.type === ListTypesProps.GENERAL) && <Divider />}
             </div>

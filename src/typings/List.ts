@@ -21,7 +21,9 @@ export interface ListItemProps {
   text: string
   completed: boolean
   index?: number
-  createdAt: string
+  updatedAt: string
   completedAt?: string
-  markColor?: 'blue' | 'red' | 'yellow' | 'green'
+  markColor?: ListItemMarksProps
 }
+
+export type ListItemMarksProps = 'blue' | 'red' | 'yellow' | 'green'
