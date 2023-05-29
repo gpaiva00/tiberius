@@ -314,8 +314,8 @@ export default function List() {
                 {/* item text */}
                 <div className="w-full">
                   {item.updatedAt && (
-                    <small className="text-[0.5rem] text-lightenGray opacity-70 dark:text-darkTextGray md:text-[0.625rem]">
-                      {getDayFromDateString(item.updatedAt as string)} às{' '}
+                    <small className="text-[0.5rem] text-lightenGray opacity-90 dark:text-darkTextGray md:text-[0.625rem]">
+                      atualizado {getDayFromDateString(item.updatedAt as string)} às{' '}
                       {new Date(item.updatedAt as string).toLocaleTimeString(navigator.language, {
                         hour: '2-digit',
                         minute: '2-digit',
@@ -402,7 +402,7 @@ export default function List() {
                   onChange={() => handleCompleteItem(item)}
                 />
                 <div className="w-full">
-                  <small className="text-[0.5rem] text-lightenGray opacity-70 dark:text-darkTextGray md:text-[0.625rem]">
+                  <small className="text-[0.5rem] text-lightenGray opacity-90 dark:text-darkTextGray md:text-[0.625rem]">
                     feito {getDayFromDateString(item.completedAt as string)} às{' '}
                     {new Date(item.completedAt as string).toLocaleTimeString(navigator.language, {
                       hour: '2-digit',
@@ -411,7 +411,7 @@ export default function List() {
                   </small>
                   <div
                     className={classNames(
-                      'max-w-[92%] break-words text-lightenGray opacity-70 dark:text-darkTextGray dark:opacity-30',
+                      'max-w-[92%] break-words text-lightenGray opacity-70 dark:text-darkTextGray dark:opacity-40',
                       {
                         'break-all': ifTextHasLink(item.text),
                       }
