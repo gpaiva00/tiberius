@@ -11,7 +11,7 @@ export default function FormattedItemText(itemText: string | undefined) {
 
   let htmlWithLinks = itemTextWithoutPTag.replace(
     URL_REGEX,
-    '<a class="default-link" href="$1">$1</a>'
+    '<a class="default-link" href="$1" target="_blank">$1</a>'
   )
 
   // Replace <strong> with <b>

@@ -14,13 +14,16 @@ export default function CompletedItemsCount({ items = [], size = 'normal' }: Com
 
   return (
     <span
-      className={classNames('text-lightenGray', {
-        'text-primary': isListCompleted,
-        'text-xs': size === 'normal',
-        'text-[0.625rem]': size === 'sm',
-      })}
+      className={classNames(
+        'flex h-5 items-center justify-center rounded-xl border-default px-2 text-lightenGray',
+        {
+          'text-primary': isListCompleted,
+          'text-xs': size === 'normal',
+          'text-[0.625rem]': size === 'sm',
+        }
+      )}
     >
-      ({listItemsStatus})
+      {listItemsStatus}
     </span>
   )
 }

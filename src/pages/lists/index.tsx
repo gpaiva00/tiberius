@@ -12,7 +12,6 @@ import {
   CompletedItemsCount,
   Divider,
   FormattedItemText,
-  ProgressBar,
 } from '@/shared/components'
 
 import { useAuth, useChangeLog, useList } from '@/hooks'
@@ -186,7 +185,7 @@ export default function Lists() {
                 })}
               >
                 {/* list text */}
-                <div className="flex flex-1 flex-col items-start">
+                <div className="flex flex-1 items-center gap-2">
                   <h1
                     className={classNames(
                       'flex max-w-[21.875rem] cursor-pointer items-center truncate text-primary hover:underline dark:text-darkPrimary',
@@ -204,14 +203,11 @@ export default function Lists() {
                     )}
                     {FormattedItemText(list.name)}
                   </h1>
-                  {/* progress bar */}
-                  <div className="flex h-[1rem] items-center gap-2">
-                    <ProgressBar items={list.items} />
-                    <CompletedItemsCount
-                      size="sm"
-                      items={list.items || []}
-                    />
-                  </div>
+                  {/* complete items count */}
+                  <CompletedItemsCount
+                    size="sm"
+                    items={list.items || []}
+                  />
                 </div>
 
                 {list.type === ListTypesProps.GENERAL ? (

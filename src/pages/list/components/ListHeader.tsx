@@ -1,14 +1,14 @@
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { CompletedItemsCount, Divider, ProgressBar, FormattedItemText } from '@/shared/components'
+import { CompletedItemsCount, Divider, FormattedItemText } from '@/shared/components'
 
 import { useChangeLog } from '@/hooks'
 
 import { DEFAULT_ICON_PROPS, LISTS_ROUTE, LIST_SETTINGS_ROUTE } from '@/consts'
 import { ListProps, ListTypesProps } from '@/typings/List'
 
-import { Archive, ListDashes } from '@phosphor-icons/react'
+import { Archive, ListBullets } from '@phosphor-icons/react'
 interface ListContentHeaderProps {
   selectedList: ListProps | null
 }
@@ -29,7 +29,7 @@ export default function Header({ selectedList }: ListContentHeaderProps) {
                 'relative inline-block': !haveSeenChangeLog,
               })}
             >
-              <ListDashes {...DEFAULT_ICON_PROPS} />
+              <ListBullets {...DEFAULT_ICON_PROPS} />
               {!haveSeenChangeLog && (
                 <span className="absolute right-0 top-0 inline-block h-2 w-2 -translate-y-1/2 translate-x-1/2 transform  rounded-full bg-primary"></span>
               )}
@@ -53,13 +53,10 @@ export default function Header({ selectedList }: ListContentHeaderProps) {
             )}
             {FormattedItemText(selectedList?.name)}
           </Link>
-          <div className="flex h-[1rem] items-center gap-2">
-            <ProgressBar items={selectedList?.items || []} />
-            <CompletedItemsCount
-              size="sm"
-              items={selectedList?.items || []}
-            />
-          </div>
+          <CompletedItemsCount
+            size="sm"
+            items={selectedList?.items || []}
+          />
         </div>
       </header>
       <Divider />

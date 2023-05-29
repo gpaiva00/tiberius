@@ -34,7 +34,7 @@
   }
 
   .icon-button {
-    @apply rounded-default p-2 transition-colors hover:bg-lightGray disabled:text-lightGray disabled:hover:bg-transparent dark:text-darkTextLight dark:hover:bg-darkBackgroundIconButton disabled:dark:text-gray;
+    @apply rounded-full p-2 transition-colors hover:bg-lightGray disabled:text-lightGray disabled:hover:bg-transparent dark:text-darkTextLight dark:hover:bg-darkBackgroundIconButton disabled:dark:text-gray;
   }
 
   .popover-button {
@@ -58,7 +58,7 @@
   }
 
   .default-input-text {
-    @apply w-full rounded-sm border-default bg-lightGray p-2 outline-none disabled:text-lightenGray dark:border-dark dark:bg-darkInputBackground dark:text-darkTextLight dark:placeholder:text-darkTextGray disabled:dark:text-darkTextGray;
+    @apply w-full rounded-sm border-default bg-lightGray p-2 outline-none active:bg-white disabled:text-lightenGray dark:border-dark dark:bg-darkInputBackground dark:text-darkTextLight dark:placeholder:text-darkTextGray disabled:dark:text-darkTextGray;
   }
 
   .translucid {
@@ -79,7 +79,7 @@ aside.EmojiPickerReact.epr-main {
 
 /* quill input text */
 .ql-editor {
-  @apply max-h-64 rounded-b-md bg-lightGray p-2 text-sm outline-none disabled:text-lightenGray dark:border-dark dark:bg-darkInputBackground dark:text-darkTextLight disabled:dark:text-darkTextGray md:text-base;
+  @apply max-h-64 rounded-b-md bg-lightGray p-2 text-sm outline-none focus:bg-white disabled:text-lightenGray dark:border-dark dark:bg-darkInputBackground dark:text-darkTextLight disabled:dark:text-darkTextGray md:text-base;
 }
 
 /* quill toolbar */

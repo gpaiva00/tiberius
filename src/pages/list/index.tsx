@@ -29,7 +29,7 @@ import {
   Copy,
   CursorText,
   DotsThreeVertical,
-  ListDashes,
+  ListBullets,
   PencilSimple,
   TrashSimple,
 } from '@phosphor-icons/react'
@@ -239,7 +239,7 @@ export default function List() {
     {
       text: 'Mover',
       icon: (
-        <ListDashes
+        <ListBullets
           className="text-lightenGray dark:text-darkTextGray"
           {...DEFAULT_ICON_PROPS}
         />
@@ -342,14 +342,9 @@ export default function List() {
               onDragLeave={(event) => handleDragItemLeave(event)}
               ref={listRef}
             >
-              <div
-                className={classNames('flex flex-row items-center', {
-                  'px-2 pb-2': item.updatedAt,
-                  'p-2': !item.updatedAt,
-                })}
-              >
+              <div className="flex flex-row items-start py-2 pr-2">
                 {/* checkbox */}
-                <div className="ml-2 mr-2 flex items-center gap-1 md:mr-4">
+                <div className="mx-2 mt-1 flex md:mx-4">
                   <input
                     className="default-checkbox"
                     type="checkbox"
@@ -359,8 +354,18 @@ export default function List() {
                 </div>
                 {/* item text */}
                 <div className="w-full">
+                  <div
+                    className={classNames(
+                      'm-0 max-w-[92%] break-words p-0 dark:text-darkTextLight',
+                      {
+                        'break-all': ifTextHasLink(item.text),
+                      }
+                    )}
+                  >
+                    {FormattedItemText(item.text)}
+                  </div>
                   {item.updatedAt && (
-                    <small className="text-[0.5rem] text-lightenGray opacity-90 dark:text-darkTextGray md:text-[0.625rem]">
+                    <small className="m-0 p-0 text-[0.5rem] text-lightenGray dark:text-darkTextGray md:text-[0.625rem]">
                       atualizado {getDayFromDateString(item.updatedAt as string)} às{' '}
                       {new Date(item.updatedAt as string).toLocaleTimeString(navigator.language, {
                         hour: '2-digit',
@@ -368,13 +373,6 @@ export default function List() {
                       })}
                     </small>
                   )}
-                  <div
-                    className={classNames('max-w-[92%] break-words dark:text-darkTextLight', {
-                      'break-all': ifTextHasLink(item.text),
-                    })}
-                  >
-                    {FormattedItemText(item.text)}
-                  </div>
                 </div>
                 {/* item option */}
                 <div className="flex items-center gap-2">
@@ -440,24 +438,20 @@ export default function List() {
         <div ref={parent}>
           {sortedListItems.completed.map((item, index) => (
             <div key={item.id}>
-              <div className="flex flex-row items-center gap-2 px-4 py-2 md:gap-4">
-                <input
-                  className="default-checkbox"
-                  type="checkbox"
-                  checked={item.completed}
-                  onChange={() => handleCompleteItem(item)}
-                />
+              <div className="flex flex-row items-start py-2 pr-2">
+                {/* checkbox */}
+                <div className="mx-2 mt-1 flex md:mx-4">
+                  <input
+                    className="default-checkbox"
+                    type="checkbox"
+                    checked={item.completed}
+                    onChange={() => handleCompleteItem(item)}
+                  />
+                </div>
                 <div className="w-full">
-                  <small className="text-[0.5rem] text-lightenGray opacity-90 dark:text-darkTextGray md:text-[0.625rem]">
-                    feito {getDayFromDateString(item.completedAt as string)} às{' '}
-                    {new Date(item.completedAt as string).toLocaleTimeString(navigator.language, {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </small>
                   <div
                     className={classNames(
-                      'max-w-[92%] break-words text-lightenGray opacity-70 dark:text-darkTextGray dark:opacity-40',
+                      'm-0 max-w-[92%] break-words p-0 text-lightenGray opacity-70 dark:text-darkTextGray dark:opacity-40',
                       {
                         'break-all': ifTextHasLink(item.text),
                       }
@@ -465,6 +459,13 @@ export default function List() {
                   >
                     {FormattedItemText(item.text)}
                   </div>
+                  <small className="text-[0.5rem] text-lightenGray opacity-90 dark:text-darkTextGray md:text-[0.625rem]">
+                    feito {getDayFromDateString(item.completedAt as string)} às{' '}
+                    {new Date(item.completedAt as string).toLocaleTimeString(navigator.language, {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </small>
                 </div>
               </div>
               {index !== sortedListItems.completed.length - 1 && <Divider />}
