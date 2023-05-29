@@ -1,8 +1,18 @@
 import classNames from 'classnames'
 
-type InputTextProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
+type InputTextProps = React.DetailedHTMLProps<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  HTMLInputElement
+>
 
-export default function InputText({ placeholder, onChange, onKeyDown, value, className, ...props }: InputTextProps) {
+export default function InputText({
+  placeholder,
+  onChange,
+  onKeyDown,
+  value,
+  className,
+  ...props
+}: InputTextProps) {
   return (
     <input
       type="text"

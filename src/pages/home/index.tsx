@@ -38,7 +38,9 @@ export default function Home() {
         <div className="flex flex-1 flex-col items-center gap-4 pb-10 md:justify-center">
           <div className="flex md:grid md:grid-cols-2">
             <div className="flex flex-col gap-4">
-              <h1 className="text-5xl font-black dark:text-darkTextLight md:text-6xl">lista de tarefas simples.</h1>
+              <h1 className="text-5xl font-black dark:text-darkTextLight md:text-6xl">
+                lista de tarefas simples.
+              </h1>
               <h2 className="text-2xl font-semibold text-lightenGray dark:text-darkTextGray md:text-3xl">
                 minimalista e só com o necessário.
               </h2>
@@ -55,7 +57,9 @@ export default function Home() {
             <div className="hidden flex-col items-center justify-end md:flex">
               <DemoCard />
               <div className="flex w-full items-end">
-                <span className="align-bottom text-sm text-lightenGray">Apenas tarefas. Nada mais.</span>
+                <span className="align-bottom text-sm text-lightenGray">
+                  Apenas tarefas. Nada mais.
+                </span>
                 <div className="">
                   <img
                     src={ArrowIcon}

@@ -1,28 +1,33 @@
-import { useRef, useState } from 'react'
-import { v4 as uuidv4 } from 'uuid'
-import Confetti from 'react-confetti'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import toast from 'react-hot-toast'
-import classNames from 'classnames'
 import { Menu } from '@headlessui/react'
+import classNames from 'classnames'
+import { useRef, useState } from 'react'
+import Confetti from 'react-confetti'
+import toast from 'react-hot-toast'
+import { v4 as uuidv4 } from 'uuid'
 
 import { useList } from '@/hooks'
 
-import { Card, CardContentContainer, Divider, FormattedItemText } from '@/shared/components'
 import Footer from '@/pages/list/components/ListFooter'
 import Header from '@/pages/list/components/ListHeader'
-
-import { ListItemMarksProps, ListItemProps, ListProps } from '@typings/List'
-import { COMPLETE_MESSAGES, CONGRATS_EMOJIS, DEFAULT_ICON_PROPS, DEFAULT_TOAST_PROPS, QUOTES } from '@/consts'
-import { sortListItemsByStatus } from '@utils/sortListItemsByStatus'
-import { copyToClipboard, getDayFromDateString, getRandomQuote, ifTextHasLink } from '@/utils'
+import { Card, CardContentContainer, Divider, FormattedItemText } from '@/shared/components'
 
 import {
-  ArrowCircleDownRight,
-  ArrowCircleLeft,
+  COMPLETE_MESSAGES,
+  CONGRATS_EMOJIS,
+  DEFAULT_ICON_PROPS,
+  DEFAULT_TOAST_PROPS,
+  QUOTES,
+} from '@/consts'
+import { copyToClipboard, getDayFromDateString, getRandomQuote, ifTextHasLink } from '@/utils'
+import { ListItemMarksProps, ListItemProps, ListProps } from '@typings/List'
+import { sortListItemsByStatus } from '@utils/sortListItemsByStatus'
+
+import {
   Copy,
   CursorText,
   DotsThreeVertical,
+  ListDashes,
   PencilSimple,
   TrashSimple,
 } from '@phosphor-icons/react'
@@ -35,7 +40,8 @@ export default function List() {
   const [parent] = useAutoAnimate()
 
   const sortedListItems = sortListItemsByStatus((selectedList?.items || []) as ListItemProps[])
-  const isListCompleted = sortedListItems.notCompleted.length === 0 && sortedListItems.completed.length > 0
+  const isListCompleted =
+    sortedListItems.notCompleted.length === 0 && sortedListItems.completed.length > 0
 
   const handleEditItem = (item: ListItemProps) => {
     if (item.completed) return
@@ -49,7 +55,9 @@ export default function List() {
 
     if (!prompt) return
 
-    const updatedItems = selectedList?.items.filter((selectedListItem) => selectedListItem.id !== item.id)
+    const updatedItems = selectedList?.items.filter(
+      (selectedListItem) => selectedListItem.id !== item.id
+    )
     const updatedList = {
       ...(selectedList as ListProps),
       items: updatedItems as ListItemProps[],
@@ -217,7 +225,7 @@ export default function List() {
     {
       text: 'Mover',
       icon: (
-        <ArrowCircleLeft
+        <ListDashes
           className="text-lightenGray dark:text-darkTextGray"
           {...DEFAULT_ICON_PROPS}
         />
@@ -233,7 +241,8 @@ export default function List() {
           className={classNames(
             'h-4 w-4 rounded-full bg-green-400 transition-colors hover:bg-green-500 hover:opacity-100',
             {
-              'border border-black opacity-100 dark:border-darkTextLight': item.markColor === 'green',
+              'border border-black opacity-100 dark:border-darkTextLight':
+                item.markColor === 'green',
               'opacity-25': item.markColor && item.markColor !== 'green',
             }
           )}
@@ -247,7 +256,8 @@ export default function List() {
           className={classNames(
             'h-4 w-4 rounded-full bg-yellow-400 transition-colors hover:bg-yellow-500 hover:opacity-100',
             {
-              'border border-black opacity-100 dark:border-darkTextLight': item.markColor === 'yellow',
+              'border border-black opacity-100 dark:border-darkTextLight':
+                item.markColor === 'yellow',
               'opacity-25': item.markColor && item.markColor !== 'yellow',
             }
           )}
@@ -275,7 +285,8 @@ export default function List() {
           className={classNames(
             'h-4 w-4 rounded-full bg-blue-400 transition-colors hover:bg-blue-500 hover:opacity-100',
             {
-              'border border-black opacity-100 dark:border-darkTextLight': item.markColor === 'blue',
+              'border border-black opacity-100 dark:border-darkTextLight':
+                item.markColor === 'blue',
               'opacity-25': item.markColor && item.markColor !== 'blue',
             }
           )}

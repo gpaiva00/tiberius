@@ -29,7 +29,9 @@ export default function SignIn() {
       <Divider />
       {user?.uid ? (
         <div className="flex flex-1 flex-col items-center justify-center gap-6 px-4">
-          <p className="text-lg font-bold dark:text-darkTextLight">Seja bem-vindo, {user.firstName}!</p>
+          <p className="text-lg font-bold dark:text-darkTextLight">
+            Seja bem-vindo, {user.firstName}!
+          </p>
           <button
             className="primary-button"
             onClick={handleGoToTiberius}

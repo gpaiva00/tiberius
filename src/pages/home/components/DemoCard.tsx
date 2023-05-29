@@ -88,9 +88,12 @@ export default function DemoCard() {
               </div>
               <div className="mx-4 flex flex-1">
                 <label
-                  className={classNames('select-text font-light transition-all dark:text-darkTextLight', {
-                    'text-gray line-through opacity-30 hover:line-through': item.completed,
-                  })}
+                  className={classNames(
+                    'select-text font-light transition-all dark:text-darkTextLight',
+                    {
+                      'text-gray line-through opacity-30 hover:line-through': item.completed,
+                    }
+                  )}
                   onDoubleClick={() => {}}
                 >
                   {item.text}

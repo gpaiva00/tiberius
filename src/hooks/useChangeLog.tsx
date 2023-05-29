@@ -27,7 +27,10 @@ export const ChangeLogProvider = ({ children }: ChangeLogProps) => {
     const haveSeenChangeLogDate = getFromStorage(HAVE_SEEN_CHANGE_LOG_DATE_KEY)
     const changeLogDate = changeLog?.createdAt
 
-    if (changeLogDate && (!haveSeenChangeLogDate || new Date(changeLogDate) > new Date(haveSeenChangeLogDate))) {
+    if (
+      changeLogDate &&
+      (!haveSeenChangeLogDate || new Date(changeLogDate) > new Date(haveSeenChangeLogDate))
+    ) {
       setHaveSeenChangeLog(false)
       return
     }

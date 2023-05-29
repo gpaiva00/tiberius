@@ -42,7 +42,11 @@ export default function Footer({ handleAddItem, editingItemText }: ListCardFoote
             onClick={handleAdd}
             disabled={isTextInputEmpty}
           >
-            {editingItemText?.length ? <Check {...DEFAULT_ICON_PROPS} /> : <Plus {...DEFAULT_ICON_PROPS} />}
+            {editingItemText?.length ? (
+              <Check {...DEFAULT_ICON_PROPS} />
+            ) : (
+              <Plus {...DEFAULT_ICON_PROPS} />
+            )}
           </button>
         </div>
       </FooterContainer>

@@ -2,7 +2,11 @@ import { ReactNode, createContext, useContext, useEffect, useState } from 'react
 
 import { useAuth } from '@/hooks'
 
-import { subscribeToUserLists, updateList as updateListOnDB, deleteList as deleteListOnDB } from '@/services/list'
+import {
+  subscribeToUserLists,
+  updateList as updateListOnDB,
+  deleteList as deleteListOnDB,
+} from '@/services/list'
 
 import { STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
 
@@ -52,7 +56,9 @@ export const ListProvider = ({ children }: ListProviderProps) => {
   const deleteList = async (listID: ListProps['id']) => {
     // select user's general list as default selected list
     if (selectedList?.id === listID) {
-      const userGeneralList = lists.find((list) => list.type === ListTypesProps.GENERAL) as ListProps
+      const userGeneralList = lists.find(
+        (list) => list.type === ListTypesProps.GENERAL
+      ) as ListProps
       saveSelectedList(userGeneralList)
     }
 

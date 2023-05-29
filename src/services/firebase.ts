@@ -1,5 +1,11 @@
 import { initializeApp } from 'firebase/app'
-import { getAuth, GoogleAuthProvider, signInWithPopup, User, fetchSignInMethodsForEmail } from 'firebase/auth'
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  User,
+  fetchSignInMethodsForEmail,
+} from 'firebase/auth'
 import { getFirestore, initializeFirestore, persistentLocalCache } from 'firebase/firestore'
 
 const firebaseConfig = {

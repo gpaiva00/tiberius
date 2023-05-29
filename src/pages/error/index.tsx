@@ -11,7 +11,9 @@ export default function Error() {
     <main className="flex h-screen flex-col bg-white dark:bg-darkBackground">
       <div className="flex h-screen flex-1 flex-col justify-center gap-6 px-6 md:px-40">
         <div className="flex flex-col gap-4">
-          <h1 className="text-4xl font-bold dark:text-darkTextLight">{getRandomQuote(ERROR_MESSAGES)}</h1>
+          <h1 className="text-4xl font-bold dark:text-darkTextLight">
+            {getRandomQuote(ERROR_MESSAGES)}
+          </h1>
           <h4 className="text-2xl font-bold text-lightenGray dark:text-darkTextGray">
             Aproveite para tomar uma água e voltar em breve.
           </h4>

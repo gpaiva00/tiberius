@@ -1,22 +1,22 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+import classNames from 'classnames'
 import { useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
-import classNames from 'classnames'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 
+import Footer from '@/pages/lists/components/ListsFooter'
+import Header from '@/pages/lists/components/ListsHeader'
 import {
   Card,
   CardContentContainer,
   CompletedItemsCount,
   Divider,
-  ProgressBar,
   FormattedItemText,
+  ProgressBar,
 } from '@/shared/components'
-import Footer from '@/pages/lists/components/ListsFooter'
-import Header from '@/pages/lists/components/ListsHeader'
 
-import { createList as createListOnDB, updateUserLists } from '@services/list'
 import { useAuth, useChangeLog, useList } from '@/hooks'
+import { createList as createListOnDB, updateUserLists } from '@services/list'
 
 import {
   CHANGE_LOG_ROUTE,
@@ -27,10 +27,17 @@ import {
   STORAGE_SELECTED_LIST_ID_KEY,
 } from '@/consts'
 import { ListProps, ListTypesProps } from '@/typings/List'
-import { getRandomQuote, getFromStorage } from '@/utils'
+import { getFromStorage, getRandomQuote } from '@/utils'
 
-import { Archive, CaretRight, DotsSixVertical, DotsThreeVertical, GearSix, TrashSimple } from '@phosphor-icons/react'
 import { Menu } from '@headlessui/react'
+import {
+  Archive,
+  CaretRight,
+  DotsSixVertical,
+  DotsThreeVertical,
+  GearSix,
+  TrashSimple,
+} from '@phosphor-icons/react'
 
 export default function Lists() {
   const { user } = useAuth()
@@ -92,7 +99,10 @@ export default function Lists() {
     event.currentTarget.classList.remove('drag-over')
   }
 
-  const handleOnDropItem = async (event: React.DragEvent<HTMLDivElement>, itemReceivingDraggedListIndex: number) => {
+  const handleOnDropItem = async (
+    event: React.DragEvent<HTMLDivElement>,
+    itemReceivingDraggedListIndex: number
+  ) => {
     event.preventDefault()
     event.currentTarget.classList.remove('drag-over')
 

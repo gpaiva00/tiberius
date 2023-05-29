@@ -25,7 +25,9 @@ export default function Contact() {
       <Divider />
       <CardContentContainer>
         <main className="p-4">
-          <h4 className="dark:text-darkTextLight">Leia qual é a melhor forma de entrar em contato:</h4>
+          <h4 className="dark:text-darkTextLight">
+            Leia qual é a melhor forma de entrar em contato:
+          </h4>
           {/* doubts, suggestions */}
           <div className="my-4">
             <h1 className="mb-1 text-xl font-black dark:text-darkTextLight">
@@ -34,8 +36,8 @@ export default function Contact() {
             <Divider />
             <ol className="list-inside list-decimal dark:text-darkTextLight">
               <li className="my-2">
-                Caso você tenha alguma reclamação ou sugestão de melhoria para o Tiberius, sinta-se livre para abrir uma
-                issue no{' '}
+                Caso você tenha alguma reclamação ou sugestão de melhoria para o Tiberius, sinta-se
+                livre para abrir uma issue no{' '}
                 <a
                   href="https://github.com/gpaiva00/tiberius"
                   className="text-primary hover:underline dark:text-darkPrimary"
@@ -52,7 +54,8 @@ export default function Contact() {
             <Divider />
             <ol className="list-inside list-decimal dark:text-darkTextLight">
               <li className="my-2">
-                Caso você queira entrar em contato por qualquer outro assunto, sinta-se livre para enviar um e-mail para{' '}
+                Caso você queira entrar em contato por qualquer outro assunto, sinta-se livre para
+                enviar um e-mail para{' '}
                 <a
                   className="rounded-default bg-lightGray p-1 text-primary hover:underline dark:bg-darkInputBackground dark:text-darkPrimary"
                   href="mailto:mytiberius@gmail.com.br"
