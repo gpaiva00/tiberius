@@ -187,12 +187,9 @@ export default function Lists() {
                 {/* list text */}
                 <div className="flex flex-1 items-center gap-2">
                   <h1
-                    className={classNames(
-                      'flex max-w-[21.875rem] cursor-pointer items-center truncate text-primary hover:underline dark:text-darkPrimary',
-                      {
-                        'font-bold': list.id === selectedListOnStorage,
-                      }
-                    )}
+                    className={classNames('list-title', {
+                      'font-bold': list.id === selectedListOnStorage,
+                    })}
                     onClick={() => handleClickOnListName(list)}
                   >
                     {list.type === ListTypesProps.GENERAL && (

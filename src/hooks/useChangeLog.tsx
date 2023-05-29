@@ -6,6 +6,7 @@ import { getFromStorage, setToStorage } from '@/utils'
 
 import { HAVE_SEEN_CHANGE_LOG_DATE_KEY } from '@/consts'
 import { ChangeLogListProps } from '@/pages/changeLog/typings/ChangeLog'
+import { Timestamp } from 'firebase/firestore'
 
 interface ChangeLogProps {
   children: React.ReactNode
@@ -24,12 +25,14 @@ export const ChangeLogProvider = ({ children }: ChangeLogProps) => {
   const [haveSeenChangeLog, setHaveSeenChangeLog] = useState<boolean>(true)
 
   const handleSetHaveSeenChangeLog = (changeLog: ChangeLogListProps) => {
-    const haveSeenChangeLogDate = getFromStorage(HAVE_SEEN_CHANGE_LOG_DATE_KEY)
+    const haveSeenChangeLogDate = getFromStorage(HAVE_SEEN_CHANGE_LOG_DATE_KEY) as Timestamp
     const changeLogDate = changeLog?.createdAt
+    // convert timestamp object to date
+    const haveSeenChangeLogDateTimestamp = haveSeenChangeLogDate.seconds * 1000
 
     if (
       changeLogDate &&
-      (!haveSeenChangeLogDate || new Date(changeLogDate) > new Date(haveSeenChangeLogDate))
+      (!haveSeenChangeLogDate || changeLogDate?.toDate() > new Date(haveSeenChangeLogDateTimestamp))
     ) {
       setHaveSeenChangeLog(false)
       return

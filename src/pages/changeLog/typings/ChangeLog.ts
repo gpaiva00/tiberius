@@ -1,9 +1,11 @@
+import { Timestamp } from 'firebase/firestore'
+
 export interface ChangeLogListProps {
   id: string
   description: string
   icon?: string
   version: string
-  createdAt: string
+  createdAt: Timestamp
   items: ChangeLogListItemProps[]
 }
 

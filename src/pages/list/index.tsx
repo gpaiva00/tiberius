@@ -451,7 +451,7 @@ export default function List() {
                 <div className="w-full">
                   <div
                     className={classNames(
-                      'm-0 max-w-[92%] break-words p-0 text-lightenGray opacity-70 dark:text-darkTextGray dark:opacity-40',
+                      'm-0 max-w-[92%] select-text break-words p-0 text-lightenGray opacity-70 dark:text-darkTextGray dark:opacity-40',
                       {
                         'break-all': ifTextHasLink(item.text),
                       }
@@ -525,13 +525,15 @@ export default function List() {
                   </Dialog.Title>
                   <Divider />
                   {/* body */}
-                  <div className="p-2">
-                    <div className="flex flex-col gap-2">
-                      {lists.map((list, index) => (
-                        <div className="flex flex-1 flex-col">
-                          <button
-                            key={index}
-                            className="flex items-center justify-between p-2"
+                  <div className="flex flex-col">
+                    {lists.map((list, index) => (
+                      <div
+                        key={index}
+                        className="flex flex-1 flex-col"
+                      >
+                        <div className="flex items-center justify-between px-4 py-4">
+                          <h1
+                            className="list-title"
                             onClick={() =>
                               handleMoveItem({
                                 destinationList: list,
@@ -540,26 +542,24 @@ export default function List() {
                               })
                             }
                           >
-                            <h1 className="flex max-w-[21.875rem] cursor-pointer items-center truncate text-primary hover:underline dark:text-darkPrimary">
-                              {list.type === ListTypesProps.GENERAL && (
-                                <Archive
-                                  {...DEFAULT_ICON_PROPS}
-                                  className="mr-1 md:mr-2"
-                                />
-                              )}
-                              {FormattedItemText(list.name)}
-                            </h1>
-                            <CaretRight
-                              {...DEFAULT_ICON_PROPS}
-                              className="text-lightenGray dark:text-darkTextLight"
-                            />
-                          </button>
-                          {(index !== lists.length - 1 || list.type === ListTypesProps.GENERAL) && (
-                            <Divider />
-                          )}
+                            {list.type === ListTypesProps.GENERAL && (
+                              <Archive
+                                {...DEFAULT_ICON_PROPS}
+                                className="mr-1 md:mr-2"
+                              />
+                            )}
+                            {FormattedItemText(list.name)}
+                          </h1>
+                          <CaretRight
+                            {...DEFAULT_ICON_PROPS}
+                            className="text-lightenGray dark:text-darkTextLight"
+                          />
                         </div>
-                      ))}
-                    </div>
+                        {(index !== lists.length - 1 || list.type === ListTypesProps.GENERAL) && (
+                          <Divider />
+                        )}
+                      </div>
+                    ))}
                   </div>
 
                   <div className="mt-4 p-2">

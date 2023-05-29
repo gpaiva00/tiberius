@@ -2,13 +2,13 @@ import { Link } from 'react-router-dom'
 
 import { useAuth } from '@/hooks'
 
-import { Footer } from '@/shared/components'
 import DemoCard from '@/pages/home/components/DemoCard'
+import { Footer } from '@/shared/components'
 
 import { DEFAULT_ICON_PROPS, LIST_ROUTE, SIGN_IN_ROUTE } from '@/consts'
 
-import { User } from '@phosphor-icons/react'
 import ArrowIcon from '@assets/images/arrow.png'
+import { User } from '@phosphor-icons/react'
 
 export default function Home() {
   const { user } = useAuth()
@@ -21,7 +21,7 @@ export default function Home() {
           {user ? (
             <Link
               to={LIST_ROUTE}
-              className="icon-button flex items-center gap-2"
+              className="icon-button flex items-center gap-2 px-4"
             >
               <User {...DEFAULT_ICON_PROPS} />
               <span className="hidden md:inline">{user.firstName}</span>
