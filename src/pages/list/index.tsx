@@ -550,7 +550,7 @@ export default function List() {
                             </h1>
                             <CaretRight
                               {...DEFAULT_ICON_PROPS}
-                              className="text-lightGray dark:text-darkTextLight"
+                              className="text-lightenGray dark:text-darkTextLight"
                             />
                           </button>
                           {(index !== lists.length - 1 || list.type === ListTypesProps.GENERAL) && (

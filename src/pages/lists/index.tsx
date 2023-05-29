@@ -180,7 +180,11 @@ export default function Lists() {
               onDragLeave={(event) => handleDragItemLeave(event)}
               ref={listRef}
             >
-              <div className="flex flex-row items-center px-4 py-2">
+              <div
+                className={classNames('flex flex-row items-center py-2 pl-4 pr-2', {
+                  'pl-4 pr-4': list.type === ListTypesProps.GENERAL,
+                })}
+              >
                 {/* list text */}
                 <div className="flex flex-1 flex-col items-start">
                   <h1
@@ -213,7 +217,7 @@ export default function Lists() {
                 {list.type === ListTypesProps.GENERAL ? (
                   <CaretRight
                     {...DEFAULT_ICON_PROPS}
-                    className="dark:text-darkTextLight"
+                    className="text-lightenGray dark:text-darkTextLight"
                   />
                 ) : (
                   <Menu
