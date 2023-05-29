@@ -17,7 +17,15 @@ import { COMPLETE_MESSAGES, CONGRATS_EMOJIS, DEFAULT_ICON_PROPS, DEFAULT_TOAST_P
 import { sortListItemsByStatus } from '@utils/sortListItemsByStatus'
 import { copyToClipboard, getDayFromDateString, getRandomQuote, ifTextHasLink } from '@/utils'
 
-import { Copy, CursorText, DotsThreeVertical, PencilSimple, TrashSimple } from '@phosphor-icons/react'
+import {
+  ArrowCircleDownRight,
+  ArrowCircleLeft,
+  Copy,
+  CursorText,
+  DotsThreeVertical,
+  PencilSimple,
+  TrashSimple,
+} from '@phosphor-icons/react'
 
 export default function List() {
   const [editingItem, setEditingItem] = useState<ListItemProps | null>(null)
@@ -205,6 +213,16 @@ export default function List() {
         />
       ),
       action: () => handleAddItem(item.text),
+    },
+    {
+      text: 'Mover',
+      icon: (
+        <ArrowCircleLeft
+          className="text-lightenGray dark:text-darkTextGray"
+          {...DEFAULT_ICON_PROPS}
+        />
+      ),
+      action: () => {},
     },
   ]
 
