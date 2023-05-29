@@ -28,7 +28,7 @@ export const ChangeLogProvider = ({ children }: ChangeLogProps) => {
     const haveSeenChangeLogDate = getFromStorage(HAVE_SEEN_CHANGE_LOG_DATE_KEY) as Timestamp
     const changeLogDate = changeLog?.createdAt
     // convert timestamp object to date
-    const haveSeenChangeLogDateTimestamp = haveSeenChangeLogDate.seconds * 1000
+    const haveSeenChangeLogDateTimestamp = haveSeenChangeLogDate?.seconds * 1000
 
     if (
       changeLogDate &&
