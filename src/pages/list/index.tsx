@@ -1,7 +1,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { Menu } from '@headlessui/react'
+import { Dialog, Menu, Transition } from '@headlessui/react'
 import classNames from 'classnames'
-import { useRef, useState } from 'react'
+import { Fragment, useRef, useState } from 'react'
 import Confetti from 'react-confetti'
 import toast from 'react-hot-toast'
 import { v4 as uuidv4 } from 'uuid'
@@ -20,10 +20,12 @@ import {
   QUOTES,
 } from '@/consts'
 import { copyToClipboard, getDayFromDateString, getRandomQuote, ifTextHasLink } from '@/utils'
-import { ListItemMarksProps, ListItemProps, ListProps } from '@typings/List'
+import { ListItemMarksProps, ListItemProps, ListProps, ListTypesProps } from '@typings/List'
 import { sortListItemsByStatus } from '@utils/sortListItemsByStatus'
 
 import {
+  Archive,
+  CaretRight,
   Copy,
   CursorText,
   DotsThreeVertical,
@@ -34,8 +36,10 @@ import {
 
 export default function List() {
   const [editingItem, setEditingItem] = useState<ListItemProps | null>(null)
+  const [selectedItem, setSelectedItem] = useState<ListItemProps | null>(null)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-  const { selectedList, updateList } = useList()
+  const { selectedList, updateList, lists, handleMoveItem } = useList()
   const listRef = useRef<HTMLDivElement>(null)
   const [parent] = useAutoAnimate()
 
@@ -142,6 +146,25 @@ export default function List() {
 
     listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }
+
+  const handleMarkItem = async (item: ListItemProps, markOption: ListItemMarksProps) => {
+    const newItem: ListItemProps = {
+      ...item,
+      markColor: markOption === item.markColor ? '' : markOption,
+    }
+
+    await updateItem(newItem)
+  }
+
+  const toggleDialog = () => {
+    const newValue = !isDialogOpen
+    setIsDialogOpen(newValue)
+
+    if (newValue === false) {
+      setEditingItem(null)
+    }
+  }
+
   // drag and drop
   const handleOnDragItemStart = (event: React.DragEvent<HTMLDivElement>, index: number) => {
     event.dataTransfer.setData('text/plain', index.toString())
@@ -170,15 +193,6 @@ export default function List() {
       ...(selectedList as ListProps),
       items: [...newNotCompletedItems, ...(sortedListItems?.completed as ListItemProps[])],
     })
-  }
-
-  const handleMarkItem = async (item: ListItemProps, markOption: ListItemMarksProps) => {
-    const newItem: ListItemProps = {
-      ...item,
-      markColor: markOption === item.markColor ? '' : markOption,
-    }
-
-    await updateItem(newItem)
   }
 
   const ITEM_OPTIONS = (item: ListItemProps) => [
@@ -230,7 +244,10 @@ export default function List() {
           {...DEFAULT_ICON_PROPS}
         />
       ),
-      action: () => {},
+      action: () => {
+        toggleDialog()
+        setSelectedItem(item)
+      },
     },
   ]
 
@@ -459,6 +476,105 @@ export default function List() {
         handleAddItem={handleAddItem}
         editingItemText={editingItem?.text}
       />
+
+      {/* dialog */}
+      <Transition
+        appear
+        show={isDialogOpen}
+        as={Fragment}
+      >
+        <Dialog
+          as="div"
+          className="relative z-10"
+          onClose={toggleDialog}
+        >
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-default bg-white text-left align-middle shadow-xl transition-all">
+                  <Dialog.Title
+                    as="h3"
+                    className="p-4 text-xl font-black dark:text-darkTextLight"
+                  >
+                    Mover item para outra lista
+                    {/* subtitle */}
+                    <p className="text-sm font-light text-lightenGray">
+                      Escolha a lista para onde deseja mover o item.
+                    </p>
+                  </Dialog.Title>
+                  <Divider />
+                  {/* body */}
+                  <div className="p-2">
+                    <div className="flex flex-col gap-2">
+                      {lists.map((list, index) => (
+                        <div className="flex flex-1 flex-col">
+                          <button
+                            key={index}
+                            className="flex items-center justify-between p-2"
+                            onClick={() =>
+                              handleMoveItem({
+                                destinationList: list,
+                                item: selectedItem,
+                                moveItemFallback: toggleDialog,
+                              })
+                            }
+                          >
+                            <h1 className="flex max-w-[21.875rem] cursor-pointer items-center truncate text-primary hover:underline dark:text-darkPrimary">
+                              {list.type === ListTypesProps.GENERAL && (
+                                <Archive
+                                  {...DEFAULT_ICON_PROPS}
+                                  className="mr-1 md:mr-2"
+                                />
+                              )}
+                              {FormattedItemText(list.name)}
+                            </h1>
+                            <CaretRight
+                              {...DEFAULT_ICON_PROPS}
+                              className="text-lightGray dark:text-darkTextLight"
+                            />
+                          </button>
+                          {(index !== lists.length - 1 || list.type === ListTypesProps.GENERAL) && (
+                            <Divider />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-4 p-2">
+                    <button
+                      className="secondary-button"
+                      onClick={toggleDialog}
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
     </Card>
   )
 }

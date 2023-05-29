@@ -30,14 +30,7 @@ import { ListProps, ListTypesProps } from '@/typings/List'
 import { getFromStorage, getRandomQuote } from '@/utils'
 
 import { Menu } from '@headlessui/react'
-import {
-  Archive,
-  CaretRight,
-  DotsSixVertical,
-  DotsThreeVertical,
-  GearSix,
-  TrashSimple,
-} from '@phosphor-icons/react'
+import { Archive, CaretRight, DotsThreeVertical, GearSix, TrashSimple } from '@phosphor-icons/react'
 
 export default function Lists() {
   const { user } = useAuth()
@@ -187,19 +180,7 @@ export default function Lists() {
               onDragLeave={(event) => handleDragItemLeave(event)}
               ref={listRef}
             >
-              <div
-                className={classNames('flex flex-row items-center p-2', {
-                  'px-4': list.type === ListTypesProps.GENERAL,
-                })}
-              >
-                {list.type == ListTypesProps.DEFAULT && (
-                  <div className="mr-2 flex items-center gap-1 md:mr-4">
-                    <DotsSixVertical
-                      className="cursor-grab text-lightenGray dark:text-darkTextGray"
-                      {...DEFAULT_ICON_PROPS}
-                    />
-                  </div>
-                )}
+              <div className="flex flex-row items-center px-4 py-2">
                 {/* list text */}
                 <div className="flex flex-1 flex-col items-start">
                   <h1

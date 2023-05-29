@@ -1,19 +1,18 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
 
 import { useAuth } from '@/hooks'
 
 import {
+  deleteList as deleteListOnDB,
   subscribeToUserLists,
   updateList as updateListOnDB,
-  deleteList as deleteListOnDB,
 } from '@/services/list'
 
 import { STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
-
-import { getFromStorage, setToStorage } from '@utils/storage'
+import { ListItemProps, ListProps, ListTypesProps } from '@/typings/List'
 import { sortListsByPosition } from '@/utils'
-
-import { ListProps, ListTypesProps } from '@/typings/List'
+import { getFromStorage, setToStorage } from '@utils/storage'
 
 interface ListProviderProps {
   children: ReactNode
@@ -25,6 +24,13 @@ interface UseListProps {
   updateList: (list: ListProps) => Promise<void>
   deleteList: (listID: ListProps['id']) => Promise<void>
   saveSelectedList: (list: ListProps) => void
+  handleMoveItem: (props: HandleMoveItemProps) => Promise<void>
+}
+
+interface HandleMoveItemProps {
+  item: ListItemProps | null
+  destinationList: ListProps
+  moveItemFallback: () => void
 }
 
 const listContext = createContext<UseListProps>({} as UseListProps)
@@ -65,6 +71,49 @@ export const ListProvider = ({ children }: ListProviderProps) => {
     await deleteListOnDB(listID)
   }
 
+  const handleMoveItem = async ({
+    item,
+    destinationList,
+    moveItemFallback,
+  }: HandleMoveItemProps) => {
+    console.warn({ item, destinationList, moveItemFallback })
+
+    if (!item) return
+
+    const updatedItems = selectedList?.items.filter(
+      (selectedListItem) => selectedListItem.id !== item.id
+    )
+
+    const updatedList = {
+      ...(selectedList as ListProps),
+      items: updatedItems as ListItemProps[],
+    }
+
+    if (!destinationList) return
+
+    const destinationListItems = destinationList.items
+
+    const updatedDestinationListItems = [
+      ...(destinationListItems as ListItemProps[]),
+      {
+        ...item,
+      },
+    ]
+
+    const updatedDestinationList = {
+      ...(destinationList as ListProps),
+      items: updatedDestinationListItems,
+    }
+
+    await updateList(updatedList)
+    await updateList(updatedDestinationList)
+
+    toast('Item movido com sucesso!', {
+      icon: '👏',
+    })
+    moveItemFallback()
+  }
+
   useEffect(() => {
     const unsubscribe = subscribeToUserLists({
       userId,
@@ -88,6 +137,7 @@ export const ListProvider = ({ children }: ListProviderProps) => {
         lists,
         deleteList,
         updateList,
+        handleMoveItem,
       }}
     >
       {children}
