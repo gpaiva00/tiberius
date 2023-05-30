@@ -1,8 +1,6 @@
 import classNames from 'classnames'
 
-import { Card, CardContentContainer, Divider, ProgressBar } from '@/shared/components'
-
-import Footer from '@/pages/list/components/ListFooter'
+import { Card, CardContentContainer, Divider } from '@/shared/components'
 
 import { DEFAULT_ICON_PROPS } from '@/consts'
 import { ListProps, ListTypesProps } from '@/typings/List'
@@ -51,7 +49,7 @@ export default function DemoCard() {
 
   return (
     <Card size="demo">
-      <header className="flex h-16 items-center gap-2 rounded-t-default px-4">
+      <header className="flex items-center gap-2 rounded-t-default p-2">
         <div className="flex flex-1 items-center justify-between">
           <div className="flex items-center justify-center">
             <div className="icon-button">
@@ -64,7 +62,6 @@ export default function DemoCard() {
             <div className="max-w-[15.625rem] truncate text-xl text-primary hover:underline dark:text-darkPrimary">
               {demoList.name}
             </div>
-            <ProgressBar items={demoList.items} />
           </div>
         </div>
       </header>
@@ -112,11 +109,6 @@ export default function DemoCard() {
           </div>
         ))}
       </CardContentContainer>
-
-      <Footer
-        handleAddItem={() => {}}
-        editingItemText={''}
-      />
     </Card>
   )
 }

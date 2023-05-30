@@ -114,6 +114,7 @@ export default function List() {
       toast(getRandomQuote(COMPLETE_MESSAGES), {
         icon: getRandomQuote(CONGRATS_EMOJIS),
         ...DEFAULT_TOAST_PROPS,
+        duration: 6000,
       })
     }
   }
@@ -499,7 +500,7 @@ export default function List() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
+            <div className="fixed inset-0 bg-black bg-opacity-25 dark:bg-opacity-80" />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
@@ -513,7 +514,7 @@ export default function List() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-default bg-white text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-default bg-white text-left align-middle shadow-xl transition-all dark:bg-darkCardBackground">
                   <Dialog.Title
                     as="h3"
                     className="p-4 text-xl font-black dark:text-darkTextLight"

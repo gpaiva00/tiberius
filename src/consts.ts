@@ -1,7 +1,7 @@
-import { v4 as uuidv4 } from 'uuid'
 import { ListProps, ListTypesProps } from '@/typings/List'
 import { IconWeight } from '@phosphor-icons/react'
 import { ToastPosition } from 'react-hot-toast'
+import { v4 as uuidv4 } from 'uuid'
 
 export const LIST_ROUTE = '/list'
 export const SIGN_IN_ROUTE = '/sign-in'
@@ -48,7 +48,6 @@ export const DEFAULT_ICON_PROPS = {
 
 export const DEFAULT_TOAST_PROPS = {
   position: 'top-center' as ToastPosition,
-  duration: 6000,
   style: {
     width: '900px',
     fontSize: '0.875rem',

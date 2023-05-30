@@ -4,7 +4,7 @@ import { useList } from '@/hooks'
 
 import { Divider, FormattedItemText } from '@/shared/components'
 
-import { DEFAULT_ICON_PROPS, LISTS_ROUTE, LIST_ROUTE } from '@/consts'
+import { DEFAULT_ICON_PROPS, LISTS_ROUTE } from '@/consts'
 import { ListProps, ListTypesProps } from '@/typings/List'
 
 import { Archive, CaretLeft, Dot, TrashSimple } from '@phosphor-icons/react'
@@ -59,13 +59,10 @@ export default function Header({ selectedList }: ListContentHeaderProps) {
           </h1>
         </div>
         <button
-          className="rounded-default p-2 transition-colors hover:bg-lightGray dark:hover:bg-darkTextGray"
+          className="icon-button"
           onClick={() => handleDeleteList(selectedList?.id as ListProps['id'])}
         >
-          <TrashSimple
-            {...DEFAULT_ICON_PROPS}
-            className="dark:text-darkTextLight"
-          />
+          <TrashSimple {...DEFAULT_ICON_PROPS} />
         </button>
       </header>
       <Divider />

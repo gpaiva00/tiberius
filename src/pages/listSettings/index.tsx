@@ -8,7 +8,6 @@ import {
   CardContentContainer,
   Divider,
   FooterContainer,
-  InputText,
   InputTextWithFormatting,
 } from '@/shared/components'
 import Header from './components/ListSettingsHeader'
@@ -20,10 +19,6 @@ export default function ListSettings() {
   const { selectedList, updateList } = useList()
 
   const [inputText, setInputText] = useState<string>(selectedList?.name as string)
-
-  const handleChangeInputText = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputText(event.target.value)
-  }
 
   const handleSave = async () => {
     if (!inputText) {
