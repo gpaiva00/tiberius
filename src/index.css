@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --quill-input-width: 750px;
+}
+
 @layer base {
   html {
     font-family: Lato, system-ui, sans-serif;
@@ -66,6 +70,10 @@
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
   }
+
+  .default-badge {
+    @apply flex h-5 items-center justify-center rounded-xl border-default px-2 text-lightenGray dark:border-dark;
+  }
 }
 
 .default-link {
@@ -84,12 +92,12 @@ aside.EmojiPickerReact.epr-main {
 
 /* quill toolbar */
 .ql-toolbar.ql-snow {
-  @apply max-w-[637px] rounded-t-md border-default p-1 dark:border-dark dark:bg-darkInputBackground;
+  @apply max-w-[var(--quill-input-width)] rounded-t-md border-default p-1 dark:border-dark dark:bg-darkInputBackground;
 }
 
 /* quill container */
 .ql-container.ql-snow {
-  @apply h-auto max-w-[637px] rounded-b-md border-default dark:border-dark dark:bg-darkInputBackground;
+  @apply h-auto max-w-[var(--quill-input-width)] rounded-b-md border-default dark:border-dark dark:bg-darkInputBackground;
 }
 
 /* quill placeholder */

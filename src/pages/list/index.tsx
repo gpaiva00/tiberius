@@ -430,7 +430,8 @@ export default function List() {
         {sortedListItems.completed.length > 0 && (
           <div className="flex items-center gap-2 bg-lightGray px-2 py-2 dark:bg-darkInputBackground md:px-4">
             <h2 className="text-sm font-bold dark:text-darkTextLight md:text-base">
-              {sortedListItems.completed.length} concluídas
+              {sortedListItems.completed.length}{' '}
+              {sortedListItems.completed.length === 1 ? 'concluído' : 'concluídas'}
             </h2>
           </div>
         )}
