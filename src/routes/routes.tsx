@@ -5,34 +5,36 @@ import {
   RouterProvider,
 } from 'react-router-dom'
 
-import { PrivateRouter } from '@/routes/PrivateRouter'
 import { DefaultProvider } from '@/routes/DefaultProvider'
+import { PrivateRouter } from '@/routes/PrivateRouter'
 
-import DefaultLayout from '../shared/components/DefaultLayout'
+import About from '@/pages/about'
+import ChangeLog from '@/pages/changeLog'
+import Contact from '@/pages/contact'
 import Error from '@/pages/error'
+import Help from '@/pages/help'
 import Home from '@/pages/home'
 import List from '@/pages/list'
-import SignIn from '@/pages/signin'
-import User from '@/pages/user'
 import Lists from '@/pages/lists'
 import ListSettings from '@/pages/listSettings'
-import ChangeLog from '@/pages/changeLog'
+import Overview from '@/pages/overview'
+import SignIn from '@/pages/signin'
 import TermsOfUse from '@/pages/termsOfUse'
-import Contact from '@/pages/contact'
-import About from '@/pages/about'
-import Help from '@/pages/help'
+import User from '@/pages/user'
+import DefaultLayout from '../shared/components/DefaultLayout'
 
 import {
   ABOUT_ROUTE,
+  CHANGE_LOG_ROUTE,
+  CONTACT_ROUTE,
   HELP_ROUTE,
   LIST_ROUTE,
   LIST_SETTINGS_ROUTE,
   LISTS_ROUTE,
+  OVERVIEW_ROUTE,
   SIGN_IN_ROUTE,
   TERMOS_OF_USE_ROUTE,
   USER_ROUTE,
-  CHANGE_LOG_ROUTE,
-  CONTACT_ROUTE,
 } from '@/consts'
 
 const router = createBrowserRouter(
@@ -54,6 +56,12 @@ const router = createBrowserRouter(
       />
       <Route element={<DefaultLayout />}>
         <Route element={<PrivateRouter />}>
+          <Route
+            index
+            path={OVERVIEW_ROUTE}
+            element={<Overview />}
+            errorElement={<Error />}
+          />
           <Route
             path={LIST_ROUTE}
             element={<List />}

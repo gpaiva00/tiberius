@@ -20,11 +20,12 @@ export default {
         lightGray: '#e6e6e6',
         lightenGray: lighten(0.4, '#333'),
         primary: '#1d9bf0',
+        lightenPrimary: lighten(0.4, '#1d9bf0'),
         header: '#F5F5F5',
         white: '#F5F5F5',
       },
       borderRadius: {
-        default: '0.375rem',
+        default: '0.75rem',
       },
       boxShadow: {
         default: '50px 50px 100px #c6c6c6, -50px -50px 100px #f5f5f5;',

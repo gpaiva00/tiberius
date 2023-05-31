@@ -11,7 +11,8 @@ import {
 
 import { STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
 import { ListItemProps, ListProps, ListTypesProps } from '@/typings/List'
-import { sortListsByPosition } from '@/utils'
+import { sortListItemsByStatus, sortListsByPosition } from '@/utils'
+import { SortListItemsByStatusProps } from '@/utils/sortListItemsByStatus'
 import { getFromStorage, setToStorage } from '@utils/storage'
 
 interface ListProviderProps {
@@ -25,6 +26,8 @@ interface UseListProps {
   deleteList: (listID: ListProps['id']) => Promise<void>
   saveSelectedList: (list: ListProps) => void
   handleMoveItem: (props: HandleMoveItemProps) => Promise<void>
+  isListCompleted: boolean
+  sortedListItems: SortListItemsByStatusProps
 }
 
 interface HandleMoveItemProps {
@@ -114,6 +117,10 @@ export const ListProvider = ({ children }: ListProviderProps) => {
     moveItemFallback()
   }
 
+  const sortedListItems = sortListItemsByStatus((selectedList?.items || []) as ListItemProps[])
+  const isListCompleted =
+    sortedListItems.notCompleted.length === 0 && sortedListItems.completed.length > 0
+
   useEffect(() => {
     const unsubscribe = subscribeToUserLists({
       userId,
@@ -138,6 +145,8 @@ export const ListProvider = ({ children }: ListProviderProps) => {
         deleteList,
         updateList,
         handleMoveItem,
+        isListCompleted,
+        sortedListItems,
       }}
     >
       {children}

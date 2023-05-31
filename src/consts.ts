@@ -3,6 +3,7 @@ import { IconWeight } from '@phosphor-icons/react'
 import { ToastPosition } from 'react-hot-toast'
 import { v4 as uuidv4 } from 'uuid'
 
+// ROUTES
 export const LIST_ROUTE = '/list'
 export const SIGN_IN_ROUTE = '/sign-in'
 export const USER_ROUTE = '/user'
@@ -13,6 +14,7 @@ export const TERMOS_OF_USE_ROUTE = '/terms-of-use'
 export const CONTACT_ROUTE = '/contact'
 export const ABOUT_ROUTE = '/about'
 export const HELP_ROUTE = '/help'
+export const OVERVIEW_ROUTE = '/overview'
 
 export const GENERAL_LIST: Omit<ListProps, 'userId' | 'createdAt'> = {
   id: uuidv4(),
@@ -33,14 +35,14 @@ export const WHATS_NEW_LIST: Omit<ListProps, 'userId'> = {
 
 export const URL_REGEX = /(https?:\/\/[^\s]+)/g
 
-// storage
+// STORAGE
 export const STORAGE_USER_KEY = '@tiberius/user'
 export const STORAGE_SELECTED_LIST_ID_KEY = '@tiberius/selectedList'
 export const HAVE_SEEN_CHANGE_LOG_DATE_KEY = '@tiberius/haveSeenChangeLogDate'
 
 export const DEFAULT_ICON_SIZE = 20
 
-// styles
+// STYLES
 export const DEFAULT_ICON_PROPS = {
   size: DEFAULT_ICON_SIZE,
   weight: 'bold' as IconWeight,
@@ -54,7 +56,7 @@ export const DEFAULT_TOAST_PROPS = {
   },
 }
 
-// random quotes
+// RANDOM MESSAGES
 export const QUOTES = [
   '"A jornada de mil passos começa com um único item concluído."',
   '"Cada tarefa concluída é um passo em direção ao sucesso."',
@@ -81,7 +83,7 @@ export const ERROR_MESSAGES = [
   'Ups-a-daisy! Parece que nosso programador trapalhão derrubou uma pilha de códigos. Vamos pegar a vassoura e voltar a funcionar!',
 ]
 
-export const COMPLETE_MESSAGES = [
+export const ITEM_COMPLETED_MESSAGES = [
   'Adivinha quem é o mestre das tarefas? Sim, você mesmo! Continue brilhando!',
   'Concluindo tarefas como um ninja! Próximo desafio: conquistar o mundo!',
   'Você é uma máquina de produtividade! Dê uma pausa para recarregar seu modo incrível.',
@@ -120,6 +122,19 @@ export const COMPLETE_MESSAGES = [
   'Seu nível de produtividade está tão alto que as nuvens estão te aplaudindo. Continue elevando sua performance!',
   'Você está quebrando recordes de produtividade como um velocista no campo das tarefas. Continue correndo rumo ao sucesso!',
   'Você é um verdadeiro astro das tarefas, brilhando mais do que um céu estrelado. Continue sua jornada estelar!',
+]
+
+export const LIST_COMPLETED_MESSAGES = [
+  'Parabéns! Você arrasou e concluiu sua lista inteira! A sensação de conquista é incrível, não é?',
+  'Uau! Você fez isso! Tarefa por tarefa, você chegou ao final da lista. Sinta-se orgulhoso(a) do seu trabalho!',
+  'Bravo! Você é uma máquina de produtividade! Completar a lista toda é uma vitória e você conseguiu!',
+  'Fantástico! Você atingiu o objetivo! Agora, celebre essa conquista e descanse um pouco. Você merece!',
+  'Incrível! Você finalizou todas as tarefas da lista. Isso é um sinal claro de que você é um(a) verdadeiro(a) campeão/campeã da produtividade!',
+  'É uma maratona de tarefas e você venceu! Parabéns por cruzar a linha de chegada e concluir tudo. Você é demais!',
+  'Woo-hoo! A lista está completa! Seu esforço e dedicação valeram a pena. Agora, aproveite a sensação de realização.',
+  'Que desempenho incrível! Você concluiu todas as tarefas da lista. Continue assim e não há limites para o que você pode conquistar!',
+  'Uau, que conquista impressionante! Você é uma verdadeira força da natureza quando se trata de produtividade. Continue brilhando!',
+  'Parabéns! Você conquistou o status de "Mestre da Lista". Nada pode detê-lo(a) quando você está no modo de produtividade total!',
 ]
 
 export const CONGRATS_EMOJIS = [

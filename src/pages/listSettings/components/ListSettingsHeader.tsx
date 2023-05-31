@@ -32,21 +32,21 @@ export default function Header({ selectedList }: ListContentHeaderProps) {
 
   return (
     <div>
-      <header className="flex items-center justify-between gap-2 rounded-t-default p-2">
-        <div className="flex items-center">
+      <header className="default-header">
+        <div className="flex w-full items-center">
           <button
             onClick={handleClickOnBackButton}
-            className="icon-button"
+            className="icon-button mr-2"
           >
             <CaretLeft {...DEFAULT_ICON_PROPS} />
           </button>
-          <h1 className="ml-2 max-w-[5.25rem] truncate text-xl font-black dark:text-darkTextLight md:ml-4 md:max-w-fit">
+          <h1 className="default-header-title max-w-[5.25rem] truncate dark:text-darkTextLight md:max-w-fit">
             Configurações
           </h1>
           <Dot
             {...DEFAULT_ICON_PROPS}
             size={25}
-            className="dark:text-darkTextGray"
+            className="text-lightenGray dark:text-darkTextGray"
           />
           <h1 className="flex max-w-xs items-center truncate text-xl font-semibold text-lightenGray dark:text-darkTextGray md:max-w-[15.625rem]">
             {selectedList?.type === ListTypesProps.GENERAL && (

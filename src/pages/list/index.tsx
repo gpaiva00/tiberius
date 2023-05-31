@@ -1,7 +1,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Dialog, Menu, Transition } from '@headlessui/react'
 import classNames from 'classnames'
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import Confetti from 'react-confetti'
 import toast from 'react-hot-toast'
 import { v4 as uuidv4 } from 'uuid'
@@ -13,19 +13,20 @@ import Header from '@/pages/list/components/ListHeader'
 import { Card, CardContentContainer, Divider, FormattedItemText } from '@/shared/components'
 
 import {
-  COMPLETE_MESSAGES,
   CONGRATS_EMOJIS,
   DEFAULT_ICON_PROPS,
   DEFAULT_TOAST_PROPS,
+  ITEM_COMPLETED_MESSAGES,
+  LIST_COMPLETED_MESSAGES,
   QUOTES,
 } from '@/consts'
 import { copyToClipboard, getDayFromDateString, getRandomQuote, ifTextHasLink } from '@/utils'
 import { ListItemMarksProps, ListItemProps, ListProps, ListTypesProps } from '@typings/List'
-import { sortListItemsByStatus } from '@utils/sortListItemsByStatus'
 
 import {
   Archive,
   CaretRight,
+  Check,
   Copy,
   CursorText,
   DotsThreeVertical,
@@ -39,13 +40,11 @@ export default function List() {
   const [selectedItem, setSelectedItem] = useState<ListItemProps | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-  const { selectedList, updateList, lists, handleMoveItem } = useList()
+  const { selectedList, updateList, lists, handleMoveItem, isListCompleted, sortedListItems } =
+    useList()
   const listRef = useRef<HTMLDivElement>(null)
+  const isListCompletedRef = useRef(isListCompleted)
   const [parent] = useAutoAnimate()
-
-  const sortedListItems = sortListItemsByStatus((selectedList?.items || []) as ListItemProps[])
-  const isListCompleted =
-    sortedListItems.notCompleted.length === 0 && sortedListItems.completed.length > 0
 
   const handleEditItem = (item: ListItemProps) => {
     if (item.completed) return
@@ -99,19 +98,22 @@ export default function List() {
   }
 
   const handleCompleteItem = async (item: ListItemProps) => {
-    const newItemCompleteValue = !item.completed
+    const isItemCompleted = !item.completed
 
     const newItem: ListItemProps = {
       ...item,
-      completed: newItemCompleteValue,
-      completedAt: newItemCompleteValue ? new Date().toISOString() : '',
-      markColor: newItemCompleteValue ? '' : item.markColor,
+      completed: isItemCompleted,
+      completedAt: isItemCompleted ? new Date().toISOString() : '',
+      markColor: isItemCompleted ? '' : item.markColor,
     }
 
     await updateItem(newItem)
 
-    if (!item.completed) {
-      toast(getRandomQuote(COMPLETE_MESSAGES), {
+    if (isItemCompleted) {
+      const toastMessage = isListCompletedRef.current
+        ? getRandomQuote(LIST_COMPLETED_MESSAGES)
+        : getRandomQuote(ITEM_COMPLETED_MESSAGES)
+      toast(toastMessage, {
         icon: getRandomQuote(CONGRATS_EMOJIS),
         ...DEFAULT_TOAST_PROPS,
         duration: 6000,
@@ -314,6 +316,10 @@ export default function List() {
     },
   ]
 
+  useEffect(() => {
+    isListCompletedRef.current = isListCompleted
+  }, [isListCompleted])
+
   return (
     <Card>
       {isListCompleted && (
@@ -346,11 +352,9 @@ export default function List() {
               <div className="flex flex-row items-start py-2 pr-2">
                 {/* checkbox */}
                 <div className="mx-2 mt-1 flex md:mx-4">
-                  <input
+                  <div
                     className="default-checkbox"
-                    type="checkbox"
-                    checked={item.completed}
-                    onChange={() => handleCompleteItem(item)}
+                    onClick={() => handleCompleteItem(item)}
                   />
                 </div>
                 {/* item text */}
@@ -388,7 +392,7 @@ export default function List() {
                   />
                   <Menu
                     as="div"
-                    className="relative inline-block"
+                    className="relative inline-block outline-none ring-0 focus:ring-0"
                   >
                     <Menu.Button className="inline-flex">
                       <button className="icon-button">
@@ -410,7 +414,7 @@ export default function List() {
                           </button>
                         </Menu.Item>
                       ))}
-                      <Menu.Items>
+                      <Menu.Items className="mt-2">
                         <Divider />
                         <div className="flex w-full items-center justify-between pt-3">
                           {MARK_OPTIONS(item).map((option, index) => (
@@ -443,12 +447,15 @@ export default function List() {
               <div className="flex flex-row items-start py-2 pr-2">
                 {/* checkbox */}
                 <div className="mx-2 mt-1 flex md:mx-4">
-                  <input
-                    className="default-checkbox"
-                    type="checkbox"
-                    checked={item.completed}
-                    onChange={() => handleCompleteItem(item)}
-                  />
+                  <div
+                    className="default-checkbox checkbox-checked"
+                    onClick={() => handleCompleteItem(item)}
+                  >
+                    <Check
+                      weight="bold"
+                      size={15}
+                    />
+                  </div>
                 </div>
                 <div className="w-full">
                   <div

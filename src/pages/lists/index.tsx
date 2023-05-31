@@ -23,10 +23,9 @@ import {
   LIST_ROUTE,
   LIST_SETTINGS_ROUTE,
   QUOTES,
-  STORAGE_SELECTED_LIST_ID_KEY,
 } from '@/consts'
 import { ListProps, ListTypesProps } from '@/typings/List'
-import { getFromStorage, getRandomQuote } from '@/utils'
+import { getRandomQuote } from '@/utils'
 
 import { Menu } from '@headlessui/react'
 import { Archive, CaretRight, DotsThreeVertical, GearSix, TrashSimple } from '@phosphor-icons/react'
@@ -41,8 +40,6 @@ export default function Lists() {
   const navigate = useNavigate()
   const listRef = useRef<HTMLDivElement>(null)
   const [parent] = useAutoAnimate()
-
-  const selectedListOnStorage = getFromStorage(STORAGE_SELECTED_LIST_ID_KEY)
 
   const handleAddList = async (listName: string) => {
     const newList: ListProps = {
@@ -180,18 +177,19 @@ export default function Lists() {
               ref={listRef}
             >
               <div
-                className={classNames('flex flex-row items-center py-2 pl-4 pr-2', {
-                  'pl-4 pr-4': list.type === ListTypesProps.GENERAL,
-                })}
+                className={classNames(
+                  'flex flex-row items-center py-2 pl-4 pr-2 transition-all hover:bg-lightGray dark:hover:bg-darkInputBackground',
+                  {
+                    'py-4 pr-4': list.type === ListTypesProps.GENERAL,
+                  }
+                )}
               >
                 {/* list text */}
-                <div className="flex flex-1 items-center gap-2">
-                  <h1
-                    className={classNames('list-title', {
-                      'font-bold': list.id === selectedListOnStorage,
-                    })}
-                    onClick={() => handleClickOnListName(list)}
-                  >
+                <div
+                  className="flex flex-1 cursor-pointer items-center gap-2"
+                  onClick={() => handleClickOnListName(list)}
+                >
+                  <h1 className="flex items-center gap-1 font-bold hover:underline dark:text-darkTextLight">
                     {list.type === ListTypesProps.GENERAL && (
                       <Archive
                         {...DEFAULT_ICON_PROPS}
@@ -210,7 +208,7 @@ export default function Lists() {
                 {list.type === ListTypesProps.GENERAL ? (
                   <CaretRight
                     {...DEFAULT_ICON_PROPS}
-                    className="text-lightenGray dark:text-darkTextLight"
+                    className="text-lightenGray dark:text-gray"
                   />
                 ) : (
                   <Menu
@@ -218,7 +216,7 @@ export default function Lists() {
                     className="relative inline-block"
                   >
                     <Menu.Button className="inline-flex">
-                      <button className="icon-button">
+                      <button className="icon-button hover:bg-zinc-300">
                         <DotsThreeVertical
                           className="text-lightenGray dark:text-darkTextGray"
                           {...DEFAULT_ICON_PROPS}

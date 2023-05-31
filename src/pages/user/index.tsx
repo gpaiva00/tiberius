@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks'
+import { useNavigate } from 'react-router-dom'
 
 import { Card, Divider } from '@/shared/components'
 
@@ -17,19 +17,14 @@ export default function User() {
 
   return (
     <Card size="sm">
-      <header className="flex items-center justify-between gap-2 rounded-t-default p-2">
-        <div className="flex items-center">
-          <button
-            className="rounded-default p-2 transition-colors hover:bg-lightGray dark:hover:bg-darkTextGray"
-            onClick={handleClickOnBackButton}
-          >
-            <CaretLeft
-              {...DEFAULT_ICON_PROPS}
-              className="dark:text-darkTextLight"
-            />
-          </button>
-          <h1 className="ml-2 text-xl font-black dark:text-darkTextLight md:ml-4">Perfil</h1>
-        </div>
+      <header className="default-header gap-2">
+        <button
+          className="icon-button"
+          onClick={handleClickOnBackButton}
+        >
+          <CaretLeft {...DEFAULT_ICON_PROPS} />
+        </button>
+        <h1 className="default-header-title">Perfil</h1>
       </header>
       <Divider />
 

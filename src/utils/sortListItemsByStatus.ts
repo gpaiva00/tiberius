@@ -1,6 +1,6 @@
 import { ListItemProps } from '@/typings/List'
 
-interface SortListItemsByStatusProps {
+export interface SortListItemsByStatusProps {
   completed: ListItemProps[]
   notCompleted: ListItemProps[]
 }
