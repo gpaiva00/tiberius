@@ -36,10 +36,10 @@ export default function InputTextWithFormatting({
   inputTextValue,
   setInputTextValue,
   handleSubmit,
+  handleBlur,
   placeholder,
   formats = ['bold', 'italic'],
   disabled = false,
-  handleBlur = () => {},
 }: InputTextWithFormattingProps) {
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false)
 
@@ -81,14 +81,12 @@ export default function InputTextWithFormatting({
           ref={quillRef}
           placeholder={placeholder}
           onChange={setInputTextValue}
-          onKeyDown={handleOnKeyPress}
           onBlur={handleBlur}
+          onKeyDown={handleOnKeyPress}
           value={inputTextValue}
           className="max-h-96w"
           modules={{
-            toolbar: {
-              container: '#toolbar',
-            },
+            toolbar: ['bold', 'italic'],
           }}
           formats={formats}
           readOnly={disabled}

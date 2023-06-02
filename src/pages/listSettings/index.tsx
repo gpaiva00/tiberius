@@ -51,7 +51,7 @@ export default function ListSettings() {
               inputTextValue={inputText}
               setInputTextValue={setInputText}
               disabled={selectedList?.type === ListTypesProps.GENERAL}
-              formats={['italic']}
+              formats={['bold', 'italic']}
               handleBlur={handleSave}
               handleSubmit={handleSave}
             />
