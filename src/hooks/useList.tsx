@@ -79,8 +79,6 @@ export const ListProvider = ({ children }: ListProviderProps) => {
     destinationList,
     moveItemFallback,
   }: HandleMoveItemProps) => {
-    console.warn({ item, destinationList, moveItemFallback })
-
     if (!item) return
 
     const updatedItems = selectedList?.items.filter(

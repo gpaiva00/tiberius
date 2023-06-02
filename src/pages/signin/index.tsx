@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks'
+import { useNavigate } from 'react-router-dom'
 
-import { Card, Divider } from '@/shared/components'
+import { MainCard, Divider } from '@/shared/components'
 
 import { ReactComponent as GoogleIcon } from '@assets/icons/google-icon.svg'
 
@@ -22,9 +22,9 @@ export default function SignIn() {
   const handleGoToTiberius = () => navigate(LIST_ROUTE)
 
   return (
-    <Card size="sm">
-      <header className="flex items-center gap-2 rounded-t-default p-2">
-        <h1 className="text-xl font-black dark:text-darkTextLight">Entrar ou criar conta</h1>
+    <MainCard size="sm">
+      <header className="default-header">
+        <h1 className="default-header-title">Entrar ou criar conta</h1>
       </header>
       <Divider />
       {user?.uid ? (
@@ -36,7 +36,7 @@ export default function SignIn() {
             className="primary-button"
             onClick={handleGoToTiberius}
           >
-            vamos lá!
+            Acessar o Tiberius
           </button>
         </div>
       ) : (
@@ -55,6 +55,6 @@ export default function SignIn() {
           </button>
         </div>
       )}
-    </Card>
+    </MainCard>
   )
 }

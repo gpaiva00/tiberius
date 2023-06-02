@@ -1,28 +1,39 @@
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+
 import Header from '@/pages/overview/components/OverviewHeader'
-import { Card, CardContentContainer, Divider } from '@/shared/components'
+import {
+  MainCard,
+  CardContentContainer,
+  CardWithTabBar,
+  Divider,
+  SimpleCard,
+} from '@/shared/components'
 
 import { useAuth } from '@/hooks'
 import { getGreetings } from '@/pages/overview/utils/getGreetings'
-import { Link } from 'react-router-dom'
 
 export default function Overview() {
+  const [showSidebar, setShowSidebar] = useState(false)
   const { user } = useAuth()
 
-  return (
-    <Card>
-      <Header />
-      <CardContentContainer className="gap-4 p-4">
-        <h4 className="text-lg dark:text-darkTextLight">{`${getGreetings()}, ${
-          user?.firstName
-        }!`}</h4>
+  const toggleSidebar = () => setShowSidebar(!showSidebar)
 
-        <Card
-          className="mt-4 gap-2 py-2 dark:bg-darkInputBackground"
-          size="auto"
-        >
-          <h4 className="ml-4 text-lg font-black dark:text-darkTextLight">Para hoje, você tem:</h4>
+  return (
+    <MainCard
+      showSidebar={showSidebar}
+      closeSidebar={toggleSidebar}
+    >
+      <Header openSidebar={toggleSidebar} />
+      <CardContentContainer className="gap-4 p-4">
+        <h4 className="ml-4 text-lg dark:text-darkTextLight">{`${getGreetings()}, ${
+          user?.firstName
+        }! Aqui está seu resumo:`}</h4>
+
+        <SimpleCard className="p-2">
+          <h4 className="ml-4 text-lg font-black dark:text-darkTextLight">Para hoje</h4>
           <div className="">
-            {[1, 2, 3, 4, 5].map((item) => (
+            {[1, 2, 3].map((item) => (
               <>
                 <div className="flex flex-row items-start px-4 py-2">
                   {/* checkbox */}
@@ -38,18 +49,18 @@ export default function Overview() {
                     </small>
                   </div>
                 </div>
-                {item !== 5 && <Divider />}
+                {item !== 3 && <Divider />}
               </>
             ))}
           </div>
           <Link
-            to={''}
-            className="text-button ml-4"
+            to=""
+            className="flex cursor-pointer rounded-b-default transition-all hover:bg-lightGray dark:hover:bg-opacity-10"
           >
-            Mostrar mais
+            <span className="text-button ml-4 py-2">Mostrar mais</span>
           </Link>
-        </Card>
+        </SimpleCard>
       </CardContentContainer>
-    </Card>
+    </MainCard>
   )
 }

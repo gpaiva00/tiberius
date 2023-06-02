@@ -15,6 +15,7 @@ export const CONTACT_ROUTE = '/contact'
 export const ABOUT_ROUTE = '/about'
 export const HELP_ROUTE = '/help'
 export const OVERVIEW_ROUTE = '/overview'
+export const SEARCH_ROUTE = '/search'
 
 export const GENERAL_LIST: Omit<ListProps, 'userId' | 'createdAt'> = {
   id: uuidv4(),

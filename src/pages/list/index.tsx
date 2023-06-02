@@ -8,9 +8,14 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { useList } from '@/hooks'
 
-import Footer from '@/pages/list/components/ListFooter'
 import Header from '@/pages/list/components/ListHeader'
-import { Card, CardContentContainer, Divider, FormattedItemText } from '@/shared/components'
+import {
+  MainCard,
+  CardContentContainer,
+  CardWithTabBar,
+  Divider,
+  FormattedItemText,
+} from '@/shared/components'
 
 import {
   CONGRATS_EMOJIS,
@@ -23,13 +28,14 @@ import {
 import { copyToClipboard, getDayFromDateString, getRandomQuote, ifTextHasLink } from '@/utils'
 import { ListItemMarksProps, ListItemProps, ListProps, ListTypesProps } from '@typings/List'
 
+import Modal from '@/shared/components/Modal'
 import {
   Archive,
   CaretRight,
   Check,
   Copy,
   CursorText,
-  DotsThreeVertical,
+  DotsThree,
   ListBullets,
   PencilSimple,
   TrashSimple,
@@ -39,6 +45,7 @@ export default function List() {
   const [editingItem, setEditingItem] = useState<ListItemProps | null>(null)
   const [selectedItem, setSelectedItem] = useState<ListItemProps | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [showSidebar, setShowSidebar] = useState(false)
 
   const { selectedList, updateList, lists, handleMoveItem, isListCompleted, sortedListItems } =
     useList()
@@ -316,12 +323,14 @@ export default function List() {
     },
   ]
 
+  const toggleSidebar = () => setShowSidebar(!showSidebar)
+
   useEffect(() => {
     isListCompletedRef.current = isListCompleted
   }, [isListCompleted])
 
   return (
-    <Card>
+    <>
       {isListCompleted && (
         <Confetti
           width={window.innerWidth}
@@ -329,228 +338,214 @@ export default function List() {
           recycle={false}
         />
       )}
-      <Header selectedList={selectedList} />
-      <CardContentContainer>
-        {/* quotation */}
-        {!selectedList?.items.length && (
-          <div className="flex flex-1 items-center justify-center px-4 md:px-0">
-            <p className="text-center italic text-lightenGray">{getRandomQuote(QUOTES)}</p>
-          </div>
-        )}
-        {/* uncompleted items */}
-        <div ref={parent}>
-          {sortedListItems.notCompleted.map((item, index) => (
-            <div
-              key={item.id}
-              draggable
-              onDragStart={(event) => handleOnDragItemStart(event, index)}
-              onDragOver={(event) => handleOnDragItemOver(event)}
-              onDrop={(event) => handleOnDropItem(event, index)}
-              onDragLeave={(event) => handleDragItemLeave(event)}
-              ref={listRef}
-            >
-              <div className="flex flex-row items-start py-2 pr-2">
-                {/* checkbox */}
-                <div className="mx-2 mt-1 flex md:mx-4">
-                  <div
-                    className="default-checkbox"
-                    onClick={() => handleCompleteItem(item)}
-                  />
-                </div>
-                {/* item text */}
-                <div className="w-full">
-                  <div
-                    className={classNames(
-                      'm-0 max-w-[92%] break-words p-0 dark:text-darkTextLight',
-                      {
-                        'break-all': ifTextHasLink(item.text),
-                      }
-                    )}
-                  >
-                    {FormattedItemText(item.text)}
+      <MainCard
+        showSidebar={showSidebar}
+        closeSidebar={toggleSidebar}
+      >
+        <Header
+          openSidebar={toggleSidebar}
+          selectedList={selectedList}
+        />
+        <CardContentContainer>
+          {/* quotation */}
+          {!selectedList?.items.length && (
+            <div className="flex flex-1 items-center justify-center px-4 md:px-0">
+              <p className="text-center italic text-lightenGray">{getRandomQuote(QUOTES)}</p>
+            </div>
+          )}
+          {/* uncompleted items */}
+          <div ref={parent}>
+            {sortedListItems.notCompleted.map((item, index) => (
+              <div
+                key={item.id}
+                draggable
+                onDragStart={(event) => handleOnDragItemStart(event, index)}
+                onDragOver={(event) => handleOnDragItemOver(event)}
+                onDrop={(event) => handleOnDropItem(event, index)}
+                onDragLeave={(event) => handleDragItemLeave(event)}
+                ref={listRef}
+              >
+                <div className="flex flex-row items-start py-2 pr-2">
+                  {/* checkbox */}
+                  <div className="mx-2 mt-1 flex md:mx-4">
+                    <div
+                      className="default-checkbox"
+                      onClick={() => handleCompleteItem(item)}
+                    />
                   </div>
-                  {item.updatedAt && (
-                    <small className="m-0 p-0 text-[0.5rem] text-lightenGray dark:text-darkTextGray md:text-[0.625rem]">
-                      atualizado {getDayFromDateString(item.updatedAt as string)} às{' '}
-                      {new Date(item.updatedAt as string).toLocaleTimeString(navigator.language, {
+                  {/* item text */}
+                  <div className="w-full">
+                    <div
+                      className={classNames(
+                        'm-0 max-w-[92%] break-words p-0 dark:text-darkTextLight',
+                        {
+                          'break-all': ifTextHasLink(item.text),
+                        }
+                      )}
+                    >
+                      {FormattedItemText(item.text)}
+                    </div>
+                    {item.updatedAt && (
+                      <small className="m-0 p-0 text-[0.5rem] text-lightenGray dark:text-darkTextGray md:text-[0.625rem]">
+                        atualizado {getDayFromDateString(item.updatedAt as string)} às{' '}
+                        {new Date(item.updatedAt as string).toLocaleTimeString(navigator.language, {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </small>
+                    )}
+                  </div>
+                  {/* item option */}
+                  <div className="flex items-center gap-2">
+                    <div
+                      className={classNames('h-4 w-4 rounded-full transition-all', {
+                        'bg-green-400': item.markColor === 'green',
+                        'bg-yellow-400': item.markColor === 'yellow',
+                        'bg-rose-400': item.markColor === 'red',
+                        'bg-blue-400': item.markColor === 'blue',
+                        'bg-transparent': !item.markColor,
+                      })}
+                    />
+                    <Menu
+                      as="div"
+                      className="relative inline-block outline-none ring-0 focus:ring-0"
+                    >
+                      <Menu.Button className="inline-flex">
+                        <button className="icon-button">
+                          <DotsThree
+                            className="text-lightenGray dark:text-darkTextGray"
+                            {...DEFAULT_ICON_PROPS}
+                          />
+                        </button>
+                      </Menu.Button>
+                      <Menu.Items className="menu-items">
+                        {ITEM_OPTIONS(item).map((option, index) => (
+                          <Menu.Item key={index}>
+                            <button
+                              className="popover-button"
+                              onClick={option.action}
+                            >
+                              {option.icon}
+                              {option.text}
+                            </button>
+                          </Menu.Item>
+                        ))}
+                        <Menu.Items className="mt-2">
+                          <Divider />
+                          <div className="flex w-full items-center justify-between pt-3">
+                            {MARK_OPTIONS(item).map((option, index) => (
+                              <Menu.Item key={index}>
+                                <button onClick={option.action}>{option.mark}</button>
+                              </Menu.Item>
+                            ))}
+                          </div>
+                        </Menu.Items>
+                      </Menu.Items>
+                    </Menu>
+                  </div>
+                </div>
+                {index !== sortedListItems.notCompleted.length - 1 && <Divider />}
+              </div>
+            ))}
+          </div>
+          {sortedListItems.completed.length > 0 && (
+            <div className="sticky bottom-0 flex items-center bg-zinc-300 px-2 py-2 dark:bg-darkBackgroundIconButton md:px-4">
+              <h2 className="text-sm font-bold dark:text-darkTextLight md:text-base">
+                {sortedListItems.completed.length}{' '}
+                {sortedListItems.completed.length === 1 ? 'concluído' : 'concluídas'}
+              </h2>
+            </div>
+          )}
+          {/* completed items */}
+          <div ref={parent}>
+            {sortedListItems.completed.map((item, index) => (
+              <div key={item.id}>
+                <div className="flex flex-row items-start py-2 pr-2">
+                  {/* checkbox */}
+                  <div className="mx-2 mt-1 flex md:mx-4">
+                    <div
+                      className="default-checkbox checkbox-checked"
+                      onClick={() => handleCompleteItem(item)}
+                    >
+                      <Check
+                        weight="bold"
+                        size={15}
+                      />
+                    </div>
+                  </div>
+                  <div className="w-full">
+                    <div
+                      className={classNames(
+                        'm-0 max-w-[92%] select-text break-words p-0 text-lightenGray opacity-90 dark:text-darkTextGray dark:opacity-40',
+                        {
+                          'break-all': ifTextHasLink(item.text),
+                        }
+                      )}
+                    >
+                      {FormattedItemText(item.text)}
+                    </div>
+                    <small className="text-[0.5rem] text-lightenGray dark:text-darkTextGray md:text-[0.625rem]">
+                      feito {getDayFromDateString(item.completedAt as string)} às{' '}
+                      {new Date(item.completedAt as string).toLocaleTimeString(navigator.language, {
                         hour: '2-digit',
                         minute: '2-digit',
                       })}
                     </small>
-                  )}
+                  </div>
                 </div>
-                {/* item option */}
-                <div className="flex items-center gap-2">
-                  <div
-                    className={classNames('h-4 w-4 rounded-full transition-all', {
-                      'bg-green-400': item.markColor === 'green',
-                      'bg-yellow-400': item.markColor === 'yellow',
-                      'bg-rose-400': item.markColor === 'red',
-                      'bg-blue-400': item.markColor === 'blue',
-                      'bg-transparent': !item.markColor,
-                    })}
-                  />
-                  <Menu
-                    as="div"
-                    className="relative inline-block outline-none ring-0 focus:ring-0"
-                  >
-                    <Menu.Button className="inline-flex">
-                      <button className="icon-button">
-                        <DotsThreeVertical
-                          className="text-lightenGray dark:text-darkTextGray"
-                          {...DEFAULT_ICON_PROPS}
-                        />
-                      </button>
-                    </Menu.Button>
-                    <Menu.Items className="menu-items">
-                      {ITEM_OPTIONS(item).map((option, index) => (
-                        <Menu.Item key={index}>
-                          <button
-                            className="popover-button"
-                            onClick={option.action}
-                          >
-                            {option.icon}
-                            {option.text}
-                          </button>
-                        </Menu.Item>
-                      ))}
-                      <Menu.Items className="mt-2">
-                        <Divider />
-                        <div className="flex w-full items-center justify-between pt-3">
-                          {MARK_OPTIONS(item).map((option, index) => (
-                            <Menu.Item key={index}>
-                              <button onClick={option.action}>{option.mark}</button>
-                            </Menu.Item>
-                          ))}
-                        </div>
-                      </Menu.Items>
-                    </Menu.Items>
-                  </Menu>
-                </div>
+                {index !== sortedListItems.completed.length - 1 && <Divider />}
               </div>
-              {index !== sortedListItems.notCompleted.length - 1 && <Divider />}
-            </div>
-          ))}
-        </div>
-        {sortedListItems.completed.length > 0 && (
-          <div className="flex items-center gap-2 bg-lightGray px-2 py-2 dark:bg-darkInputBackground md:px-4">
-            <h2 className="text-sm font-bold dark:text-darkTextLight md:text-base">
-              {sortedListItems.completed.length}{' '}
-              {sortedListItems.completed.length === 1 ? 'concluído' : 'concluídas'}
-            </h2>
+            ))}
           </div>
-        )}
-        {/* completed items */}
-        <div ref={parent}>
-          {sortedListItems.completed.map((item, index) => (
-            <div key={item.id}>
-              <div className="flex flex-row items-start py-2 pr-2">
-                {/* checkbox */}
-                <div className="mx-2 mt-1 flex md:mx-4">
-                  <div
-                    className="default-checkbox checkbox-checked"
-                    onClick={() => handleCompleteItem(item)}
-                  >
-                    <Check
-                      weight="bold"
-                      size={15}
-                    />
-                  </div>
-                </div>
-                <div className="w-full">
-                  <div
-                    className={classNames(
-                      'm-0 max-w-[92%] select-text break-words p-0 text-lightenGray opacity-70 dark:text-darkTextGray dark:opacity-40',
-                      {
-                        'break-all': ifTextHasLink(item.text),
-                      }
-                    )}
-                  >
-                    {FormattedItemText(item.text)}
-                  </div>
-                  <small className="text-[0.5rem] text-lightenGray opacity-90 dark:text-darkTextGray md:text-[0.625rem]">
-                    feito {getDayFromDateString(item.completedAt as string)} às{' '}
-                    {new Date(item.completedAt as string).toLocaleTimeString(navigator.language, {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </small>
-                </div>
-              </div>
-              {index !== sortedListItems.completed.length - 1 && <Divider />}
-            </div>
-          ))}
-        </div>
-      </CardContentContainer>
-      <Footer
-        handleAddItem={handleAddItem}
-        editingItemText={editingItem?.text}
-      />
-
+        </CardContentContainer>
+      </MainCard>
       {/* dialog */}
-      <Transition
-        appear
-        show={isDialogOpen}
-        as={Fragment}
+      <Modal
+        isOpen={isDialogOpen}
+        toggleDialog={toggleDialog}
       >
-        <Dialog
-          as="div"
-          className="relative z-10"
-          onClose={toggleDialog}
-        >
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-25 dark:bg-opacity-80" />
-          </Transition.Child>
-
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-default bg-white text-left align-middle shadow-xl transition-all dark:bg-darkCardBackground">
-                  <Dialog.Title
-                    as="h3"
-                    className="p-4 text-xl font-black dark:text-darkTextLight"
-                  >
-                    Mover item para outra lista
-                    {/* subtitle */}
-                    <p className="text-sm font-light text-lightenGray">
-                      Escolha a lista para onde deseja mover o item.
-                    </p>
-                  </Dialog.Title>
-                  <Divider />
-                  {/* body */}
-                  <div className="flex flex-col">
-                    {lists.map((list, index) => (
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-default bg-white text-left align-middle shadow-xl transition-all dark:bg-darkCardBackground">
+                <Dialog.Title
+                  as="h3"
+                  className="default-header flex-col items-start"
+                >
+                  <h1 className="default-header-title">Mover item para outra lista</h1>
+                  {/* subtitle */}
+                  <p className="text-sm font-light text-lightenGray">
+                    Escolha a lista para onde deseja mover o item.
+                  </p>
+                </Dialog.Title>
+                <Divider />
+                {/* body */}
+                <div className="flex flex-col">
+                  {lists.map((list, index) => (
+                    <>
                       <div
                         key={index}
-                        className="flex flex-1 flex-col"
+                        className="flex flex-row items-center pl-4 pr-2 transition-all hover:bg-lightGray dark:hover:bg-darkInputBackground"
                       >
-                        <div className="flex items-center justify-between px-4 py-4">
-                          <h1
-                            className="list-title"
-                            onClick={() =>
-                              handleMoveItem({
-                                destinationList: list,
-                                item: selectedItem,
-                                moveItemFallback: toggleDialog,
-                              })
-                            }
-                          >
+                        <div
+                          className="flex w-full cursor-pointer items-center gap-2 py-4"
+                          onClick={() =>
+                            handleMoveItem({
+                              destinationList: list,
+                              item: selectedItem,
+                              moveItemFallback: toggleDialog,
+                            })
+                          }
+                        >
+                          <h1 className="flex items-center gap-1 font-bold hover:underline dark:text-darkTextLight">
                             {list.type === ListTypesProps.GENERAL && (
                               <Archive
                                 {...DEFAULT_ICON_PROPS}
@@ -559,32 +554,32 @@ export default function List() {
                             )}
                             {FormattedItemText(list.name)}
                           </h1>
-                          <CaretRight
-                            {...DEFAULT_ICON_PROPS}
-                            className="text-lightenGray dark:text-darkTextLight"
-                          />
                         </div>
-                        {(index !== lists.length - 1 || list.type === ListTypesProps.GENERAL) && (
-                          <Divider />
-                        )}
+                        <CaretRight
+                          {...DEFAULT_ICON_PROPS}
+                          className="text-lightenGray dark:text-lightenGray"
+                        />
                       </div>
-                    ))}
-                  </div>
+                      {(index !== lists.length - 1 || list.type === ListTypesProps.GENERAL) && (
+                        <Divider />
+                      )}
+                    </>
+                  ))}
+                </div>
 
-                  <div className="mt-4 p-2">
-                    <button
-                      className="secondary-button"
-                      onClick={toggleDialog}
-                    >
-                      Cancelar
-                    </button>
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
+                <div className="mt-4 p-2">
+                  <button
+                    className="secondary-button"
+                    onClick={toggleDialog}
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
           </div>
-        </Dialog>
-      </Transition>
-    </Card>
+        </div>
+      </Modal>
+    </>
   )
 }

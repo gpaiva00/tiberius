@@ -1,29 +1,36 @@
-import { Link } from 'react-router-dom'
-
 import { Divider } from '@/shared/components'
 
-import { DEFAULT_ICON_PROPS, LIST_ROUTE, USER_ROUTE } from '@/consts'
+import { DEFAULT_ICON_PROPS } from '@/consts'
 
-import { CaretLeft, User } from '@phosphor-icons/react'
+import { Plus, SidebarSimple } from '@phosphor-icons/react'
 
-interface ListsContentHeaderProps {}
+interface HeaderProps {
+  openSidebar: () => void
+  toggleCreateListModal: () => void
+}
 
-export default function Header({}: ListsContentHeaderProps) {
+export default function Header({ openSidebar, toggleCreateListModal }: HeaderProps) {
   return (
     <div>
       <header className="default-header gap-2">
-        <Link
-          to={LIST_ROUTE}
+        <button
           className="icon-button"
+          onClick={openSidebar}
         >
-          <CaretLeft {...DEFAULT_ICON_PROPS} />
-        </Link>
+          <SidebarSimple
+            {...DEFAULT_ICON_PROPS}
+            size={25}
+          />
+        </button>
         <h1 className="default-header-title w-full">Listas</h1>
-        <Link to={USER_ROUTE}>
-          <button className="icon-button">
-            <User {...DEFAULT_ICON_PROPS} />
+        <div className="flex items-end gap-2">
+          <button
+            onClick={toggleCreateListModal}
+            className="icon-button"
+          >
+            <Plus {...DEFAULT_ICON_PROPS} />
           </button>
-        </Link>
+        </div>
       </header>
       <Divider />
     </div>

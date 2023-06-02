@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { useChangeLog } from '@/hooks'
 
-import { Card, CardContentContainer, Divider, FooterContainer } from '@/shared/components'
+import { MainCard, CardContentContainer, Divider, FooterContainer } from '@/shared/components'
 import FormattedItemText from '@/shared/components/ItemTextFormatted'
 
 import { LISTS_ROUTE } from '@/consts'
@@ -24,7 +24,7 @@ export default function ChangeLog() {
   }, [])
 
   return (
-    <Card>
+    <MainCard>
       {/* header */}
       <header className="flex items-center justify-between gap-2 rounded-t-default p-2">
         <h1 className="text-xl font-black dark:text-darkTextLight">
@@ -79,6 +79,6 @@ export default function ChangeLog() {
           </Link>
         </div>
       </FooterContainer>
-    </Card>
+    </MainCard>
   )
 }

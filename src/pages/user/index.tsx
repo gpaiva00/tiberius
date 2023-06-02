@@ -1,13 +1,15 @@
 import { useAuth } from '@/hooks'
 import { useNavigate } from 'react-router-dom'
 
-import { Card, Divider } from '@/shared/components'
+import { useState } from 'react'
 
+import { MainCard, CardWithTabBar, Divider } from '@/shared/components'
 import { DEFAULT_ICON_PROPS } from '@/consts'
 
-import { CaretLeft } from '@phosphor-icons/react'
+import { CaretLeft, Sidebar, SidebarSimple } from '@phosphor-icons/react'
 
 export default function User() {
+  const [showSidebar, setShowSidebar] = useState(false)
   const navigate = useNavigate()
   const { user, signOut } = useAuth()
 
@@ -15,14 +17,22 @@ export default function User() {
     navigate(-1)
   }
 
+  const toggleSidebar = () => setShowSidebar(!showSidebar)
+
   return (
-    <Card size="sm">
+    <MainCard
+      showSidebar={showSidebar}
+      closeSidebar={toggleSidebar}
+    >
       <header className="default-header gap-2">
         <button
           className="icon-button"
-          onClick={handleClickOnBackButton}
+          onClick={toggleSidebar}
         >
-          <CaretLeft {...DEFAULT_ICON_PROPS} />
+          <SidebarSimple
+            {...DEFAULT_ICON_PROPS}
+            size={25}
+          />
         </button>
         <h1 className="default-header-title">Perfil</h1>
       </header>
@@ -38,13 +48,13 @@ export default function User() {
         <div className="flex w-full flex-col items-center gap-4">
           <h1 className="ml-4 text-xl font-bold dark:text-darkTextLight">{user?.displayName}</h1>
           <button
-            className="primary-button"
+            className="secondary-button max-w-md"
             onClick={signOut}
           >
-            sair da conta
+            Sair da conta
           </button>
         </div>
       </div>
-    </Card>
+    </MainCard>
   )
 }

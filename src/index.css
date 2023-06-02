@@ -12,8 +12,9 @@
     user-select: none;
     font-size: 1.125rem /* 18px */;
     font-weight: 300;
-    line-height: 1.5rem /* 28px */;
+    line-height: 1.75rem /* 28px */;
     color: #000;
+    trasnsition: all 0.5s ease-in-out;
   }
 
   body {
@@ -38,27 +39,39 @@
 
 @layer components {
   .primary-button {
-    @apply flex w-full items-center justify-center gap-4 rounded-full border-default bg-primary px-4 py-2 font-bold text-white transition-colors hover:bg-darkButtonHover hover:text-white dark:border-dark dark:bg-darkPrimary dark:text-darkTextLight dark:hover:bg-darkButtonHover dark:hover:text-darkTextLight;
+    @apply flex w-full items-center justify-center rounded-full border-default bg-primary px-4 py-2 font-bold text-white transition-colors hover:bg-darkButtonHover hover:text-white dark:border-dark dark:bg-darkPrimary dark:text-darkTextLight dark:hover:bg-darkButtonHover dark:hover:text-darkTextLight;
   }
 
   .secondary-button {
-    @apply w-full items-center rounded-sm border border-lightGray px-3 py-2 text-primary transition-all hover:bg-lightGray disabled:text-lightenGray dark:border-dark dark:text-darkPrimary dark:hover:bg-darkBackgroundIconButton;
+    @apply w-full items-center rounded-full border border-lightGray px-3 py-2 font-bold text-primary transition-all hover:bg-lightGray disabled:text-lightenGray dark:border-dark dark:text-darkPrimary dark:hover:bg-darkBackgroundIconButton;
   }
 
   .icon-button {
     @apply flex items-center justify-center rounded-full p-2 transition-colors hover:bg-lightGray disabled:text-lightGray disabled:hover:bg-transparent dark:text-darkTextLight dark:hover:bg-darkBackgroundIconButton disabled:dark:text-gray;
   }
 
+  .tab-bar-button {
+    @apply flex items-center justify-center rounded-full p-2 transition-colors hover:bg-lightGray hover:text-primary disabled:text-lightGray disabled:hover:bg-transparent dark:text-darkTextLight dark:hover:bg-darkBackgroundIconButton dark:hover:text-darkPrimary disabled:dark:text-gray;
+  }
+
+  .tab-bar-button-active {
+    @apply flex items-center justify-center text-primary transition-colors dark:text-darkPrimary;
+  }
+
   .text-button {
-    @apply text-primary transition-all hover:underline dark:text-darkPrimary;
+    @apply text-primary hover:underline dark:text-darkPrimary;
   }
 
   .popover-button {
     @apply flex w-full items-center gap-2 rounded-full p-2 transition-colors hover:bg-lightGray disabled:text-lightGray disabled:hover:bg-transparent dark:text-darkTextLight dark:hover:bg-darkBackgroundIconButton disabled:dark:text-gray;
   }
 
+  .sidebar-button {
+    @apply flex w-full items-center gap-2 rounded-full p-2 transition-colors hover:bg-lightGray disabled:text-lightGray disabled:hover:bg-transparent dark:text-darkTextLight dark:hover:bg-darkBackgroundIconButton disabled:dark:text-gray;
+  }
+
   .menu-items {
-    @apply absolute right-0 z-50 mt-2 origin-top-right rounded-default border-default bg-white p-2 shadow-lg dark:border-dark dark:bg-darkCardBackground;
+    @apply absolute right-0 z-50 mt-2 origin-top-right rounded-default border-default bg-white p-2 shadow-lg dark:border-dark dark:bg-darkCardBackground dark:shadow-sm dark:shadow-gray;
   }
 
   .drag-over {
@@ -86,11 +99,11 @@
   }
 
   .default-header {
-    @apply flex w-full items-center rounded-t-default px-4 py-2;
+    @apply flex w-full items-center px-4 py-1;
   }
 
   .default-header-title {
-    @apply text-lg font-black dark:text-darkTextLight md:text-xl;
+    @apply text-lg font-bold capitalize dark:text-darkTextLight;
   }
 }
 

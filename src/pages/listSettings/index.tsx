@@ -3,13 +3,7 @@ import toast from 'react-hot-toast'
 
 import { useList } from '@/hooks'
 
-import {
-  Card,
-  CardContentContainer,
-  Divider,
-  FooterContainer,
-  InputTextWithFormatting,
-} from '@/shared/components'
+import { CardContentContainer, InputTextWithFormatting, MainCard } from '@/shared/components'
 import Header from './components/ListSettingsHeader'
 
 import { DEFAULT_TOAST_PROPS } from '@/consts'
@@ -29,6 +23,8 @@ export default function ListSettings() {
       return
     }
 
+    if (inputText === selectedList?.name) return
+
     const updatedList: ListProps = {
       ...(selectedList as ListProps),
       name: inputText,
@@ -43,9 +39,9 @@ export default function ListSettings() {
   }
 
   return (
-    <Card>
+    <MainCard>
       <Header selectedList={selectedList} />
-      <CardContentContainer>
+      <CardContentContainer className="rounded-b-default">
         <div className="flex flex-1 flex-col">
           {/* input container */}
           <div className="flex flex-col gap-2 p-2 md:gap-4 md:p-4">
@@ -56,6 +52,7 @@ export default function ListSettings() {
               setInputTextValue={setInputText}
               disabled={selectedList?.type === ListTypesProps.GENERAL}
               formats={['italic']}
+              handleBlur={handleSave}
               handleSubmit={handleSave}
             />
           </div>
@@ -81,17 +78,6 @@ export default function ListSettings() {
           </div> */}
         </div>
       </CardContentContainer>
-      <Divider />
-      <FooterContainer>
-        <div className="flex flex-1 items-center justify-center">
-          <button
-            className="primary-button"
-            onClick={handleSave}
-          >
-            Salvar alterações
-          </button>
-        </div>
-      </FooterContainer>
-    </Card>
+    </MainCard>
   )
 }

@@ -28,7 +28,7 @@ export default {
         default: '0.75rem',
       },
       boxShadow: {
-        default: '50px 50px 100px #c6c6c6, -50px -50px 100px #f5f5f5;',
+        default: '50px 50px 100px #c6c6c6, -50px -50px 100px #e9e9e9;',
       },
       borderWidth: {
         default: '0.0625rem',

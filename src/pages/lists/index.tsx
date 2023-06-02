@@ -1,17 +1,19 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { Dialog, Menu, Transition } from '@headlessui/react'
 import classNames from 'classnames'
-import { useRef } from 'react'
+import { Fragment, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
-import Footer from '@/pages/lists/components/ListsFooter'
 import Header from '@/pages/lists/components/ListsHeader'
 import {
-  Card,
   CardContentContainer,
   CompletedItemsCount,
   Divider,
   FormattedItemText,
+  InputTextWithFormatting,
+  MainCard,
+  Modal,
 } from '@/shared/components'
 
 import { useAuth, useChangeLog, useList } from '@/hooks'
@@ -27,10 +29,13 @@ import {
 import { ListProps, ListTypesProps } from '@/typings/List'
 import { getRandomQuote } from '@/utils'
 
-import { Menu } from '@headlessui/react'
-import { Archive, CaretRight, DotsThreeVertical, GearSix, TrashSimple } from '@phosphor-icons/react'
+import { Archive, CaretRight, DotsThree, GearSix, TrashSimple } from '@phosphor-icons/react'
 
 export default function Lists() {
+  const [showSidebar, setShowSidebar] = useState(false)
+  const [showAddListModal, setShowAddListModal] = useState(false)
+  const [listName, setListName] = useState('')
+
   const { user } = useAuth()
   const userId = user?.uid as string
 
@@ -41,7 +46,7 @@ export default function Lists() {
   const listRef = useRef<HTMLDivElement>(null)
   const [parent] = useAutoAnimate()
 
-  const handleAddList = async (listName: string) => {
+  const handleAddList = async () => {
     const newList: ListProps = {
       id: uuidv4(),
       name: listName,
@@ -136,9 +141,18 @@ export default function Lists() {
     },
   ]
 
+  const toggleSidebar = () => setShowSidebar(!showSidebar)
+  const toggleCreateListModal = () => setShowAddListModal(!showAddListModal)
+
   return (
-    <Card>
-      <Header />
+    <MainCard
+      showSidebar={showSidebar}
+      closeSidebar={toggleSidebar}
+    >
+      <Header
+        openSidebar={toggleSidebar}
+        toggleCreateListModal={toggleCreateListModal}
+      />
       <CardContentContainer>
         {!haveSeenChangeLog && (
           <div>
@@ -178,22 +192,22 @@ export default function Lists() {
             >
               <div
                 className={classNames(
-                  'flex flex-row items-center py-2 pl-4 pr-2 transition-all hover:bg-lightGray dark:hover:bg-darkInputBackground',
+                  'flex items-center pl-4 pr-2 transition-all hover:bg-lightGray dark:hover:bg-darkInputBackground',
                   {
-                    'py-4 pr-4': list.type === ListTypesProps.GENERAL,
+                    'pr-4': list.type === ListTypesProps.GENERAL,
                   }
                 )}
               >
                 {/* list text */}
                 <div
-                  className="flex flex-1 cursor-pointer items-center gap-2"
+                  className="flex w-full cursor-pointer items-center gap-2 py-2"
                   onClick={() => handleClickOnListName(list)}
                 >
-                  <h1 className="flex items-center gap-1 font-bold hover:underline dark:text-darkTextLight">
+                  <h1 className="flex items-center gap-1 hover:underline dark:text-darkTextLight">
                     {list.type === ListTypesProps.GENERAL && (
                       <Archive
                         {...DEFAULT_ICON_PROPS}
-                        className="mr-1 md:mr-2"
+                        className="mr-1"
                       />
                     )}
                     {FormattedItemText(list.name)}
@@ -208,7 +222,7 @@ export default function Lists() {
                 {list.type === ListTypesProps.GENERAL ? (
                   <CaretRight
                     {...DEFAULT_ICON_PROPS}
-                    className="text-lightenGray dark:text-gray"
+                    className="text-lightenGray dark:text-lightenGray"
                   />
                 ) : (
                   <Menu
@@ -216,8 +230,8 @@ export default function Lists() {
                     className="relative inline-block"
                   >
                     <Menu.Button className="inline-flex">
-                      <button className="icon-button hover:bg-zinc-300">
-                        <DotsThreeVertical
+                      <button className="icon-button hover:bg-zinc-300 dark:hover:bg-zinc-700">
+                        <DotsThree
                           className="text-lightenGray dark:text-darkTextGray"
                           {...DEFAULT_ICON_PROPS}
                         />
@@ -244,7 +258,46 @@ export default function Lists() {
           ))}
         </div>
       </CardContentContainer>
-      <Footer handleAddList={handleAddList} />
-    </Card>
+
+      <Modal
+        isOpen={showAddListModal}
+        toggleDialog={toggleCreateListModal}
+      >
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-default bg-white text-left align-middle shadow-xl transition-all dark:bg-darkCardBackground">
+                <Dialog.Title
+                  as="h3"
+                  className="default-header flex-col items-start"
+                >
+                  <h1 className="default-header-title">Criar lista</h1>
+                </Dialog.Title>
+                <Divider />
+                {/* body */}
+                <div className="flex flex-col gap-2 p-2 md:gap-4 md:p-4">
+                  <label className="default-label">Nome da lista</label>
+                  <InputTextWithFormatting
+                    handleSubmit={handleAddList}
+                    inputTextValue={listName}
+                    setInputTextValue={setListName}
+                    placeholder="Ex: 📖 Estudos"
+                    formats={['italic']}
+                  />
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Modal>
+    </MainCard>
   )
 }

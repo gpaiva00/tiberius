@@ -9,21 +9,21 @@ export default function Footer() {
           to={TERMOS_OF_USE_ROUTE}
           className="hover:underline"
         >
-          termos de uso
+          Termos de uso
         </Link>
         <span className="mx-1 md:mx-2">•</span>
         <Link
           to={ABOUT_ROUTE}
           className="hover:underline"
         >
-          sobre
+          Sobre
         </Link>
         <span className="mx-1 md:mx-2">•</span>
         <Link
           to={CONTACT_ROUTE}
           className="hover:underline"
         >
-          contato
+          Contato
         </Link>
         <span className="mx-1 md:mx-2">•</span>
         <Link
@@ -31,14 +31,14 @@ export default function Footer() {
           target="_blank"
           className="hover:underline"
         >
-          github
+          Github
         </Link>
         <span className="mx-1 md:mx-2">•</span>
         <Link
           to={HELP_ROUTE}
           className="hover:underline"
         >
-          ajuda
+          Ajuda
         </Link>
         <span className="mx-1 hidden md:mx-2 md:inline">•</span>
         <span className="mt-1 block md:mt-0 md:inline">

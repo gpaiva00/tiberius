@@ -16,7 +16,7 @@ export default function FormattedItemText(itemText: string | undefined) {
 
   // Replace <strong> with <b>
   htmlWithLinks = htmlWithLinks
-    .replace(/<strong>/g, '<b style="font-weight: 700;">')
+    .replace(/<strong>/g, '<b style="font-weight: 600;">')
     .replace(/<\/strong>/g, '</b>')
 
   // sanitize the html string

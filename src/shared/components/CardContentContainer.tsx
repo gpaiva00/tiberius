@@ -9,7 +9,7 @@ export function CardContentContainer({ children, className, ...props }: CardCont
   return (
     <div
       className={classNames(
-        'flex h-listBody flex-1 flex-col overflow-y-scroll rounded-b-default bg-white pb-4 dark:bg-darkCardBackground',
+        'flex h-full flex-1 flex-col overflow-y-scroll rounded-b-default',
         className
       )}
       {...props}

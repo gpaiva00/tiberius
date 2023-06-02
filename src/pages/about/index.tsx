@@ -1,17 +1,17 @@
 import { Link } from 'react-router-dom'
 
-import { DEFAULT_ICON_PROPS, LISTS_ROUTE } from '@/consts'
+import { DEFAULT_ICON_PROPS, LISTS_ROUTE, OVERVIEW_ROUTE } from '@/consts'
 
-import { Card, CardContentContainer, Divider } from '@/shared/components'
+import { MainCard, CardContentContainer, Divider } from '@/shared/components'
 
 import { HouseSimple } from '@phosphor-icons/react'
 
 export default function About() {
   return (
-    <Card>
+    <MainCard>
       <header className="default-header gap-2">
         <Link
-          to={LISTS_ROUTE}
+          to={OVERVIEW_ROUTE}
           className="icon-button"
         >
           <HouseSimple {...DEFAULT_ICON_PROPS} />
@@ -119,6 +119,6 @@ export default function About() {
           </p>
         </div>
       </CardContentContainer>
-    </Card>
+    </MainCard>
   )
 }

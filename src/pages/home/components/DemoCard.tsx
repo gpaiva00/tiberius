@@ -1,11 +1,11 @@
 import classNames from 'classnames'
 
-import { Card, CardContentContainer, Divider } from '@/shared/components'
+import { MainCard, CardContentContainer, Divider } from '@/shared/components'
 
 import { DEFAULT_ICON_PROPS } from '@/consts'
 import { ListProps, ListTypesProps } from '@/typings/List'
 
-import { DotsSixVertical, List, TrashSimple } from '@phosphor-icons/react'
+import { Check, DotsThree } from '@phosphor-icons/react'
 
 export default function DemoCard() {
   const demoList: ListProps = {
@@ -48,22 +48,9 @@ export default function DemoCard() {
   }
 
   return (
-    <Card size="demo">
-      <header className="flex items-center gap-2 rounded-t-default p-2">
-        <div className="flex flex-1 items-center justify-between">
-          <div className="flex items-center justify-center">
-            <div className="icon-button">
-              <List {...DEFAULT_ICON_PROPS} />
-            </div>
-            <h1 className="ml-4 text-2xl font-black dark:text-darkTextLight">para hoje</h1>
-          </div>
-
-          <div className="flex flex-col items-end gap-1">
-            <div className="max-w-[15.625rem] truncate text-xl text-primary hover:underline dark:text-darkPrimary">
-              {demoList.name}
-            </div>
-          </div>
-        </div>
+    <MainCard size="demo">
+      <header className="default-header">
+        <h1 className="default-header-title">Para hoje</h1>
       </header>
       <Divider />
 
@@ -71,16 +58,10 @@ export default function DemoCard() {
         {demoList.items.map((item, index) => (
           <div key={item.id}>
             <div className="flex flex-row items-center p-4">
-              <div className="flex gap-1">
-                <DotsSixVertical
-                  className="cursor-grab text-lightenGray dark:text-darkTextLight"
-                  {...DEFAULT_ICON_PROPS}
-                />
-                <input
-                  className="relative h-[1.125rem] w-[1.125rem] appearance-none rounded-default border-default border-lightenGray outline-none transition-all checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:ml-[0.315rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer"
-                  type="checkbox"
-                  checked={item.completed}
-                  onChange={() => {}}
+              <div className="default-checkbox checkbox-checked">
+                <Check
+                  weight="bold"
+                  size={15}
                 />
               </div>
               <div className="mx-4 flex flex-1">
@@ -91,24 +72,20 @@ export default function DemoCard() {
                       'text-gray line-through opacity-30 hover:line-through': item.completed,
                     }
                   )}
-                  onDoubleClick={() => {}}
                 >
                   {item.text}
                 </label>
               </div>
               <div className="flex">
-                <button
-                  className="icon-button"
-                  onClick={() => {}}
-                >
-                  <TrashSimple {...DEFAULT_ICON_PROPS} />
-                </button>
+                <div className="icon-button">
+                  <DotsThree {...DEFAULT_ICON_PROPS} />
+                </div>
               </div>
             </div>
             {index !== demoList.items.length - 1 && <Divider />}
           </div>
         ))}
       </CardContentContainer>
-    </Card>
+    </MainCard>
   )
 }

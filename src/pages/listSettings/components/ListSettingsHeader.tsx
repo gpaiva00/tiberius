@@ -7,7 +7,7 @@ import { Divider, FormattedItemText } from '@/shared/components'
 import { DEFAULT_ICON_PROPS, LISTS_ROUTE } from '@/consts'
 import { ListProps, ListTypesProps } from '@/typings/List'
 
-import { Archive, CaretLeft, Dot, TrashSimple } from '@phosphor-icons/react'
+import { Archive, CaretLeft, Dot, Sidebar, SidebarSimple, TrashSimple } from '@phosphor-icons/react'
 
 interface ListContentHeaderProps {
   selectedList: ListProps | null
@@ -34,9 +34,15 @@ export default function Header({ selectedList }: ListContentHeaderProps) {
     <div>
       <header className="default-header">
         <div className="flex w-full items-center">
+          <button className="icon-button">
+            <SidebarSimple
+              {...DEFAULT_ICON_PROPS}
+              size={25}
+            />
+          </button>
           <button
             onClick={handleClickOnBackButton}
-            className="icon-button mr-2"
+            className="icon-button"
           >
             <CaretLeft {...DEFAULT_ICON_PROPS} />
           </button>

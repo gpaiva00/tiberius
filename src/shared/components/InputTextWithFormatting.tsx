@@ -1,5 +1,5 @@
-import { InputHTMLAttributes, useRef, useState } from 'react'
 import EmojiPicker, { EmojiClickData, SkinTones } from 'emoji-picker-react'
+import { useRef, useState } from 'react'
 import ReactQuill from 'react-quill'
 
 import { Smiley } from '@phosphor-icons/react'
@@ -8,6 +8,7 @@ interface InputTextWithFormattingProps {
   inputTextValue: string
   setInputTextValue: (value: string) => void
   handleSubmit: () => void
+  handleBlur?: () => void
   placeholder?: string
   formats?: string[]
   disabled?: boolean
@@ -38,6 +39,7 @@ export default function InputTextWithFormatting({
   placeholder,
   formats = ['bold', 'italic'],
   disabled = false,
+  handleBlur = () => {},
 }: InputTextWithFormattingProps) {
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false)
 
@@ -80,6 +82,7 @@ export default function InputTextWithFormatting({
           placeholder={placeholder}
           onChange={setInputTextValue}
           onKeyDown={handleOnKeyPress}
+          onBlur={handleBlur}
           value={inputTextValue}
           className="max-h-96w"
           modules={{

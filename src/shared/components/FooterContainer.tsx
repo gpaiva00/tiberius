@@ -1,3 +1,14 @@
-export function FooterContainer({ children }: { children: React.ReactNode }) {
-  return <footer className="flex items-center rounded-b-default p-2 md:p-4">{children}</footer>
+import classNames from 'classnames'
+
+interface FooterContainerProps {
+  children: React.ReactNode
+  className?: string
+}
+
+export function FooterContainer({ children, className }: FooterContainerProps) {
+  return (
+    <footer className={classNames('flex items-center rounded-b-default', className)}>
+      {children}
+    </footer>
+  )
 }
