@@ -15,6 +15,7 @@ import {
   FormattedItemText,
   InputTextWithFormatting,
   MainCard,
+  Task,
 } from '@/shared/components'
 import Modal from '@/shared/components/Modal'
 
@@ -54,7 +55,6 @@ import {
   TrashSimple,
 } from '@phosphor-icons/react'
 
-import Task from '@/shared/components/Task'
 import 'react-datepicker/dist/react-datepicker.css'
 
 export default function List() {
@@ -672,6 +672,24 @@ export default function List() {
                 })
               }
               value={editingTask?.scheduleDate}
+              startDate={new Date()}
+              popperModifiers={[
+                {
+                  name: 'preventOverflow',
+                  options: {
+                    rootBoundary: 'viewport',
+                    tether: false,
+                    altAxis: true,
+                  },
+                },
+              ]}
+              minDate={new Date()}
+              placeholderText="Escolha uma data para agendar sua tarefa"
+              popperPlacement="top-start"
+              isClearable
+              fixedHeight
+              withPortal
+              portalId="root-portal"
               customInput={
                 <input
                   className="default-input-text"
@@ -714,15 +732,35 @@ export default function List() {
           <div className="flex flex-col gap-2">
             <label className="default-label">Data</label>
             <DatePicker
-              className="default-input"
-              startOpen={false}
               onChange={(date) =>
                 setSelectedItem({
                   ...(selectedItem as TaskProps),
                   scheduleDate: date?.toISOString() || '',
                 })
               }
-              value={new Date(selectedItem?.scheduleDate || '').toLocaleDateString()}
+              value={
+                selectedItem?.scheduleDate
+                  ? new Date(selectedItem.scheduleDate).toLocaleDateString()
+                  : ''
+              }
+              startDate={new Date()}
+              popperModifiers={[
+                {
+                  name: 'preventOverflow',
+                  options: {
+                    rootBoundary: 'viewport',
+                    tether: true,
+                    altAxis: true,
+                  },
+                },
+              ]}
+              minDate={new Date()}
+              placeholderText="Escolha uma data para agendar sua tarefa"
+              popperPlacement="top-start"
+              isClearable
+              fixedHeight
+              withPortal
+              portalId="root-portal"
               customInput={
                 <input
                   className="default-input-text"

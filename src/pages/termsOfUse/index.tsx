@@ -1,25 +1,9 @@
-import { Link } from 'react-router-dom'
-
-import { DEFAULT_ICON_PROPS, OVERVIEW_ROUTE } from '@/consts'
-
 import { CardContentContainer, Divider, MainCard } from '@/shared/components'
-
-import { HouseSimple } from '@phosphor-icons/react'
 
 export default function TermsOfUse() {
   return (
     <MainCard
-      title={
-        <>
-          <Link
-            to={OVERVIEW_ROUTE}
-            className="icon-button"
-          >
-            <HouseSimple {...DEFAULT_ICON_PROPS} />
-          </Link>
-          <h1 className="default-header-title">termos de uso</h1>
-        </>
-      }
+      title="termos de uso"
       showAsideButton={false}
     >
       <CardContentContainer className="p-4">

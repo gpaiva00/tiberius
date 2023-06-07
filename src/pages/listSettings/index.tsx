@@ -7,7 +7,7 @@ import { CardContentContainer, FormattedItemText, MainCard } from '@/shared/comp
 
 import { DEFAULT_ICON_PROPS, DEFAULT_TOAST_PROPS } from '@/consts'
 import { ListProps, ListTypesProps } from '@/typings/List'
-import { Archive, Dot } from '@phosphor-icons/react'
+import { Archive } from '@phosphor-icons/react'
 
 export default function ListSettings() {
   const { selectedList, updateList } = useList()
@@ -41,15 +41,11 @@ export default function ListSettings() {
   return (
     <MainCard
       title={
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
           <h1 className="default-header-title max-w-[5.25rem] truncate dark:text-darkTextLight md:max-w-fit">
             Configurações
           </h1>
-          <Dot
-            {...DEFAULT_ICON_PROPS}
-            size={25}
-            className="text-lightenGray dark:text-darkTextGray"
-          />
+          <span className="text-lg font-bold dark:text-darkTextLight">em</span>
           <h1 className="flex max-w-xs items-center truncate text-xl font-semibold text-lightenGray dark:text-darkTextGray md:max-w-[15.625rem]">
             {selectedList?.type === ListTypesProps.GENERAL && (
               <Archive

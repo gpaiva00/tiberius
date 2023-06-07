@@ -1,25 +1,13 @@
-import { Link } from 'react-router-dom'
-
 import { CardContentContainer, Divider, MainCard } from '@/shared/components'
 
-import { DEFAULT_ICON_PROPS, OVERVIEW_ROUTE } from '@/consts'
+import { DEFAULT_ICON_PROPS } from '@/consts'
 
-import { HouseSimple, User } from '@phosphor-icons/react'
+import { User } from '@phosphor-icons/react'
 
 export default function Help() {
   return (
     <MainCard
-      title={
-        <>
-          <Link
-            to={OVERVIEW_ROUTE}
-            className="icon-button"
-          >
-            <HouseSimple {...DEFAULT_ICON_PROPS} />
-          </Link>
-          <h1 className="default-header-title">ajuda</h1>
-        </>
-      }
+      title="ajuda"
       showAsideButton={false}
     >
       <CardContentContainer className="p-4">

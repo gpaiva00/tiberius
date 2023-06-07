@@ -130,3 +130,29 @@
 .ql-editor.ql-blank::before {
   @apply !not-italic text-lightenGray dark:text-darkTextGray;
 }
+
+/* datepicker clear button */
+.react-datepicker__close-icon::after {
+  @apply bg-gray transition-colors hover:bg-zinc-600 dark:bg-darkBackgroundIconButton dark:hover:bg-darkBackgroundIconButton;
+}
+
+.react-datepicker {
+  @apply border-default shadow-md;
+}
+
+.react-datepicker-popper[data-placement^='top'] {
+  @apply pb-0;
+}
+
+.react-datepicker-popper[data-placement^='top'] .react-datepicker__triangle,
+.react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle {
+  @apply invisible;
+}
+
+#root-portal {
+  @apply absolute z-50 flex items-center justify-center;
+}
+
+.react-datepicker__portal {
+  @apply bg-black bg-opacity-60;
+}

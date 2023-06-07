@@ -1,25 +1,9 @@
-import { Link } from 'react-router-dom'
-
 import { CardContentContainer, Divider, MainCard } from '@/shared/components'
-
-import { DEFAULT_ICON_PROPS, OVERVIEW_ROUTE } from '@/consts'
-
-import { HouseSimple } from '@phosphor-icons/react'
 
 export default function Contact() {
   return (
     <MainCard
-      title={
-        <>
-          <Link
-            to={OVERVIEW_ROUTE}
-            className="icon-button"
-          >
-            <HouseSimple {...DEFAULT_ICON_PROPS} />
-          </Link>
-          <h1 className="default-header-title">contato</h1>
-        </>
-      }
+      title="contato"
       showAsideButton={false}
     >
       <CardContentContainer className="p-4">
