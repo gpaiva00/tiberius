@@ -1,11 +1,12 @@
 import classNames from 'classnames'
 
-import { MainCard, CardContentContainer, Divider } from '@/shared/components'
+import { CardContentContainer, Divider } from '@/shared/components'
 
-import { DEFAULT_ICON_PROPS } from '@/consts'
+import { DEFAULT_ICON_PROPS, SIGN_IN_ROUTE } from '@/consts'
 import { ListProps, ListTypesProps } from '@/typings/List'
 
 import { Check, DotsThree } from '@phosphor-icons/react'
+import { Link } from 'react-router-dom'
 
 export default function DemoCard() {
   const demoList: ListProps = {
@@ -48,22 +49,30 @@ export default function DemoCard() {
   }
 
   return (
-    <MainCard size="demo">
-      <header className="default-header">
-        <h1 className="default-header-title">Para hoje</h1>
+    <div className="relative flex h-[20rem] w-[25rem] flex-col overflow-hidden rounded-default border-default bg-white dark:border-dark dark:bg-darkCardBackground">
+      <header className="default-header py-2">
+        <div className="flex w-full items-center gap-2">
+          <h1 className="default-header-title max-w-xs truncate">Para hoje</h1>
+        </div>
       </header>
       <Divider />
-
       <CardContentContainer>
         {demoList.items.map((item, index) => (
           <div key={item.id}>
             <div className="flex flex-row items-center p-4">
-              <div className="default-checkbox checkbox-checked">
-                <Check
-                  weight="bold"
-                  size={15}
-                />
-              </div>
+              <Link
+                to={SIGN_IN_ROUTE}
+                className={classNames('default-checkbox', {
+                  'checkbox-checked': item.completed,
+                })}
+              >
+                {item.completed && (
+                  <Check
+                    weight="bold"
+                    size={15}
+                  />
+                )}
+              </Link>
               <div className="mx-4 flex flex-1">
                 <label
                   className={classNames(
@@ -86,6 +95,6 @@ export default function DemoCard() {
           </div>
         ))}
       </CardContentContainer>
-    </MainCard>
+    </div>
   )
 }

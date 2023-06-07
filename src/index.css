@@ -1,10 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+/*
 :root {
   --quill-input-width: 750px;
 }
+*/
 
 @layer base {
   html {
@@ -38,7 +39,7 @@
 
 @layer components {
   .primary-button {
-    @apply flex w-full items-center justify-center rounded-full border-default bg-primary px-4 py-2 font-bold text-white transition-colors hover:bg-darkButtonHover hover:text-white dark:border-dark dark:bg-darkPrimary dark:text-darkTextLight dark:hover:bg-darkButtonHover dark:hover:text-darkTextLight;
+    @apply flex w-full items-center justify-center rounded-full border-default bg-primary px-4 py-2 font-bold text-white transition-colors hover:bg-darkButtonHover hover:text-white disabled:bg-lightGray disabled:text-lightenGray disabled:hover:bg-lightGray dark:border-dark dark:bg-darkPrimary dark:text-darkTextLight dark:hover:bg-darkButtonHover dark:hover:text-darkTextLight dark:disabled:bg-darkInputBackground dark:disabled:hover:bg-darkInputBackground dark:disabled:hover:text-lightenGray;
   }
 
   .secondary-button {
@@ -78,7 +79,7 @@
   }
 
   .default-label {
-    @apply font-bold dark:text-darkTextLight;
+    @apply font-medium dark:text-darkTextLight;
   }
 
   .default-checkbox {
@@ -90,47 +91,42 @@
   }
 
   .list-title {
-    @apply flex max-w-[21.875rem] cursor-pointer items-center truncate text-primary hover:underline dark:text-darkPrimary;
-  }
-
-  .default-badge {
-    @apply flex h-5 items-center justify-center rounded-xl border-default px-2 text-lightenGray dark:border-dark;
+    @apply flex items-center gap-1 hover:underline dark:text-darkTextLight;
   }
 
   .default-header {
-    @apply flex w-full items-center px-4 py-1;
+    @apply flex w-full items-center px-4 py-2;
   }
 
   .default-header-title {
     @apply text-lg font-bold capitalize dark:text-darkTextLight;
   }
-}
 
-.default-link {
-  @apply text-primary hover:underline dark:text-darkPrimary;
-}
+  .default-input-text {
+    @apply w-full rounded-default border border-default bg-lightGray px-4 py-2 text-sm outline-none transition-colors focus:bg-white disabled:text-lightenGray dark:border-dark dark:bg-darkInputBackground dark:text-darkTextLight dark:focus:bg-darkBackgroundIconButton disabled:dark:text-darkTextGray md:text-base;
+  }
 
-/* emoji picker styles */
-aside.EmojiPickerReact.epr-main {
-  @apply z-50 w-full md:absolute md:bottom-48;
+  .default-link {
+    @apply text-primary hover:underline dark:text-darkPrimary;
+  }
 }
 
 /* quill input text */
 .ql-editor {
-  @apply max-h-64 rounded-b-md bg-lightGray p-2 text-sm outline-none transition-colors focus:bg-white disabled:text-lightenGray dark:border-dark dark:bg-darkInputBackground dark:text-darkTextLight dark:focus:bg-darkBackgroundIconButton disabled:dark:text-darkTextGray md:text-base;
+  @apply rounded-b-md !border-default bg-lightGray p-2 text-sm outline-none transition-colors focus:bg-white disabled:text-lightenGray dark:!border-dark dark:bg-darkInputBackground dark:text-darkTextLight dark:focus:bg-darkInputBackground disabled:dark:text-darkTextGray md:text-base;
 }
 
 /* quill toolbar */
 .ql-toolbar.ql-snow {
-  @apply max-w-[var(--quill-input-width)] rounded-t-md border-default p-1 dark:border-dark dark:bg-darkInputBackground;
+  @apply rounded-t-md dark:border-dark dark:bg-darkInputBackground;
 }
 
 /* quill container */
 .ql-container.ql-snow {
-  @apply h-auto max-w-[var(--quill-input-width)] rounded-b-md border-default dark:border-dark dark:bg-darkInputBackground;
+  @apply h-auto rounded-b-md dark:border-dark dark:bg-darkInputBackground;
 }
 
 /* quill placeholder */
 .ql-editor.ql-blank::before {
-  @apply not-italic text-lightenGray dark:text-darkTextGray;
+  @apply !not-italic text-lightenGray dark:text-darkTextGray;
 }

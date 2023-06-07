@@ -36,6 +36,9 @@ export const WHATS_NEW_LIST: Omit<ListProps, 'userId'> = {
 
 export const URL_REGEX = /(https?:\/\/[^\s]+)/g
 
+export const SCHEDULE_LIMIT = 7
+export const TASK_CHAR_LIMIT = 500
+
 // STORAGE
 export const STORAGE_USER_KEY = '@tiberius/user'
 export const STORAGE_SELECTED_LIST_ID_KEY = '@tiberius/selectedList'

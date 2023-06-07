@@ -1,40 +1,58 @@
 import classNames from 'classnames'
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { DEFAULT_ICON_PROPS, LISTS_ROUTE, OVERVIEW_ROUTE, USER_ROUTE } from '@/consts'
 import { useAuth } from '@/hooks'
 
-import { HouseSimple, ListBullets, X } from '@phosphor-icons/react'
+import Divider from '@/shared/components/Divider'
 
-interface MainCard extends React.HTMLAttributes<HTMLDivElement> {
+import { FormattedItemText } from '@/shared/components'
+import {
+  CaretLeft,
+  CaretRight,
+  HouseSimple,
+  ListBullets,
+  SidebarSimple,
+  X,
+} from '@phosphor-icons/react'
+
+interface MainCard {
   children: React.ReactNode
   size?: 'sm' | 'demo' | 'lg' | 'auto'
-  showSidebar?: boolean
-  closeSidebar?: () => void
+  title: string | React.ReactNode
+  options?: React.ReactNode
+  className?: string
+  showAsideButton?: boolean
 }
 
 export default function MainCard({
   children,
   size = 'lg',
-  showSidebar,
-  closeSidebar,
   className,
+  title,
+  options,
+  showAsideButton = true,
 }: MainCard) {
   const { user } = useAuth()
+
+  const [showSidebar, setShowSidebar] = useState(false)
+  const navigate = useNavigate()
+  const toggleSidebar = () => setShowSidebar(!showSidebar)
 
   return (
     <div
       className={classNames(
-        'relative overflow-x-hidden',
-        'flex flex-col rounded-default bg-white dark:border-dark dark:bg-darkCardBackground dark:shadow-none md:shadow-default dark:md:shadow-none',
+        'relative flex flex-col overflow-hidden rounded-default bg-white dark:border-dark dark:bg-darkCardBackground dark:shadow-none md:shadow-default dark:md:shadow-none',
         {
           'h-screen w-full md:h-72 md:w-72': size === 'sm',
-          'h-screen w-full md:h-[37.5rem] md:w-[46.875rem]': size === 'lg',
+          'h-screen w-full md:h-[38rem] md:w-[50rem]': size === 'lg',
           'h-[20rem] w-[25rem]': size === 'demo',
         },
         className
       )}
     >
+      {/* side menu */}
       <aside
         className={classNames(
           'absolute left-0 top-0 z-50 h-full w-64 transform border-r-default bg-white transition-transform duration-200 ease-in-out dark:border-r-dark dark:bg-darkCardBackground',
@@ -49,7 +67,7 @@ export default function MainCard({
             <h1 className="font-bold dark:text-lightenGray">Menu</h1>
             <button
               className="icon-button place-self-end"
-              onClick={closeSidebar}
+              onClick={toggleSidebar}
             >
               <X {...DEFAULT_ICON_PROPS} />
             </button>
@@ -90,16 +108,52 @@ export default function MainCard({
           </div>
         </div>
       </aside>
+      {/* overlay */}
       <div
         className={classNames(
           'absolute left-0 top-12 h-full w-full bg-black transition duration-200 ease-in-out',
           {
-            'z-40 opacity-40': showSidebar,
-            'z-auto opacity-0': !showSidebar,
+            'z-40 opacity-40 dark:opacity-70': showSidebar,
+            'invisible z-auto opacity-0': !showSidebar,
           }
         )}
-        onClick={showSidebar ? closeSidebar : () => {}}
+        onClick={showSidebar ? toggleSidebar : undefined}
       ></div>
+      {/* header */}
+      <header className="default-header">
+        <div className="flex w-full items-center gap-2">
+          {showAsideButton && (
+            <button
+              className="icon-button"
+              onClick={toggleSidebar}
+            >
+              <SidebarSimple {...DEFAULT_ICON_PROPS} />
+            </button>
+          )}
+          <div className="mr-2 flex items-center gap-1">
+            <button
+              className="icon-button"
+              onClick={() => navigate(-1)}
+            >
+              <CaretLeft {...DEFAULT_ICON_PROPS} />
+            </button>
+            <button
+              className="icon-button"
+              onClick={() => navigate(+1)}
+            >
+              <CaretRight {...DEFAULT_ICON_PROPS} />
+            </button>
+          </div>
+          {typeof title === 'string' ? (
+            <h1 className="default-header-title max-w-xs truncate">{FormattedItemText(title)}</h1>
+          ) : (
+            title
+          )}
+        </div>
+        {/* options */}
+        <div className="flex items-end gap-2">{options}</div>
+      </header>
+      <Divider />
       {children}
     </div>
   )

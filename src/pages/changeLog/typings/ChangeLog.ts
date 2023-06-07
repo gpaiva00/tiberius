@@ -6,10 +6,10 @@ export interface ChangeLogListProps {
   icon?: string
   version: string
   createdAt: Timestamp
-  items: ChangeLogListItemProps[]
+  items: ChangeLogTaskProps[]
 }
 
-export interface ChangeLogListItemProps {
+export interface ChangeLogTaskProps {
   id: string
   text: string
   completed: boolean

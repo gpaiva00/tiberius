@@ -1,24 +1,27 @@
 import { Link } from 'react-router-dom'
 
-import { DEFAULT_ICON_PROPS, LISTS_ROUTE, OVERVIEW_ROUTE } from '@/consts'
+import { DEFAULT_ICON_PROPS, OVERVIEW_ROUTE } from '@/consts'
 
-import { MainCard, CardContentContainer, Divider } from '@/shared/components'
+import { CardContentContainer, Divider, MainCard } from '@/shared/components'
 
 import { HouseSimple } from '@phosphor-icons/react'
 
 export default function TermsOfUse() {
   return (
-    <MainCard>
-      <header className="default-header gap-2">
-        <Link
-          to={OVERVIEW_ROUTE}
-          className="icon-button"
-        >
-          <HouseSimple {...DEFAULT_ICON_PROPS} />
-        </Link>
-        <h1 className="default-header-title">termos de uso</h1>
-      </header>
-      <Divider />
+    <MainCard
+      title={
+        <>
+          <Link
+            to={OVERVIEW_ROUTE}
+            className="icon-button"
+          >
+            <HouseSimple {...DEFAULT_ICON_PROPS} />
+          </Link>
+          <h1 className="default-header-title">termos de uso</h1>
+        </>
+      }
+      showAsideButton={false}
+    >
       <CardContentContainer className="p-4">
         <h4 className="dark:text-darkTextLight">
           Ao usar o Tiberius você está de acordo com os seguintes termos de uso:

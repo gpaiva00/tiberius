@@ -1,15 +1,18 @@
+import { ChangeLogProvider } from '@/hooks/useChangeLog'
+import { ListProvider } from '@/hooks/useList'
+import { TaskProvider } from '@/hooks/useTask'
 import { ReactElement } from 'react'
 import { Outlet } from 'react-router-dom'
 import { AuthProvider } from '../hooks/useAuth'
-import { ListProvider } from '@/hooks/useList'
-import { ChangeLogProvider } from '@/hooks/useChangeLog'
 
 export const DefaultProvider = ({ children }: { children?: ReactElement }) => {
   return (
     <>
       <AuthProvider>
         <ListProvider>
-          <ChangeLogProvider>{children || <Outlet />}</ChangeLogProvider>
+          <TaskProvider>
+            <ChangeLogProvider>{children || <Outlet />}</ChangeLogProvider>
+          </TaskProvider>
         </ListProvider>
       </AuthProvider>
     </>

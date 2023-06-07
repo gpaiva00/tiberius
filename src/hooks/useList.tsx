@@ -1,5 +1,4 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react'
-import { toast } from 'react-hot-toast'
 
 import { useAuth } from '@/hooks'
 
@@ -10,10 +9,9 @@ import {
 } from '@/services/list'
 
 import { STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
-import { ListItemProps, ListProps, ListTypesProps } from '@/typings/List'
-import { sortListItemsByStatus, sortListsByPosition } from '@/utils'
-import { SortListItemsByStatusProps } from '@/utils/sortListItemsByStatus'
-import { getFromStorage, setToStorage } from '@utils/storage'
+import { ListProps, ListTypesProps, TaskProps } from '@/typings/List'
+import { getFromStorage, setToStorage, sortListsByPosition, sortTasksByStatus } from '@/utils'
+import { SortTasksByStatusProps } from '@/utils/sortTasksByStatus'
 
 interface ListProviderProps {
   children: ReactNode
@@ -25,15 +23,8 @@ interface UseListProps {
   updateList: (list: ListProps) => Promise<void>
   deleteList: (listID: ListProps['id']) => Promise<void>
   saveSelectedList: (list: ListProps) => void
-  handleMoveItem: (props: HandleMoveItemProps) => Promise<void>
   isListCompleted: boolean
-  sortedListItems: SortListItemsByStatusProps
-}
-
-interface HandleMoveItemProps {
-  item: ListItemProps | null
-  destinationList: ListProps
-  moveItemFallback: () => void
+  sortedTasks: SortTasksByStatusProps
 }
 
 const listContext = createContext<UseListProps>({} as UseListProps)
@@ -74,50 +65,8 @@ export const ListProvider = ({ children }: ListProviderProps) => {
     await deleteListOnDB(listID)
   }
 
-  const handleMoveItem = async ({
-    item,
-    destinationList,
-    moveItemFallback,
-  }: HandleMoveItemProps) => {
-    if (!item) return
-
-    const updatedItems = selectedList?.items.filter(
-      (selectedListItem) => selectedListItem.id !== item.id
-    )
-
-    const updatedList = {
-      ...(selectedList as ListProps),
-      items: updatedItems as ListItemProps[],
-    }
-
-    if (!destinationList) return
-
-    const destinationListItems = destinationList.items
-
-    const updatedDestinationListItems = [
-      ...(destinationListItems as ListItemProps[]),
-      {
-        ...item,
-      },
-    ]
-
-    const updatedDestinationList = {
-      ...(destinationList as ListProps),
-      items: updatedDestinationListItems,
-    }
-
-    await updateList(updatedList)
-    await updateList(updatedDestinationList)
-
-    toast('Item movido com sucesso!', {
-      icon: '👏',
-    })
-    moveItemFallback()
-  }
-
-  const sortedListItems = sortListItemsByStatus((selectedList?.items || []) as ListItemProps[])
-  const isListCompleted =
-    sortedListItems.notCompleted.length === 0 && sortedListItems.completed.length > 0
+  const sortedTasks = sortTasksByStatus((selectedList?.items || []) as TaskProps[])
+  const isListCompleted = sortedTasks.notCompleted.length === 0 && sortedTasks.completed.length > 0
 
   useEffect(() => {
     const unsubscribe = subscribeToUserLists({
@@ -125,7 +74,6 @@ export const ListProvider = ({ children }: ListProviderProps) => {
       observer: (querySnapshot) => {
         const newLists = querySnapshot.docs.map((doc) => doc.data() as ListProps)
         const sortedLists = sortListsByPosition(newLists)
-
         setLists(sortedLists)
         handleSetSelectedList(sortedLists)
       },
@@ -142,9 +90,8 @@ export const ListProvider = ({ children }: ListProviderProps) => {
         lists,
         deleteList,
         updateList,
-        handleMoveItem,
         isListCompleted,
-        sortedListItems,
+        sortedTasks,
       }}
     >
       {children}

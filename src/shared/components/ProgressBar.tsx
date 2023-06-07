@@ -1,7 +1,7 @@
-import { ListItemProps } from '@/typings/List'
+import { TaskProps } from '@/typings/List'
 
 interface ProgressBarProps {
-  items: ListItemProps[]
+  items: TaskProps[]
 }
 
 export default function ProgressBar({ items = [] }: ProgressBarProps) {

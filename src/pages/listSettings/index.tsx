@@ -3,11 +3,11 @@ import toast from 'react-hot-toast'
 
 import { useList } from '@/hooks'
 
-import { CardContentContainer, InputTextWithFormatting, MainCard } from '@/shared/components'
-import Header from './components/ListSettingsHeader'
+import { CardContentContainer, FormattedItemText, MainCard } from '@/shared/components'
 
-import { DEFAULT_TOAST_PROPS } from '@/consts'
+import { DEFAULT_ICON_PROPS, DEFAULT_TOAST_PROPS } from '@/consts'
 import { ListProps, ListTypesProps } from '@/typings/List'
+import { Archive, Dot } from '@phosphor-icons/react'
 
 export default function ListSettings() {
   const { selectedList, updateList } = useList()
@@ -39,43 +39,46 @@ export default function ListSettings() {
   }
 
   return (
-    <MainCard>
-      <Header selectedList={selectedList} />
-      <CardContentContainer className="rounded-b-default">
+    <MainCard
+      title={
+        <div className="flex items-center gap-1">
+          <h1 className="default-header-title max-w-[5.25rem] truncate dark:text-darkTextLight md:max-w-fit">
+            Configurações
+          </h1>
+          <Dot
+            {...DEFAULT_ICON_PROPS}
+            size={25}
+            className="text-lightenGray dark:text-darkTextGray"
+          />
+          <h1 className="flex max-w-xs items-center truncate text-xl font-semibold text-lightenGray dark:text-darkTextGray md:max-w-[15.625rem]">
+            {selectedList?.type === ListTypesProps.GENERAL && (
+              <Archive
+                {...DEFAULT_ICON_PROPS}
+                className="mr-2"
+              />
+            )}
+            {FormattedItemText(selectedList?.name)}
+          </h1>
+        </div>
+      }
+    >
+      <CardContentContainer>
         <div className="flex flex-1 flex-col">
           {/* input container */}
           <div className="flex flex-col gap-2 p-2 md:gap-4 md:p-4">
             <label className="default-label">Nome da lista</label>
-            <InputTextWithFormatting
-              placeholder="Nome da lista"
-              inputTextValue={inputText}
-              setInputTextValue={setInputText}
+            <input
+              type="text"
+              className="default-input-text"
+              placeholder="Ex: 📖 Estudos"
+              onSubmit={handleSave}
+              onKeyDown={(event) => event.key === 'Enter' && handleSave()}
+              value={inputText}
+              onBlur={handleSave}
+              onChange={(event) => setInputText(event.target.value)}
               disabled={selectedList?.type === ListTypesProps.GENERAL}
-              formats={['bold', 'italic']}
-              handleBlur={handleSave}
-              handleSubmit={handleSave}
             />
           </div>
-
-          {/* <Divider /> */}
-
-          {/* delete completed items container */}
-          {/* <div className="flex flex-col gap-4 p-4">
-            <label className="default-label">apagar itens concluídos</label>
-            <div className="flex flex-col gap-2">
-              <select
-                className="h-inputControl"
-                onChange={handleOnChangeOption}
-                value={inputOption}
-              >
-                <option value="daily">diariamente (padrão)</option>
-                <option value="weekly">semanalmente</option>
-                <option value="monthly">mensalmente</option>
-                <option value="never">nunca</option>
-              </select>
-              <p className="text-xs text-lightenGray dark:text-darkTextGray">{getOptionDescription[inputOption]}</p>
-            </div>
-          </div> */}
         </div>
       </CardContentContainer>
     </MainCard>

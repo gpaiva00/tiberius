@@ -1,24 +1,27 @@
 import { Link } from 'react-router-dom'
 
-import { MainCard, CardContentContainer, Divider } from '@/shared/components'
+import { CardContentContainer, Divider, MainCard } from '@/shared/components'
 
-import { DEFAULT_ICON_PROPS, LISTS_ROUTE, OVERVIEW_ROUTE } from '@/consts'
+import { DEFAULT_ICON_PROPS, OVERVIEW_ROUTE } from '@/consts'
 
 import { HouseSimple } from '@phosphor-icons/react'
 
 export default function Contact() {
   return (
-    <MainCard>
-      <header className="default-header gap-2">
-        <Link
-          to={OVERVIEW_ROUTE}
-          className="icon-button"
-        >
-          <HouseSimple {...DEFAULT_ICON_PROPS} />
-        </Link>
-        <h1 className="default-header-title">contato</h1>
-      </header>
-      <Divider />
+    <MainCard
+      title={
+        <>
+          <Link
+            to={OVERVIEW_ROUTE}
+            className="icon-button"
+          >
+            <HouseSimple {...DEFAULT_ICON_PROPS} />
+          </Link>
+          <h1 className="default-header-title">contato</h1>
+        </>
+      }
+      showAsideButton={false}
+    >
       <CardContentContainer className="p-4">
         <h4 className="dark:text-darkTextLight">
           Leia qual é a melhor forma de entrar em contato:

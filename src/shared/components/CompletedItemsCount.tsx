@@ -1,9 +1,9 @@
+import Badge from '@/shared/components/Badge'
+import { TaskProps } from '@/typings/List'
 import classNames from 'classnames'
 
-import { ListItemProps } from '@/typings/List'
-
 interface CompletedItemsCount {
-  items: ListItemProps[]
+  items: TaskProps[]
   size?: 'sm' | 'normal'
 }
 
@@ -13,14 +13,12 @@ export default function CompletedItemsCount({ items = [], size = 'normal' }: Com
   const listItemsStatus = `${completedItems}/${items.length}`
 
   return (
-    <span
-      className={classNames('default-badge', {
+    <Badge
+      className={classNames('bg-transparent', {
         'text-primary': isListCompleted,
-        'text-xs': size === 'normal',
-        'text-[0.625rem]': size === 'sm',
       })}
     >
       {listItemsStatus}
-    </span>
+    </Badge>
   )
 }

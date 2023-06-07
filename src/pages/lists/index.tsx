@@ -1,17 +1,15 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { Dialog, Menu, Transition } from '@headlessui/react'
+import { Menu } from '@headlessui/react'
 import classNames from 'classnames'
-import { Fragment, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
-import Header from '@/pages/lists/components/ListsHeader'
 import {
   CardContentContainer,
   CompletedItemsCount,
   Divider,
   FormattedItemText,
-  InputTextWithFormatting,
   MainCard,
   Modal,
 } from '@/shared/components'
@@ -29,7 +27,7 @@ import {
 import { ListProps, ListTypesProps } from '@/typings/List'
 import { getRandomQuote } from '@/utils'
 
-import { Archive, CaretRight, DotsThree, GearSix, TrashSimple } from '@phosphor-icons/react'
+import { Archive, CaretRight, DotsThree, GearSix, Plus, TrashSimple } from '@phosphor-icons/react'
 
 export default function Lists() {
   const [showSidebar, setShowSidebar] = useState(false)
@@ -46,10 +44,20 @@ export default function Lists() {
   const listRef = useRef<HTMLDivElement>(null)
   const [parent] = useAutoAnimate()
 
+  const toggleSidebar = () => setShowSidebar(!showSidebar)
+  const toggleCreateListModal = () => {
+    setShowAddListModal(!showAddListModal)
+    setListName('')
+  }
+
   const handleAddList = async () => {
+    if (!listName) return
+
+    const validatedListName = listName.trim()
+
     const newList: ListProps = {
       id: uuidv4(),
-      name: listName,
+      name: validatedListName,
       items: [],
       userId,
       position: lists.length,
@@ -59,8 +67,12 @@ export default function Lists() {
 
     await createListOnDB(newList)
 
+    toggleCreateListModal()
     listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }
+
+  const handleOnChangeListName = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setListName(event.target.value)
 
   const handleDeleteList = (listID: ListProps['id']) => {
     const prompt = window.confirm('tem certeza que deseja excluir esta lista?')
@@ -141,163 +153,154 @@ export default function Lists() {
     },
   ]
 
-  const toggleSidebar = () => setShowSidebar(!showSidebar)
-  const toggleCreateListModal = () => setShowAddListModal(!showAddListModal)
-
   return (
-    <MainCard
-      showSidebar={showSidebar}
-      closeSidebar={toggleSidebar}
-    >
-      <Header
-        openSidebar={toggleSidebar}
-        toggleCreateListModal={toggleCreateListModal}
-      />
-      <CardContentContainer>
-        {!haveSeenChangeLog && (
-          <div>
-            <div className="flex items-center justify-between bg-primary p-2 dark:bg-darkPrimary">
-              <div className="flex flex-1 flex-col">
-                <div className="flex items-center gap-1">
-                  <Link to={CHANGE_LOG_ROUTE}>
-                    <h1 className="font-bold text-white hover:underline dark:text-darkTextLight">
-                      <span>🎉 novidades</span>
-                    </h1>
-                  </Link>
+    <>
+      <MainCard
+        title="Listas"
+        options={
+          <button
+            onClick={toggleCreateListModal}
+            className="icon-button"
+          >
+            <Plus {...DEFAULT_ICON_PROPS} />
+          </button>
+        }
+      >
+        <CardContentContainer>
+          {!haveSeenChangeLog && (
+            <div>
+              <div className="flex items-center justify-between bg-primary p-2 dark:bg-darkPrimary">
+                <div className="flex flex-1 flex-col">
+                  <div className="flex items-center gap-1">
+                    <Link to={CHANGE_LOG_ROUTE}>
+                      <h1 className="font-bold text-white hover:underline dark:text-darkTextLight">
+                        <span>🎉 novidades</span>
+                      </h1>
+                    </Link>
+                  </div>
                 </div>
+                <CaretRight
+                  {...DEFAULT_ICON_PROPS}
+                  className="text-white dark:text-darkTextLight"
+                />
               </div>
-              <CaretRight
-                {...DEFAULT_ICON_PROPS}
-                className="text-white dark:text-darkTextLight"
-              />
+              <Divider />
             </div>
-            <Divider />
-          </div>
-        )}
-        {!lists.length && (
-          <div className="flex flex-1 items-center justify-center">
-            <p className="italic text-lightenGray">{getRandomQuote(QUOTES)}</p>
-          </div>
-        )}
-        <div ref={parent}>
-          {lists.map((list, index) => (
-            <div
-              key={list.id}
-              draggable={list.type !== (ListTypesProps.GENERAL || ListTypesProps.WHATS_NEW)}
-              onDragStart={(event) => handleOnDragItemStart(event, index)}
-              onDragOver={(event) => handleOnDragItemOver(event)}
-              onDrop={(event) => handleOnDropItem(event, index)}
-              onDragLeave={(event) => handleDragItemLeave(event)}
-              ref={listRef}
-            >
+          )}
+          {!lists.length && (
+            <div className="flex flex-1 items-center justify-center">
+              <p className="italic text-lightenGray">{getRandomQuote(QUOTES)}</p>
+            </div>
+          )}
+          {/* lists */}
+          <div ref={parent}>
+            {lists.map((list, index) => (
               <div
-                className={classNames(
-                  'flex items-center pl-4 pr-2 transition-all hover:bg-lightGray dark:hover:bg-darkInputBackground',
-                  {
-                    'pr-4': list.type === ListTypesProps.GENERAL,
-                  }
-                )}
+                key={list.id}
+                draggable={list.type !== (ListTypesProps.GENERAL || ListTypesProps.WHATS_NEW)}
+                onDragStart={(event) => handleOnDragItemStart(event, index)}
+                onDragOver={(event) => handleOnDragItemOver(event)}
+                onDrop={(event) => handleOnDropItem(event, index)}
+                onDragLeave={(event) => handleDragItemLeave(event)}
+                ref={listRef}
               >
-                {/* list text */}
                 <div
-                  className="flex w-full cursor-pointer items-center gap-2 py-2"
-                  onClick={() => handleClickOnListName(list)}
+                  className={classNames(
+                    'flex items-center pl-4 pr-2 transition-all hover:bg-lightGray dark:hover:bg-darkInputBackground',
+                    {
+                      'pr-4': list.type === ListTypesProps.GENERAL,
+                    }
+                  )}
                 >
-                  <h1 className="flex items-center gap-1 hover:underline dark:text-darkTextLight">
-                    {list.type === ListTypesProps.GENERAL && (
-                      <Archive
-                        {...DEFAULT_ICON_PROPS}
-                        className="mr-1"
-                      />
-                    )}
-                    {FormattedItemText(list.name)}
-                  </h1>
-                  {/* complete items count */}
-                  <CompletedItemsCount
-                    size="sm"
-                    items={list.items || []}
-                  />
-                </div>
-
-                {list.type === ListTypesProps.GENERAL ? (
-                  <CaretRight
-                    {...DEFAULT_ICON_PROPS}
-                    className="text-lightenGray dark:text-lightenGray"
-                  />
-                ) : (
-                  <Menu
-                    as="div"
-                    className="relative inline-block"
+                  {/* list text */}
+                  <div
+                    className="flex w-full cursor-pointer items-center gap-2 py-2"
+                    onClick={() => handleClickOnListName(list)}
                   >
-                    <Menu.Button className="inline-flex">
-                      <button className="icon-button hover:bg-zinc-300 dark:hover:bg-zinc-700">
-                        <DotsThree
-                          className="text-lightenGray dark:text-darkTextGray"
+                    <h1 className="list-title">
+                      {list.type === ListTypesProps.GENERAL && (
+                        <Archive
                           {...DEFAULT_ICON_PROPS}
+                          className="mr-1"
                         />
-                      </button>
-                    </Menu.Button>
-                    <Menu.Items className="menu-items">
-                      {LIST_OPTIONS(list).map((option) => (
-                        <Menu.Item key={option.text}>
-                          <button
-                            className="popover-button"
-                            onClick={option.action}
-                          >
-                            {option.icon}
-                            {option.text}
-                          </button>
-                        </Menu.Item>
-                      ))}
-                    </Menu.Items>
-                  </Menu>
+                      )}
+                      {FormattedItemText(list.name)}
+                    </h1>
+                    {/* complete items count */}
+                    <CompletedItemsCount
+                      size="sm"
+                      items={list.items || []}
+                    />
+                  </div>
+
+                  {list.type === ListTypesProps.GENERAL ? (
+                    <CaretRight
+                      {...DEFAULT_ICON_PROPS}
+                      className="text-lightenGray dark:text-lightenGray"
+                    />
+                  ) : (
+                    <Menu
+                      as="div"
+                      className="relative inline-block"
+                    >
+                      <Menu.Button className="inline-flex">
+                        <button className="icon-button hover:bg-zinc-300 dark:hover:bg-zinc-700">
+                          <DotsThree
+                            className="text-lightenGray dark:text-darkTextGray"
+                            {...DEFAULT_ICON_PROPS}
+                          />
+                        </button>
+                      </Menu.Button>
+                      <Menu.Items className="menu-items">
+                        {LIST_OPTIONS(list).map((option) => (
+                          <Menu.Item key={option.text}>
+                            <button
+                              className="popover-button"
+                              onClick={option.action}
+                            >
+                              {option.icon}
+                              {option.text}
+                            </button>
+                          </Menu.Item>
+                        ))}
+                      </Menu.Items>
+                    </Menu>
+                  )}
+                </div>
+                {(index !== lists.length - 1 || list.type === ListTypesProps.GENERAL) && (
+                  <Divider />
                 )}
               </div>
-              {(index !== lists.length - 1 || list.type === ListTypesProps.GENERAL) && <Divider />}
-            </div>
-          ))}
-        </div>
-      </CardContentContainer>
-
+            ))}
+          </div>
+        </CardContentContainer>
+      </MainCard>
       <Modal
         isOpen={showAddListModal}
         toggleDialog={toggleCreateListModal}
+        title="Criar lista"
       >
-        <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-default bg-white text-left align-middle shadow-xl transition-all dark:bg-darkCardBackground">
-                <Dialog.Title
-                  as="h3"
-                  className="default-header flex-col items-start"
-                >
-                  <h1 className="default-header-title">Criar lista</h1>
-                </Dialog.Title>
-                <Divider />
-                {/* body */}
-                <div className="flex flex-col gap-2 p-2 md:gap-4 md:p-4">
-                  <label className="default-label">Nome da lista</label>
-                  <InputTextWithFormatting
-                    handleSubmit={handleAddList}
-                    inputTextValue={listName}
-                    setInputTextValue={setListName}
-                    placeholder="Ex: 📖 Estudos"
-                    formats={['italic']}
-                  />
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
-          </div>
+        {/* body */}
+        <div className="flex flex-col gap-2 px-4 py-4">
+          <label className="default-label">Nome da lista</label>
+          <input
+            type="text"
+            className="default-input-text"
+            placeholder="Ex: 📖 Estudos"
+            onSubmit={handleAddList}
+            onKeyDown={(event) => event.key === 'Enter' && handleAddList()}
+            value={listName}
+            onChange={handleOnChangeListName}
+          />
+          <button
+            className="primary-button mt-4"
+            onClick={handleAddList}
+            disabled={!listName}
+          >
+            Criar lista
+          </button>
         </div>
       </Modal>
-    </MainCard>
+    </>
   )
 }

@@ -5,7 +5,7 @@ export enum ListTypesProps {
 }
 
 export interface ListProps {
-  items: ListItemProps[]
+  items: TaskProps[]
   id: string
   name: string
   icon?: string
@@ -16,14 +16,16 @@ export interface ListProps {
   completedAt?: string
 }
 
-export interface ListItemProps {
+export interface TaskProps {
   id: string
   text: string
   completed: boolean
   index?: number
-  updatedAt: string
+  updatedAt?: string
+  createdAt?: string
   completedAt?: string
-  markColor: ListItemMarksProps | ''
+  scheduleDate?: string
+  markColor: TaskMarksProps | ''
 }
 
-export type ListItemMarksProps = 'blue' | 'red' | 'yellow' | 'green'
+export type TaskMarksProps = 'blue' | 'red' | 'yellow' | 'green'

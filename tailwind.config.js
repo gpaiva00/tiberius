@@ -6,23 +6,19 @@ export default {
   theme: {
     extend: {
       colors: {
-        black: '#000',
         darkBackground: '#090909',
         darkCardBackground: '#16181c',
         darkTextGray: '#acacac',
         darkBackgroundIconButton: '#2f3336',
         darkTextLight: '#f5f5f5',
         darkInputBackground: '#212327',
-        darkButtonHover: darken(0.1, '#1d9bf0'),
-        darkPrimary: '#1d9bf0',
-        red: '#ef4444',
         gray: '#333',
-        lightGray: '#e6e6e6',
+        lightGray: '#e9e9e9',
         lightenGray: lighten(0.4, '#333'),
+        darkPrimary: '#1d9bf0',
+        darkButtonHover: darken(0.1, '#1d9bf0'),
         primary: '#1d9bf0',
         lightenPrimary: lighten(0.4, '#1d9bf0'),
-        header: '#F5F5F5',
-        white: '#F5F5F5',
       },
       borderRadius: {
         default: '0.75rem',

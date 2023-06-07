@@ -7,7 +7,7 @@ import { Divider, FormattedItemText } from '@/shared/components'
 import { DEFAULT_ICON_PROPS, LISTS_ROUTE } from '@/consts'
 import { ListProps, ListTypesProps } from '@/typings/List'
 
-import { Archive, CaretLeft, Dot, Sidebar, SidebarSimple, TrashSimple } from '@phosphor-icons/react'
+import { Archive, CaretLeft, Dot, SidebarSimple } from '@phosphor-icons/react'
 
 interface ListContentHeaderProps {
   selectedList: ListProps | null
@@ -64,12 +64,6 @@ export default function Header({ selectedList }: ListContentHeaderProps) {
             {FormattedItemText(selectedList?.name)}
           </h1>
         </div>
-        <button
-          className="icon-button"
-          onClick={() => handleDeleteList(selectedList?.id as ListProps['id'])}
-        >
-          <TrashSimple {...DEFAULT_ICON_PROPS} />
-        </button>
       </header>
       <Divider />
     </div>

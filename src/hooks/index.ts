@@ -1,5 +1,6 @@
 import { useAuth } from '@/hooks/useAuth'
-import { useList } from '@/hooks/useList'
 import { useChangeLog } from '@/hooks/useChangeLog'
+import { useList } from '@/hooks/useList'
+import { useTask } from '@/hooks/useTask'
 
-export { useAuth, useList, useChangeLog }
+export { useAuth, useList, useChangeLog, useTask }

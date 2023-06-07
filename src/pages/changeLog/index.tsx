@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { useChangeLog } from '@/hooks'
 
-import { MainCard, CardContentContainer, Divider, FooterContainer } from '@/shared/components'
+import { CardContentContainer, Divider, FooterContainer, MainCard } from '@/shared/components'
 import FormattedItemText from '@/shared/components/ItemTextFormatted'
 
 import { LISTS_ROUTE } from '@/consts'
@@ -24,16 +24,7 @@ export default function ChangeLog() {
   }, [])
 
   return (
-    <MainCard>
-      {/* header */}
-      <header className="flex items-center justify-between gap-2 rounded-t-default p-2">
-        <h1 className="text-xl font-black dark:text-darkTextLight">
-          <span className="mx-2 md:mx-4">🎉</span>
-          novidades
-        </h1>
-      </header>
-      <Divider />
-
+    <MainCard title="🎉 Novidades">
       <CardContentContainer>
         <div className="p-2 pb-2 md:p-4">
           <h4 className="dark:text-darkTextLight">{changeLog?.description}</h4>

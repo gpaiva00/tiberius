@@ -1,21 +1,22 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { Dialog, Menu, Transition } from '@headlessui/react'
+import { Menu } from '@headlessui/react'
 import classNames from 'classnames'
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Confetti from 'react-confetti'
+import DatePicker from 'react-datepicker'
 import toast from 'react-hot-toast'
+import { Link } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
-import { useList } from '@/hooks'
-
-import Header from '@/pages/list/components/ListHeader'
 import {
-  MainCard,
   CardContentContainer,
-  CardWithTabBar,
+  CompletedItemsCount,
   Divider,
   FormattedItemText,
+  InputTextWithFormatting,
+  MainCard,
 } from '@/shared/components'
+import Modal from '@/shared/components/Modal'
 
 import {
   CONGRATS_EMOJIS,
@@ -23,98 +24,100 @@ import {
   DEFAULT_TOAST_PROPS,
   ITEM_COMPLETED_MESSAGES,
   LIST_COMPLETED_MESSAGES,
+  LIST_SETTINGS_ROUTE,
   QUOTES,
+  SCHEDULE_LIMIT,
+  TASK_CHAR_LIMIT,
 } from '@/consts'
-import { copyToClipboard, getDayFromDateString, getRandomQuote, ifTextHasLink } from '@/utils'
-import { ListItemMarksProps, ListItemProps, ListProps, ListTypesProps } from '@typings/List'
+import { useList, useTask } from '@/hooks'
+import {
+  copyToClipboard,
+  getDayFromDateString,
+  getInputLength,
+  getRandomQuote,
+  ifTextHasLink,
+} from '@/utils'
+import { ListProps, ListTypesProps, TaskMarksProps, TaskProps } from '@typings/List'
 
-import Modal from '@/shared/components/Modal'
 import {
   Archive,
+  CalendarBlank,
   CaretRight,
   Check,
   Copy,
   CursorText,
   DotsThree,
+  GearSix,
   ListBullets,
   PencilSimple,
+  Plus,
   TrashSimple,
 } from '@phosphor-icons/react'
 
-export default function List() {
-  const [editingItem, setEditingItem] = useState<ListItemProps | null>(null)
-  const [selectedItem, setSelectedItem] = useState<ListItemProps | null>(null)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [showSidebar, setShowSidebar] = useState(false)
+import Task from '@/shared/components/Task'
+import 'react-datepicker/dist/react-datepicker.css'
 
-  const { selectedList, updateList, lists, handleMoveItem, isListCompleted, sortedListItems } =
-    useList()
+export default function List() {
+  const [editingTask, setEditingTask] = useState<TaskProps | null>(null)
+  const [isEditingTask, setIsEditingTask] = useState(false)
+  const [selectedItem, setSelectedItem] = useState<TaskProps | null>(null)
+
+  const [showMoveTaskModal, setShowMoveTaskModal] = useState(false)
+  const [showCreateTaskModal, setShowCreateTaskModal] = useState(false)
+  const [showEditTaskModal, setShowEditTaskModal] = useState(false)
+  const [showScheduleTaskModal, setShowScheduleTaskModal] = useState(false)
+
+  const { selectedList, updateList, lists, isListCompleted, sortedTasks } = useList()
+  const { moveTask, todayTasks, updateTask, duplicateTask } = useTask()
+
   const listRef = useRef<HTMLDivElement>(null)
   const isListCompletedRef = useRef(isListCompleted)
   const [parent] = useAutoAnimate()
 
-  const handleEditItem = (item: ListItemProps) => {
-    if (item.completed) return
-    setEditingItem({
-      ...item,
-    })
+  const toggleMoveTaskModal = () => setShowMoveTaskModal(!showMoveTaskModal)
+  const toggleCreateTaskModal = () => setShowCreateTaskModal(!showCreateTaskModal)
+  const toggleEditTaskModal = () => setShowEditTaskModal(!showEditTaskModal)
+  const toggleScheduleTaskModal = () => setShowScheduleTaskModal(!showScheduleTaskModal)
+
+  const isTextInputEmpty = (inputValue: string) => {
+    const stripped = inputValue.replace(/<[^>]*>?/gm, '').trim()
+    return !stripped.length
   }
 
-  const handleDeleteItem = async (item: ListItemProps) => {
-    const prompt = window.confirm('tem certeza que deseja excluir este item?')
+  const handleClickOnCreateTask = () => {
+    setEditingTask({
+      id: uuidv4(),
+      text: '',
+      markColor: '',
+      completed: false,
+      updatedAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+      scheduleDate: '',
+    })
+    toggleCreateTaskModal()
+  }
+
+  const handleClickOnDeleteTask = async (task: TaskProps) => {
+    const prompt = window.confirm('Tem certeza que deseja excluir esta tarefa?')
 
     if (!prompt) return
 
-    const updatedItems = selectedList?.items.filter(
-      (selectedListItem) => selectedListItem.id !== item.id
-    )
-    const updatedList = {
+    const updatedItems = selectedList?.items.filter((selectedTask) => selectedTask.id !== task.id)
+    const updatedList: ListProps = {
       ...(selectedList as ListProps),
-      items: updatedItems as ListItemProps[],
+      items: updatedItems as TaskProps[],
     }
 
     await updateList(updatedList)
   }
 
-  const updateItem = async (item: ListItemProps) => {
-    const newListItems = [...(selectedList?.items as ListItemProps[])]
+  const handleCompleteTask = async (task: TaskProps) => {
+    const isItemCompleted = !task.completed
 
-    const itemIndex = newListItems.findIndex((listItem) => listItem.id === item.id)
-
-    newListItems[itemIndex] = {
-      ...item,
-      updatedAt: new Date().toISOString(),
-    }
-
-    const updatedList = {
-      ...(selectedList as ListProps),
-      items: newListItems,
-    }
-
-    await updateList(updatedList)
-  }
-
-  const renameItem = (itemText: string) => {
-    const newItem: ListItemProps = {
-      ...(editingItem as ListItemProps),
-      text: itemText,
-    }
-
-    updateItem(newItem)
-    setEditingItem(null)
-  }
-
-  const handleCompleteItem = async (item: ListItemProps) => {
-    const isItemCompleted = !item.completed
-
-    const newItem: ListItemProps = {
-      ...item,
+    await updateTask({
+      ...task,
       completed: isItemCompleted,
-      completedAt: isItemCompleted ? new Date().toISOString() : '',
-      markColor: isItemCompleted ? '' : item.markColor,
-    }
-
-    await updateItem(newItem)
+    })
 
     if (isItemCompleted) {
       const toastMessage = isListCompletedRef.current
@@ -128,93 +131,125 @@ export default function List() {
     }
   }
 
-  const handleAddItem = async (itemText: string) => {
-    const validatedItemText = itemText.trim()
+  const handleSaveTask = async () => {
+    const newTasks = [...(selectedList?.items as TaskProps[])]
 
-    if (!!editingItem) {
-      renameItem(validatedItemText)
-      return
+    if (isEditingTask) {
+      const oldTaskIndex = selectedList?.items.findIndex(
+        (task) => task.id === editingTask?.id
+      ) as number
+
+      newTasks[oldTaskIndex] = editingTask as TaskProps
+    } else {
+      newTasks.push(editingTask as TaskProps)
     }
 
-    const updatedItems: ListItemProps[] = [
-      ...(selectedList?.items as ListItemProps[]),
-      {
-        id: uuidv4(),
-        text: validatedItemText,
-        completed: false,
-        updatedAt: new Date().toISOString(),
-        markColor: '',
-      },
-    ]
-
-    const updatedList = {
+    await updateList({
       ...(selectedList as ListProps),
-      items: updatedItems,
-    }
+      items: newTasks,
+    } as ListProps)
 
-    await updateList(updatedList)
+    if (showEditTaskModal) toggleEditTaskModal()
+    if (showCreateTaskModal) toggleCreateTaskModal()
 
     listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }
 
-  const handleMarkItem = async (item: ListItemProps, markOption: ListItemMarksProps) => {
-    const newItem: ListItemProps = {
-      ...item,
-      markColor: markOption === item.markColor ? '' : markOption,
-    }
-
-    await updateItem(newItem)
+  const handleMarkTask = async (task: TaskProps, markOption: TaskMarksProps) => {
+    await updateTask({
+      ...task,
+      markColor: markOption === task.markColor ? '' : markOption,
+    })
   }
 
-  const toggleDialog = () => {
-    const newValue = !isDialogOpen
-    setIsDialogOpen(newValue)
+  const handleMoveTask = async (destinationList: ListProps) => {
+    await moveTask({
+      item: selectedItem as TaskProps,
+      destinationList,
+      moveTaskFallback: () => {
+        toast('Item movido com sucesso!', {
+          icon: '👏',
+        })
+        toggleMoveTaskModal()
+      },
+    })
+  }
 
-    if (newValue === false) {
-      setEditingItem(null)
+  const handleSetTaskText = (text: string) => {
+    const validatedItemText = text.trim()
+
+    setEditingTask({
+      ...(editingTask as TaskProps),
+      text: validatedItemText,
+    })
+  }
+
+  const handleKeyDownCreateTaskInput = (event: any) => {
+    const textLength = event.target.textContent.length
+
+    if (textLength > TASK_CHAR_LIMIT && event.key !== 'Backspace') event.preventDefault()
+
+    if (event.key === 'Enter' && event.metaKey) {
+      handleSaveTask()
     }
+  }
+
+  const handleScheduleTask = async (task: TaskProps | null) => {
+    if (!task) return
+
+    if (todayTasks.length === SCHEDULE_LIMIT) {
+      toast(
+        'O limite de 7 tarefas agendadas por dia foi atingido. Tente completar alguma tarefa ou agendar para outro dia.',
+        {
+          icon: '⚠️',
+          duration: 6000,
+        }
+      )
+      return
+    }
+
+    await updateTask(task)
+    toggleScheduleTaskModal()
+    toast('Tarefa agendada com sucesso!', {
+      icon: '👏',
+    })
   }
 
   // drag and drop
-  const handleOnDragItemStart = (event: React.DragEvent<HTMLDivElement>, index: number) => {
-    event.dataTransfer.setData('text/plain', index.toString())
-  }
-
-  const handleOnDragItemOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault()
-    event.currentTarget.classList.add('drag-over')
-  }
-
-  const handleDragItemLeave = (event: React.DragEvent<HTMLDivElement>) => {
-    event.currentTarget.classList.remove('drag-over')
-  }
-
   const handleOnDropItem = async (event: React.DragEvent<HTMLDivElement>, index: number) => {
     event.preventDefault()
     event.currentTarget.classList.remove('drag-over')
 
     const dragIndex = Number(event.dataTransfer.getData('text/plain'))
-    const newNotCompletedItems = [...(sortedListItems?.notCompleted as ListItemProps[])]
+    const newNotCompletedItems = [...(sortedTasks?.notCompleted as TaskProps[])]
     const [draggedItem] = newNotCompletedItems.splice(dragIndex, 1)
 
     newNotCompletedItems.splice(index, 0, draggedItem)
 
     await updateList({
       ...(selectedList as ListProps),
-      items: [...newNotCompletedItems, ...(sortedListItems?.completed as ListItemProps[])],
+      items: [...newNotCompletedItems, ...(sortedTasks?.completed as TaskProps[])],
     })
   }
 
-  const ITEM_OPTIONS = (item: ListItemProps) => [
+  const ITEM_OPTIONS = (task: TaskProps) => [
     {
-      text: 'Editar',
+      text: 'Renomear',
       icon: (
         <PencilSimple
           className="text-lightenGray dark:text-darkTextGray"
           {...DEFAULT_ICON_PROPS}
         />
       ),
-      action: () => handleEditItem(item),
+      action: () => {
+        setEditingTask({
+          ...task,
+          updatedAt: new Date().toISOString(),
+        })
+
+        setIsEditingTask(true)
+        toggleEditTaskModal()
+      },
     },
     {
       text: 'Excluir',
@@ -224,7 +259,23 @@ export default function List() {
           {...DEFAULT_ICON_PROPS}
         />
       ),
-      action: () => handleDeleteItem(item),
+      action: () => handleClickOnDeleteTask(task),
+    },
+    {
+      text: 'Agendar',
+      icon: (
+        <CalendarBlank
+          className="text-lightenGray dark:text-darkTextGray"
+          {...DEFAULT_ICON_PROPS}
+        />
+      ),
+      action: () => {
+        setSelectedItem({
+          ...task,
+          scheduleDate: task.scheduleDate || new Date().toLocaleDateString(),
+        })
+        toggleScheduleTaskModal()
+      },
     },
     {
       text: 'Copiar',
@@ -234,7 +285,7 @@ export default function List() {
           {...DEFAULT_ICON_PROPS}
         />
       ),
-      action: () => copyToClipboard(item.text),
+      action: () => copyToClipboard(task.text),
     },
     {
       text: 'Duplicar',
@@ -244,7 +295,7 @@ export default function List() {
           {...DEFAULT_ICON_PROPS}
         />
       ),
-      action: () => handleAddItem(item.text),
+      action: () => duplicateTask(task),
     },
     {
       text: 'Mover',
@@ -255,75 +306,74 @@ export default function List() {
         />
       ),
       action: () => {
-        toggleDialog()
-        setSelectedItem(item)
+        toggleMoveTaskModal()
+        setSelectedItem(task)
       },
     },
   ]
 
-  const MARK_OPTIONS = (item: ListItemProps) => [
+  const MARK_OPTIONS = (task: TaskProps) => [
     {
       mark: (
         <div
           className={classNames(
-            'h-4 w-4 rounded-full bg-green-400 transition-colors hover:bg-green-500 hover:opacity-100',
+            'h-4 w-4 rounded-full bg-green-400 transition-all hover:bg-green-500 hover:opacity-100',
             {
               'border border-black opacity-100 dark:border-darkTextLight':
-                item.markColor === 'green',
-              'opacity-25': item.markColor && item.markColor !== 'green',
+                task?.markColor === 'green',
+              'opacity-25': task?.markColor && task?.markColor !== 'green',
             }
           )}
         />
       ),
-      action: () => handleMarkItem(item, 'green'),
+      action: () => handleMarkTask(task, 'green'),
     },
     {
       mark: (
         <div
           className={classNames(
-            'h-4 w-4 rounded-full bg-yellow-400 transition-colors hover:bg-yellow-500 hover:opacity-100',
+            'h-4 w-4 rounded-full bg-yellow-400 transition-all hover:bg-yellow-500 hover:opacity-100',
             {
               'border border-black opacity-100 dark:border-darkTextLight':
-                item.markColor === 'yellow',
-              'opacity-25': item.markColor && item.markColor !== 'yellow',
+                task?.markColor === 'yellow',
+              'opacity-25': task?.markColor && task?.markColor !== 'yellow',
             }
           )}
         />
       ),
-      action: () => handleMarkItem(item, 'yellow'),
+      action: () => handleMarkTask(task, 'yellow'),
     },
     {
       mark: (
         <div
           className={classNames(
-            'h-4 w-4 rounded-full bg-rose-400 transition-colors hover:bg-rose-500 hover:opacity-100',
+            'h-4 w-4 rounded-full bg-rose-400 transition-all hover:bg-rose-500 hover:opacity-100',
             {
-              'border border-black opacity-100 dark:border-darkTextLight': item.markColor === 'red',
-              'opacity-25': item.markColor && item.markColor !== 'red',
+              'border border-black opacity-100 dark:border-darkTextLight':
+                task?.markColor === 'red',
+              'opacity-25': task?.markColor && task?.markColor !== 'red',
             }
           )}
         />
       ),
-      action: () => handleMarkItem(item, 'red'),
+      action: () => handleMarkTask(task, 'red'),
     },
     {
       mark: (
         <div
           className={classNames(
-            'h-4 w-4 rounded-full bg-blue-400 transition-colors hover:bg-blue-500 hover:opacity-100',
+            'h-4 w-4 rounded-full bg-blue-400 transition-all hover:bg-blue-500 hover:opacity-100',
             {
               'border border-black opacity-100 dark:border-darkTextLight':
-                item.markColor === 'blue',
-              'opacity-25': item.markColor && item.markColor !== 'blue',
+                task?.markColor === 'blue',
+              'opacity-25': task?.markColor && task?.markColor !== 'blue',
             }
           )}
         />
       ),
-      action: () => handleMarkItem(item, 'blue'),
+      action: () => handleMarkTask(task, 'blue'),
     },
   ]
-
-  const toggleSidebar = () => setShowSidebar(!showSidebar)
 
   useEffect(() => {
     isListCompletedRef.current = isListCompleted
@@ -339,73 +389,63 @@ export default function List() {
         />
       )}
       <MainCard
-        showSidebar={showSidebar}
-        closeSidebar={toggleSidebar}
+        title={
+          <div className="flex w-full items-center gap-2">
+            <h1 className="default-header-title max-w-xs truncate">
+              {FormattedItemText(
+                selectedList?.type === 'default' ? selectedList?.name : 'Itens gerais'
+              )}
+            </h1>
+            <CompletedItemsCount
+              size="sm"
+              items={selectedList?.items || []}
+            />
+          </div>
+        }
+        options={
+          <>
+            <button
+              onClick={handleClickOnCreateTask}
+              className="icon-button"
+            >
+              <Plus {...DEFAULT_ICON_PROPS} />
+            </button>
+            <Link
+              to={LIST_SETTINGS_ROUTE}
+              className="icon-button"
+            >
+              <GearSix {...DEFAULT_ICON_PROPS} />
+            </Link>
+          </>
+        }
       >
-        <Header
-          openSidebar={toggleSidebar}
-          selectedList={selectedList}
-        />
         <CardContentContainer>
           {/* quotation */}
-          {!selectedList?.items.length && (
+          {!selectedList?.items?.length && (
             <div className="flex flex-1 items-center justify-center px-4 md:px-0">
               <p className="text-center italic text-lightenGray">{getRandomQuote(QUOTES)}</p>
             </div>
           )}
-          {/* uncompleted items */}
+          {/* tasks */}
           <div ref={parent}>
-            {sortedListItems.notCompleted.map((item, index) => (
-              <div
-                key={item.id}
-                draggable
-                onDragStart={(event) => handleOnDragItemStart(event, index)}
-                onDragOver={(event) => handleOnDragItemOver(event)}
-                onDrop={(event) => handleOnDropItem(event, index)}
-                onDragLeave={(event) => handleDragItemLeave(event)}
-                ref={listRef}
-              >
-                <div className="flex flex-row items-start py-2 pr-2">
-                  {/* checkbox */}
-                  <div className="mx-2 mt-1 flex md:mx-4">
-                    <div
-                      className="default-checkbox"
-                      onClick={() => handleCompleteItem(item)}
-                    />
-                  </div>
-                  {/* item text */}
-                  <div className="w-full">
-                    <div
-                      className={classNames(
-                        'm-0 max-w-[92%] break-words p-0 dark:text-darkTextLight',
-                        {
-                          'break-all': ifTextHasLink(item.text),
-                        }
-                      )}
-                    >
-                      {FormattedItemText(item.text)}
-                    </div>
-                    {item.updatedAt && (
-                      <small className="m-0 p-0 text-[0.5rem] text-lightenGray dark:text-darkTextGray md:text-[0.625rem]">
-                        atualizado {getDayFromDateString(item.updatedAt as string)} às{' '}
-                        {new Date(item.updatedAt as string).toLocaleTimeString(navigator.language, {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
-                      </small>
-                    )}
-                  </div>
-                  {/* item option */}
-                  <div className="flex items-center gap-2">
-                    <div
-                      className={classNames('h-4 w-4 rounded-full transition-all', {
-                        'bg-green-400': item.markColor === 'green',
-                        'bg-yellow-400': item.markColor === 'yellow',
-                        'bg-rose-400': item.markColor === 'red',
-                        'bg-blue-400': item.markColor === 'blue',
-                        'bg-transparent': !item.markColor,
-                      })}
-                    />
+            {sortedTasks.notCompleted.map((task: TaskProps, index: number) => (
+              <>
+                <Task
+                  task={task}
+                  index={index}
+                  handleCompleteTask={handleCompleteTask}
+                  handleOnDropItem={handleOnDropItem}
+                  handleClickOnScheduleDate={() => {
+                    setSelectedItem({
+                      ...task,
+                      scheduleDate: task.scheduleDate || new Date().toLocaleDateString(),
+                    })
+                    toggleScheduleTaskModal()
+                  }}
+                  listRef={listRef}
+                  key={task.id}
+                  showScheduleDate
+                  options={
                     <Menu
                       as="div"
                       className="relative inline-block outline-none ring-0 focus:ring-0"
@@ -418,8 +458,8 @@ export default function List() {
                           />
                         </button>
                       </Menu.Button>
-                      <Menu.Items className="menu-items">
-                        {ITEM_OPTIONS(item).map((option, index) => (
+                      <Menu.Items className="menu-items w-[150px]">
+                        {ITEM_OPTIONS(task).map((option, index) => (
                           <Menu.Item key={index}>
                             <button
                               className="popover-button"
@@ -433,7 +473,7 @@ export default function List() {
                         <Menu.Items className="mt-2">
                           <Divider />
                           <div className="flex w-full items-center justify-between pt-3">
-                            {MARK_OPTIONS(item).map((option, index) => (
+                            {MARK_OPTIONS(task).map((option, index) => (
                               <Menu.Item key={index}>
                                 <button onClick={option.action}>{option.mark}</button>
                               </Menu.Item>
@@ -442,30 +482,30 @@ export default function List() {
                         </Menu.Items>
                       </Menu.Items>
                     </Menu>
-                  </div>
-                </div>
-                {index !== sortedListItems.notCompleted.length - 1 && <Divider />}
-              </div>
+                  }
+                />
+                {index !== sortedTasks.notCompleted.length - 1 && <Divider />}
+              </>
             ))}
           </div>
-          {sortedListItems.completed.length > 0 && (
+          {sortedTasks.completed.length > 0 && (
             <div className="sticky bottom-0 flex items-center bg-zinc-300 px-2 py-2 dark:bg-darkBackgroundIconButton md:px-4">
               <h2 className="text-sm font-bold dark:text-darkTextLight md:text-base">
-                {sortedListItems.completed.length}{' '}
-                {sortedListItems.completed.length === 1 ? 'concluído' : 'concluídas'}
+                {sortedTasks.completed.length}{' '}
+                {sortedTasks.completed.length === 1 ? 'concluído' : 'concluídas'}
               </h2>
             </div>
           )}
-          {/* completed items */}
+          {/* completed tasks */}
           <div ref={parent}>
-            {sortedListItems.completed.map((item, index) => (
-              <div key={item.id}>
+            {sortedTasks.completed.map((task: TaskProps, index: number) => (
+              <div key={task.id}>
                 <div className="flex flex-row items-start py-2 pr-2">
                   {/* checkbox */}
                   <div className="mx-2 mt-1 flex md:mx-4">
                     <div
                       className="default-checkbox checkbox-checked"
-                      onClick={() => handleCompleteItem(item)}
+                      onClick={() => handleCompleteTask(task)}
                     >
                       <Check
                         weight="bold"
@@ -478,105 +518,236 @@ export default function List() {
                       className={classNames(
                         'm-0 max-w-[92%] select-text break-words p-0 text-lightenGray opacity-90 dark:text-darkTextGray dark:opacity-40',
                         {
-                          'break-all': ifTextHasLink(item.text),
+                          'break-all': ifTextHasLink(task.text),
                         }
                       )}
                     >
-                      {FormattedItemText(item.text)}
+                      {FormattedItemText(task.text)}
                     </div>
                     <small className="text-[0.5rem] text-lightenGray dark:text-darkTextGray md:text-[0.625rem]">
-                      feito {getDayFromDateString(item.completedAt as string)} às{' '}
-                      {new Date(item.completedAt as string).toLocaleTimeString(navigator.language, {
+                      Feita {getDayFromDateString(task.completedAt as string)} às{' '}
+                      {new Date(task.completedAt as string).toLocaleTimeString(navigator.language, {
                         hour: '2-digit',
                         minute: '2-digit',
                       })}
                     </small>
                   </div>
                 </div>
-                {index !== sortedListItems.completed.length - 1 && <Divider />}
+                {index !== sortedTasks.completed.length - 1 && <Divider />}
               </div>
             ))}
           </div>
         </CardContentContainer>
       </MainCard>
-      {/* dialog */}
+      {/* move item */}
       <Modal
-        isOpen={isDialogOpen}
-        toggleDialog={toggleDialog}
+        isOpen={showMoveTaskModal}
+        toggleDialog={toggleMoveTaskModal}
+        title="Mover tarefa para outra lista"
       >
-        <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-default bg-white text-left align-middle shadow-xl transition-all dark:bg-darkCardBackground">
-                <Dialog.Title
-                  as="h3"
-                  className="default-header flex-col items-start"
+        {/* body */}
+        <div className="flex max-h-96 flex-col overflow-y-auto">
+          {lists.map((list, index) => (
+            <>
+              <div
+                key={index}
+                className="flex flex-row items-center pl-4 pr-2 transition-all hover:bg-lightGray dark:hover:bg-darkInputBackground"
+              >
+                <div
+                  className="flex w-full cursor-pointer items-center gap-2 py-4"
+                  onClick={() => handleMoveTask(list)}
                 >
-                  <h1 className="default-header-title">Mover item para outra lista</h1>
-                  {/* subtitle */}
-                  <p className="text-sm font-light text-lightenGray">
-                    Escolha a lista para onde deseja mover o item.
-                  </p>
-                </Dialog.Title>
-                <Divider />
-                {/* body */}
-                <div className="flex flex-col">
-                  {lists.map((list, index) => (
-                    <>
-                      <div
-                        key={index}
-                        className="flex flex-row items-center pl-4 pr-2 transition-all hover:bg-lightGray dark:hover:bg-darkInputBackground"
-                      >
-                        <div
-                          className="flex w-full cursor-pointer items-center gap-2 py-4"
-                          onClick={() =>
-                            handleMoveItem({
-                              destinationList: list,
-                              item: selectedItem,
-                              moveItemFallback: toggleDialog,
-                            })
-                          }
-                        >
-                          <h1 className="flex items-center gap-1 font-bold hover:underline dark:text-darkTextLight">
-                            {list.type === ListTypesProps.GENERAL && (
-                              <Archive
-                                {...DEFAULT_ICON_PROPS}
-                                className="mr-1 md:mr-2"
-                              />
-                            )}
-                            {FormattedItemText(list.name)}
-                          </h1>
-                        </div>
-                        <CaretRight
-                          {...DEFAULT_ICON_PROPS}
-                          className="text-lightenGray dark:text-lightenGray"
-                        />
-                      </div>
-                      {(index !== lists.length - 1 || list.type === ListTypesProps.GENERAL) && (
-                        <Divider />
-                      )}
-                    </>
-                  ))}
+                  <h1 className="list-title">
+                    {list.type === ListTypesProps.GENERAL && (
+                      <Archive
+                        {...DEFAULT_ICON_PROPS}
+                        className="mr-1 md:mr-2"
+                      />
+                    )}
+                    {FormattedItemText(list.name)}
+                  </h1>
                 </div>
+                <CaretRight
+                  {...DEFAULT_ICON_PROPS}
+                  className="text-lightenGray dark:text-lightenGray"
+                />
+              </div>
+              {(index !== lists.length - 1 || list.type === ListTypesProps.GENERAL) && <Divider />}
+            </>
+          ))}
+        </div>
+        {/* buttons */}
+        <div className="mt-4 p-2">
+          <button
+            className="secondary-button"
+            onClick={() => {
+              toggleMoveTaskModal()
+              setSelectedItem(null)
+            }}
+          >
+            Cancelar
+          </button>
+        </div>
+      </Modal>
+      {/* edit task description */}
+      <Modal
+        isOpen={showEditTaskModal}
+        toggleDialog={toggleEditTaskModal}
+        title="Editar descrição da tarefa"
+        size="xl"
+      >
+        {/* body */}
+        <div className="flex flex-col gap-4 p-4">
+          <div className="flex flex-col gap-2">
+            <label className="default-label">Descrição</label>
 
-                <div className="mt-4 p-2">
-                  <button
-                    className="secondary-button"
-                    onClick={toggleDialog}
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
+            <InputTextWithFormatting
+              inputTextValue={editingTask?.text || ''}
+              setInputTextValue={handleSetTaskText}
+              placeholder="Descreva a tarefa..."
+              handleOnKeyDown={handleKeyDownCreateTaskInput}
+            />
+            {/* character count */}
+            <div className="flex w-full items-center justify-end gap-2">
+              <span className="text-xs text-lightenGray">
+                {getInputLength(editingTask?.text || '')}/{TASK_CHAR_LIMIT}
+              </span>
+            </div>
+          </div>
+          {/* buttons */}
+          <div className="mt-4 flex items-center justify-between gap-2">
+            <button
+              className="secondary-button"
+              onClick={() => {
+                toggleEditTaskModal()
+                setEditingTask(null)
+                setIsEditingTask(false)
+              }}
+            >
+              Cancelar
+            </button>
+            <button
+              className="primary-button"
+              disabled={isTextInputEmpty(editingTask?.text || '')}
+              onClick={handleSaveTask}
+            >
+              Editar tarefa
+            </button>
+          </div>
+        </div>
+      </Modal>
+      {/* create task */}
+      <Modal
+        isOpen={showCreateTaskModal}
+        toggleDialog={toggleCreateTaskModal}
+        title="Criar tarefa"
+        size="xl"
+      >
+        {/* body */}
+        <div className="flex flex-col gap-4 p-4">
+          <div className="flex flex-col gap-2">
+            <label className="default-label">Descrição</label>
+
+            <InputTextWithFormatting
+              inputTextValue={editingTask?.text || ''}
+              setInputTextValue={handleSetTaskText}
+              placeholder="Descreva a tarefa..."
+              handleOnKeyDown={handleKeyDownCreateTaskInput}
+            />
+            {/* character count */}
+            <div className="flex w-full items-center justify-end gap-2">
+              <span className="text-xs text-lightenGray">
+                {getInputLength(editingTask?.text || '')}/{TASK_CHAR_LIMIT}
+              </span>
+            </div>
+          </div>
+          {/* schedule task */}
+          <div className="flex flex-col gap-2">
+            <label className="default-label">Agendar</label>
+            <DatePicker
+              onChange={(date) =>
+                setEditingTask({
+                  ...(editingTask as TaskProps),
+                  scheduleDate: date?.toLocaleDateString() || '',
+                })
+              }
+              value={editingTask?.scheduleDate}
+              customInput={
+                <input
+                  className="default-input-text"
+                  placeholder="Escolha uma data para agendar sua tarefa"
+                />
+              }
+            />
+          </div>
+          {/* buttons */}
+          <div className="mt-4 flex items-center justify-between gap-2">
+            <button
+              className="secondary-button"
+              onClick={() => {
+                toggleCreateTaskModal()
+                setEditingTask(null)
+                setIsEditingTask(false)
+              }}
+            >
+              Cancelar
+            </button>
+            <button
+              className="primary-button"
+              disabled={isTextInputEmpty(editingTask?.text || '')}
+              onClick={handleSaveTask}
+            >
+              Criar tarefa
+            </button>
+          </div>
+        </div>
+      </Modal>
+      {/* schedule task */}
+      <Modal
+        title="Agendar tarefa"
+        subtitle="Selecione a data para completar a tarefa."
+        isOpen={showScheduleTaskModal}
+        toggleDialog={toggleScheduleTaskModal}
+      >
+        <div className="flex flex-col gap-4 p-4">
+          {/* body */}
+          <div className="flex flex-col gap-2">
+            <label className="default-label">Data</label>
+            <DatePicker
+              className="default-input"
+              startOpen={false}
+              onChange={(date) =>
+                setSelectedItem({
+                  ...(selectedItem as TaskProps),
+                  scheduleDate: date?.toISOString() || '',
+                })
+              }
+              value={new Date(selectedItem?.scheduleDate || '').toLocaleDateString()}
+              customInput={
+                <input
+                  className="default-input-text"
+                  placeholder="Escolha uma data para agendar sua tarefa"
+                />
+              }
+            />
+          </div>
+          {/* buttons */}
+          <div className="mt-4 flex items-center justify-between gap-2">
+            <button
+              className="secondary-button"
+              onClick={() => {
+                toggleScheduleTaskModal()
+                setEditingTask(null)
+              }}
+            >
+              Cancelar
+            </button>
+            <button
+              className="primary-button"
+              onClick={() => handleScheduleTask(selectedItem)}
+            >
+              Agendar tarefa
+            </button>
           </div>
         </div>
       </Modal>
