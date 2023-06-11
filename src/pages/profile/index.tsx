@@ -1,20 +1,9 @@
 import { useAuth } from '@/hooks'
-import { useNavigate } from 'react-router-dom'
-
-import { useState } from 'react'
 
 import { MainCard } from '@/shared/components'
 
 export default function User() {
-  const [showSidebar, setShowSidebar] = useState(false)
-  const navigate = useNavigate()
   const { user, signOut } = useAuth()
-
-  const handleClickOnBackButton = () => {
-    navigate(-1)
-  }
-
-  const toggleSidebar = () => setShowSidebar(!showSidebar)
 
   return (
     <MainCard title="Perfil">

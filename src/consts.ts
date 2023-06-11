@@ -16,6 +16,7 @@ export const ABOUT_ROUTE = '/about'
 export const HELP_ROUTE = '/help'
 export const OVERVIEW_ROUTE = '/overview'
 export const SEARCH_ROUTE = '/search'
+export const APP_SETTINGS_ROUTE = '/app-settings'
 
 export const GENERAL_LIST: Omit<ListProps, 'userId' | 'createdAt'> = {
   id: uuidv4(),
@@ -43,6 +44,8 @@ export const TASK_CHAR_LIMIT = 500
 export const STORAGE_USER_KEY = '@tiberius/user'
 export const STORAGE_SELECTED_LIST_ID_KEY = '@tiberius/selectedList'
 export const HAVE_SEEN_CHANGE_LOG_DATE_KEY = '@tiberius/haveSeenChangeLogDate'
+export const APP_TEXT_SIZE_KEY = '@tiberius/appTextSize'
+export const APP_COMPLETED_TASK_STYLE_KEY = '@tiberius/appCompletedTaskStyle'
 
 export const DEFAULT_ICON_SIZE = 20
 

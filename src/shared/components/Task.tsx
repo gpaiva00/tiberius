@@ -5,6 +5,7 @@ import { TodaysTaskProps } from '@/hooks/useTask'
 import { TaskProps } from '@/typings/List'
 import { getDayFromDateString, ifTextHasLink } from '@/utils'
 
+import { useAppSettings } from '@/hooks'
 import { CalendarBlank } from '@phosphor-icons/react'
 
 interface TaskComponentProps {
@@ -30,6 +31,8 @@ export default function Task({
   className,
   handleClickOnScheduleDate,
 }: TaskComponentProps) {
+  const { textSize } = useAppSettings()
+
   return (
     <div
       key={task.id}
@@ -62,9 +65,13 @@ export default function Task({
         {/* item text */}
         <div className="w-full">
           <div
-            className={classNames('m-0 max-w-[92%] break-words p-0 dark:text-darkTextLight', {
-              'break-all': ifTextHasLink(task.text),
-            })}
+            className={classNames(
+              'm-0 max-w-[92%] break-words p-0 dark:text-darkTextLight',
+              {
+                'break-all': ifTextHasLink(task.text),
+              },
+              `text-${textSize}`
+            )}
           >
             {FormattedItemText(task.text)}
           </div>

@@ -62,18 +62,20 @@ export default function ListSettings() {
         <div className="flex flex-1 flex-col">
           {/* input container */}
           <div className="flex flex-col gap-2 p-2 md:gap-4 md:p-4">
-            <label className="default-label">Nome da lista</label>
-            <input
-              type="text"
-              className="default-input-text"
-              placeholder="Ex: 📖 Estudos"
-              onSubmit={handleSave}
-              onKeyDown={(event) => event.key === 'Enter' && handleSave()}
-              value={inputText}
-              onBlur={handleSave}
-              onChange={(event) => setInputText(event.target.value)}
-              disabled={selectedList?.type === ListTypesProps.GENERAL}
-            />
+            <div className="flex flex-col gap-2">
+              <label className="default-label">Nome da lista</label>
+              <input
+                type="text"
+                className="default-input-text"
+                placeholder="Ex: 📖 Estudos"
+                onSubmit={handleSave}
+                onKeyDown={(event) => event.key === 'Enter' && handleSave()}
+                value={inputText}
+                onBlur={handleSave}
+                onChange={(event) => setInputText(event.target.value)}
+                disabled={selectedList?.type === ListTypesProps.GENERAL}
+              />
+            </div>
           </div>
         </div>
       </CardContentContainer>

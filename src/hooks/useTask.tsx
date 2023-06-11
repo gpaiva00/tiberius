@@ -22,13 +22,9 @@ interface TaskContextProps {
   todayTasks: TodaysTaskProps[]
 }
 
-interface TaskProviderProps {
-  children: ReactNode
-}
-
 const taskContext = createContext<TaskContextProps>({} as TaskContextProps)
 
-export const TaskProvider = ({ children }: TaskProviderProps) => {
+export const TaskProvider = ({ children }: { children: ReactNode }) => {
   const [todayTasks, setTodayTasks] = useState<TaskProps[]>([])
 
   const { updateList, selectedList, lists } = useList()

@@ -4,8 +4,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { CardContentContainer, Divider, MainCard, SimpleCard } from '@/shared/components'
 import Task from '@/shared/components/Task'
 
-import { DEFAULT_ICON_PROPS, LIST_ROUTE, QUOTES } from '@/consts'
-import { useAuth, useList, useTask } from '@/hooks'
+import { APP_SETTINGS_ROUTE, DEFAULT_ICON_PROPS, LIST_ROUTE, QUOTES } from '@/consts'
+import { useAppSettings, useAuth, useList, useTask } from '@/hooks'
 import { TodaysTaskProps } from '@/hooks/useTask'
 import { getGreetings } from '@/pages/overview/utils/getGreetings'
 import { ListProps } from '@/typings/List'
@@ -17,6 +17,7 @@ export default function Overview() {
   const { user } = useAuth()
   const { saveSelectedList } = useList()
   const { todayTasks } = useTask()
+  const { textSize } = useAppSettings()
   const navigate = useNavigate()
 
   const handleClickOnTask = (task: TodaysTaskProps) => {
@@ -29,7 +30,7 @@ export default function Overview() {
       title="Início"
       options={
         <Link
-          to={''}
+          to={APP_SETTINGS_ROUTE}
           className="icon-button"
         >
           <GearSix {...DEFAULT_ICON_PROPS} />
@@ -37,7 +38,7 @@ export default function Overview() {
       }
     >
       <CardContentContainer className="gap-4 px-4 py-4">
-        <h4 className="text-lg dark:text-darkTextLight">
+        <h4 className={classNames('text-lg dark:text-darkTextLight')}>
           {`${getGreetings()}, ${user?.firstName}! Aqui está seu resumo:`}
         </h4>
 

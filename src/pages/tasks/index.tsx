@@ -30,7 +30,7 @@ import {
   SCHEDULE_LIMIT,
   TASK_CHAR_LIMIT,
 } from '@/consts'
-import { useList, useTask } from '@/hooks'
+import { useAppSettings, useList, useTask } from '@/hooks'
 import {
   copyToClipboard,
   getDayFromDateString,
@@ -55,6 +55,7 @@ import {
   TrashSimple,
 } from '@phosphor-icons/react'
 
+import { CompletedTaskStyleProps } from '@/hooks/useAppSettings'
 import 'react-datepicker/dist/react-datepicker.css'
 
 enum Modals {
@@ -74,6 +75,7 @@ export default function List() {
 
   const { selectedList, updateList, lists, isListCompleted, sortedTasks } = useList()
   const { moveTask, todayTasks, updateTask, duplicateTask, completeTask } = useTask()
+  const { textSize, completedTaskStyle } = useAppSettings()
 
   const listRef = useRef<HTMLDivElement>(null)
   const isListCompletedRef = useRef(isListCompleted)
@@ -487,10 +489,17 @@ export default function List() {
                   <div className="w-full">
                     <div
                       className={classNames(
-                        'm-0 max-w-[92%] select-text break-words p-0 text-lightenGray opacity-90 dark:text-darkTextGray dark:opacity-40',
+                        'm-0 max-w-[92%] select-text break-words p-0 opacity-90',
                         {
                           'break-all': ifTextHasLink(task.text),
-                        }
+                          'text-lightenGray dark:text-darkTextGray':
+                            completedTaskStyle === CompletedTaskStyleProps.GRAY,
+                          'text-lightenGray line-through dark:text-darkTextGray':
+                            completedTaskStyle === CompletedTaskStyleProps.GRAY_AND_STROKE,
+                          'line-through dark:text-darkTextLight':
+                            completedTaskStyle === CompletedTaskStyleProps.STROKE,
+                        },
+                        `text-${textSize}`
                       )}
                     >
                       {FormattedItemText(task.text)}

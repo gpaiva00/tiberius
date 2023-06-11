@@ -9,22 +9,24 @@ import { DefaultProvider } from '@/routes/DefaultProvider'
 import { PrivateRouter } from '@/routes/PrivateRouter'
 
 import About from '@/pages/about'
+import AppSettings from '@/pages/appSettings'
 import ChangeLog from '@/pages/changeLog'
 import Contact from '@/pages/contact'
 import Error from '@/pages/error'
 import Help from '@/pages/help'
 import Home from '@/pages/home'
-import List from '@/pages/list'
 import Lists from '@/pages/lists'
 import ListSettings from '@/pages/listSettings'
 import Overview from '@/pages/overview'
+import Profile from '@/pages/profile'
 import SignIn from '@/pages/signin'
+import Tasks from '@/pages/tasks'
 import TermsOfUse from '@/pages/termsOfUse'
-import User from '@/pages/user'
 import DefaultLayout from '../shared/components/DefaultLayout'
 
 import {
   ABOUT_ROUTE,
+  APP_SETTINGS_ROUTE,
   CHANGE_LOG_ROUTE,
   CONTACT_ROUTE,
   HELP_ROUTE,
@@ -57,6 +59,11 @@ const router = createBrowserRouter(
       <Route element={<DefaultLayout />}>
         <Route element={<PrivateRouter />}>
           <Route
+            path={APP_SETTINGS_ROUTE}
+            element={<AppSettings />}
+            errorElement={<Error />}
+          />
+          <Route
             index
             path={OVERVIEW_ROUTE}
             element={<Overview />}
@@ -64,7 +71,7 @@ const router = createBrowserRouter(
           />
           <Route
             path={LIST_ROUTE}
-            element={<List />}
+            element={<Tasks />}
             errorElement={<Error />}
           />
           <Route
@@ -74,7 +81,7 @@ const router = createBrowserRouter(
           />
           <Route
             path={USER_ROUTE}
-            element={<User />}
+            element={<Profile />}
             errorElement={<Error />}
           />
           <Route
