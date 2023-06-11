@@ -3,7 +3,7 @@ import classNames from 'classnames'
 interface BadgeProps {
   children: React.ReactNode
   className?: string
-  variant?: 'primary' | 'secondary' | 'default'
+  variant?: 'primary' | 'secondary' | 'danger' | 'default'
 }
 
 export default function Badge({ children, variant = 'default', className }: BadgeProps) {
@@ -16,6 +16,7 @@ export default function Badge({ children, variant = 'default', className }: Badg
             variant === 'primary',
           'border-default bg-white text-lightenGray dark:bg-darkInputBackground dark:text-darkTextGray':
             variant === 'default',
+          'bg-red-200 text-red-700 dark:bg-red-200 dark:text-red-800': variant === 'danger',
         },
         className
       )}

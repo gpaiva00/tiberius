@@ -73,7 +73,11 @@ export default function Task({
             {showScheduleDate && task.scheduleDate && handleClickOnScheduleDate && (
               <button onClick={handleClickOnScheduleDate}>
                 <Badge
-                  variant="primary"
+                  variant={
+                    new Date(task.scheduleDate as string).getTime() < new Date().getTime()
+                      ? 'danger'
+                      : 'primary'
+                  }
                   className="hover:underline"
                 >
                   <CalendarBlank size={10} /> Agendada para{' '}

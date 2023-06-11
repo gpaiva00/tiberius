@@ -11,13 +11,14 @@ export interface TodaysTaskProps extends TaskProps {
 interface MoveItemProps {
   item: TaskProps | null
   destinationList: ListProps
-  moveTaskFallback: () => void
+  fallback: () => void
 }
 
 interface TaskContextProps {
   moveTask: (props: MoveItemProps) => Promise<void>
   updateTask: (task: TaskProps) => Promise<void>
   duplicateTask: (task: TaskProps) => Promise<void>
+  completeTask: (task: TaskProps, fallback: (isCompleted: boolean) => void) => Promise<void>
   todayTasks: TodaysTaskProps[]
 }
 
@@ -61,7 +62,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
     })
   }
 
-  const moveTask = async ({ item, destinationList, moveTaskFallback }: MoveItemProps) => {
+  const moveTask = async ({ item, destinationList, fallback }: MoveItemProps) => {
     if (!item) return
 
     if (!destinationList) return
@@ -83,7 +84,20 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
       ],
     })
 
-    moveTaskFallback()
+    fallback()
+  }
+
+  const completeTask = async (task: TaskProps, fallback: (isCompleted: boolean) => void) => {
+    const isItemCompleted = !task.completed
+
+    await updateTask({
+      ...task,
+      completed: isItemCompleted,
+      completedAt: isItemCompleted ? new Date().toISOString() : undefined,
+      scheduleDate: undefined,
+    })
+
+    fallback(isItemCompleted)
   }
 
   const getTodayTasks = () => {
@@ -114,6 +128,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
       value={{
         moveTask,
         todayTasks,
+        completeTask,
         updateTask,
         duplicateTask,
       }}

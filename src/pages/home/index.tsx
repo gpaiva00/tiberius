@@ -31,7 +31,7 @@ export default function Home() {
               to={SIGN_IN_ROUTE}
               className="secondary-button w-auto"
             >
-              entrar
+              Entrar
             </Link>
           )}
         </header>
@@ -49,9 +49,9 @@ export default function Home() {
               </p>
               <Link
                 to={SIGN_IN_ROUTE}
-                className="primary-button md:w-[20rem]"
+                className="primary-button md:max-w-sm"
               >
-                começar
+                Começar
               </Link>
             </div>
             <div className="hidden flex-col items-center justify-end md:flex">

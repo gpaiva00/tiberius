@@ -32,7 +32,7 @@ export default function SignIn() {
             Seja bem-vindo, {user.firstName}!
           </p>
           <button
-            className="primary-button max-w-sm"
+            className="primary-button md:max-w-sm"
             onClick={handleGoToTiberius}
           >
             Acessar o Tiberius
@@ -42,15 +42,18 @@ export default function SignIn() {
         <div className="flex flex-1 flex-col items-center justify-center gap-6 px-2 md:px-4">
           <p className="text-lg font-bold dark:text-darkTextLight">
             Entre para ter acesso ao Tiberius.
-            <p className="text-start font-normal text-lightenGray"> Simples assim, e de graça.</p>
+            <p className="text-start font-normal text-lightenGray md:text-center">
+              {' '}
+              Simples assim, e de graça.
+            </p>
           </p>
 
           <button
-            className="primary-button"
+            className="primary-button gap-2 md:max-w-sm"
             onClick={handleSignIn}
           >
             <GoogleIcon className="w-5" />
-            entrar com Google
+            Entrar com Google
           </button>
         </div>
       )}

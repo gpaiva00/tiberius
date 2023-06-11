@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
-    <footer className="w-full pb-2 pt-6 md:pt-0">
+    <footer className="z-50 w-full pb-2 pt-6 md:pt-0">
       <p className="text-center text-sm text-lightenGray dark:text-darkTextGray">
         <Link
           to={TERMOS_OF_USE_ROUTE}

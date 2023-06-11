@@ -57,27 +57,27 @@ import {
 
 import 'react-datepicker/dist/react-datepicker.css'
 
+enum Modals {
+  MOVE_TASK = 'MOVE_TASK',
+  CREATE_TASK = 'CREATE_TASK',
+  EDIT_TASK = 'EDIT_TASK',
+  SCHEDULE_TASK = 'SCHEDULE_TASK',
+  NONE = 'NONE',
+}
+
 export default function List() {
   const [editingTask, setEditingTask] = useState<TaskProps | null>(null)
   const [isEditingTask, setIsEditingTask] = useState(false)
   const [selectedItem, setSelectedItem] = useState<TaskProps | null>(null)
 
-  const [showMoveTaskModal, setShowMoveTaskModal] = useState(false)
-  const [showCreateTaskModal, setShowCreateTaskModal] = useState(false)
-  const [showEditTaskModal, setShowEditTaskModal] = useState(false)
-  const [showScheduleTaskModal, setShowScheduleTaskModal] = useState(false)
+  const [currentModal, setCurrentModal] = useState<Modals>(Modals.NONE)
 
   const { selectedList, updateList, lists, isListCompleted, sortedTasks } = useList()
-  const { moveTask, todayTasks, updateTask, duplicateTask } = useTask()
+  const { moveTask, todayTasks, updateTask, duplicateTask, completeTask } = useTask()
 
   const listRef = useRef<HTMLDivElement>(null)
   const isListCompletedRef = useRef(isListCompleted)
   const [parent] = useAutoAnimate()
-
-  const toggleMoveTaskModal = () => setShowMoveTaskModal(!showMoveTaskModal)
-  const toggleCreateTaskModal = () => setShowCreateTaskModal(!showCreateTaskModal)
-  const toggleEditTaskModal = () => setShowEditTaskModal(!showEditTaskModal)
-  const toggleScheduleTaskModal = () => setShowScheduleTaskModal(!showScheduleTaskModal)
 
   const isTextInputEmpty = (inputValue: string) => {
     const stripped = inputValue.replace(/<[^>]*>?/gm, '').trim()
@@ -94,7 +94,7 @@ export default function List() {
       createdAt: new Date().toISOString(),
       scheduleDate: '',
     })
-    toggleCreateTaskModal()
+    setCurrentModal(Modals.CREATE_TASK)
   }
 
   const handleClickOnDeleteTask = async (task: TaskProps) => {
@@ -112,23 +112,18 @@ export default function List() {
   }
 
   const handleCompleteTask = async (task: TaskProps) => {
-    const isItemCompleted = !task.completed
-
-    await updateTask({
-      ...task,
-      completed: isItemCompleted,
+    completeTask(task, (isCompleted) => {
+      if (isCompleted) {
+        const toastMessage = isListCompletedRef.current
+          ? getRandomQuote(LIST_COMPLETED_MESSAGES)
+          : getRandomQuote(ITEM_COMPLETED_MESSAGES)
+        toast(toastMessage, {
+          icon: getRandomQuote(CONGRATS_EMOJIS),
+          ...DEFAULT_TOAST_PROPS,
+          duration: 6000,
+        })
+      }
     })
-
-    if (isItemCompleted) {
-      const toastMessage = isListCompletedRef.current
-        ? getRandomQuote(LIST_COMPLETED_MESSAGES)
-        : getRandomQuote(ITEM_COMPLETED_MESSAGES)
-      toast(toastMessage, {
-        icon: getRandomQuote(CONGRATS_EMOJIS),
-        ...DEFAULT_TOAST_PROPS,
-        duration: 6000,
-      })
-    }
   }
 
   const handleSaveTask = async () => {
@@ -149,8 +144,7 @@ export default function List() {
       items: newTasks,
     } as ListProps)
 
-    if (showEditTaskModal) toggleEditTaskModal()
-    if (showCreateTaskModal) toggleCreateTaskModal()
+    setCurrentModal(Modals.NONE)
 
     listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }
@@ -162,32 +156,10 @@ export default function List() {
     })
   }
 
-  const handleMoveTask = async (destinationList: ListProps) => {
-    await moveTask({
-      item: selectedItem as TaskProps,
-      destinationList,
-      moveTaskFallback: () => {
-        toast('Item movido com sucesso!', {
-          icon: '👏',
-        })
-        toggleMoveTaskModal()
-      },
-    })
-  }
-
-  const handleSetTaskText = (text: string) => {
-    const validatedItemText = text.trim()
-
-    setEditingTask({
-      ...(editingTask as TaskProps),
-      text: validatedItemText,
-    })
-  }
-
   const handleKeyDownCreateTaskInput = (event: any) => {
     const textLength = event.target.textContent.length
 
-    if (textLength > TASK_CHAR_LIMIT && event.key !== 'Backspace') event.preventDefault()
+    if (textLength === TASK_CHAR_LIMIT && event.key !== 'Backspace') event.preventDefault()
 
     if (event.key === 'Enter' && event.metaKey) {
       handleSaveTask()
@@ -209,13 +181,12 @@ export default function List() {
     }
 
     await updateTask(task)
-    toggleScheduleTaskModal()
+    setCurrentModal(Modals.NONE)
     toast('Tarefa agendada com sucesso!', {
       icon: '👏',
     })
   }
 
-  // drag and drop
   const handleOnDropItem = async (event: React.DragEvent<HTMLDivElement>, index: number) => {
     event.preventDefault()
     event.currentTarget.classList.remove('drag-over')
@@ -231,7 +202,7 @@ export default function List() {
       items: [...newNotCompletedItems, ...(sortedTasks?.completed as TaskProps[])],
     })
   }
-
+  // TODO: create a component for this
   const ITEM_OPTIONS = (task: TaskProps) => [
     {
       text: 'Renomear',
@@ -248,7 +219,7 @@ export default function List() {
         })
 
         setIsEditingTask(true)
-        toggleEditTaskModal()
+        setCurrentModal(Modals.EDIT_TASK)
       },
     },
     {
@@ -274,7 +245,7 @@ export default function List() {
           ...task,
           scheduleDate: task.scheduleDate || new Date().toLocaleDateString(),
         })
-        toggleScheduleTaskModal()
+        setCurrentModal(Modals.SCHEDULE_TASK)
       },
     },
     {
@@ -306,12 +277,12 @@ export default function List() {
         />
       ),
       action: () => {
-        toggleMoveTaskModal()
+        setCurrentModal(Modals.MOVE_TASK)
         setSelectedItem(task)
       },
     },
   ]
-
+  // TODO: create a component for this
   const MARK_OPTIONS = (task: TaskProps) => [
     {
       mark: (
@@ -440,7 +411,7 @@ export default function List() {
                       ...task,
                       scheduleDate: task.scheduleDate || new Date().toLocaleDateString(),
                     })
-                    toggleScheduleTaskModal()
+                    setCurrentModal(Modals.SCHEDULE_TASK)
                   }}
                   listRef={listRef}
                   key={task.id}
@@ -539,10 +510,10 @@ export default function List() {
           </div>
         </CardContentContainer>
       </MainCard>
-      {/* move item */}
+      {/* move task */}
       <Modal
-        isOpen={showMoveTaskModal}
-        toggleDialog={toggleMoveTaskModal}
+        isOpen={currentModal === Modals.MOVE_TASK}
+        toggleDialog={() => setCurrentModal(Modals.MOVE_TASK)}
         title="Mover tarefa para outra lista"
       >
         {/* body */}
@@ -555,7 +526,18 @@ export default function List() {
               >
                 <div
                   className="flex w-full cursor-pointer items-center gap-2 py-4"
-                  onClick={() => handleMoveTask(list)}
+                  onClick={() =>
+                    moveTask({
+                      item: selectedItem as TaskProps,
+                      destinationList: list,
+                      fallback: () => {
+                        toast('Item movido com sucesso!', {
+                          icon: '👏',
+                        })
+                        setCurrentModal(Modals.NONE)
+                      },
+                    })
+                  }
                 >
                   <h1 className="list-title">
                     {list.type === ListTypesProps.GENERAL && (
@@ -581,7 +563,7 @@ export default function List() {
           <button
             className="secondary-button"
             onClick={() => {
-              toggleMoveTaskModal()
+              setCurrentModal(Modals.NONE)
               setSelectedItem(null)
             }}
           >
@@ -591,8 +573,8 @@ export default function List() {
       </Modal>
       {/* edit task description */}
       <Modal
-        isOpen={showEditTaskModal}
-        toggleDialog={toggleEditTaskModal}
+        isOpen={currentModal === Modals.EDIT_TASK}
+        toggleDialog={() => setCurrentModal(Modals.EDIT_TASK)}
         title="Editar descrição da tarefa"
         size="xl"
       >
@@ -603,7 +585,12 @@ export default function List() {
 
             <InputTextWithFormatting
               inputTextValue={editingTask?.text || ''}
-              setInputTextValue={handleSetTaskText}
+              setInputTextValue={(value) =>
+                setEditingTask({
+                  ...(editingTask as TaskProps),
+                  text: value.trim(),
+                })
+              }
               placeholder="Descreva a tarefa..."
               handleOnKeyDown={handleKeyDownCreateTaskInput}
             />
@@ -619,7 +606,7 @@ export default function List() {
             <button
               className="secondary-button"
               onClick={() => {
-                toggleEditTaskModal()
+                setCurrentModal(Modals.NONE)
                 setEditingTask(null)
                 setIsEditingTask(false)
               }}
@@ -638,8 +625,8 @@ export default function List() {
       </Modal>
       {/* create task */}
       <Modal
-        isOpen={showCreateTaskModal}
-        toggleDialog={toggleCreateTaskModal}
+        isOpen={currentModal === Modals.CREATE_TASK}
+        toggleDialog={() => setCurrentModal(Modals.CREATE_TASK)}
         title="Criar tarefa"
         size="xl"
       >
@@ -650,7 +637,12 @@ export default function List() {
 
             <InputTextWithFormatting
               inputTextValue={editingTask?.text || ''}
-              setInputTextValue={handleSetTaskText}
+              setInputTextValue={(value) => {
+                setEditingTask({
+                  ...(editingTask as TaskProps),
+                  text: value.trim(),
+                })
+              }}
               placeholder="Descreva a tarefa..."
               handleOnKeyDown={handleKeyDownCreateTaskInput}
             />
@@ -703,7 +695,7 @@ export default function List() {
             <button
               className="secondary-button"
               onClick={() => {
-                toggleCreateTaskModal()
+                setCurrentModal(Modals.NONE)
                 setEditingTask(null)
                 setIsEditingTask(false)
               }}
@@ -724,8 +716,8 @@ export default function List() {
       <Modal
         title="Agendar tarefa"
         subtitle="Selecione a data para completar a tarefa."
-        isOpen={showScheduleTaskModal}
-        toggleDialog={toggleScheduleTaskModal}
+        isOpen={currentModal === Modals.SCHEDULE_TASK}
+        toggleDialog={() => setCurrentModal(Modals.SCHEDULE_TASK)}
       >
         <div className="flex flex-col gap-4 p-4">
           {/* body */}
@@ -774,7 +766,7 @@ export default function List() {
             <button
               className="secondary-button"
               onClick={() => {
-                toggleScheduleTaskModal()
+                setCurrentModal(Modals.NONE)
                 setEditingTask(null)
               }}
             >

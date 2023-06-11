@@ -34,13 +34,7 @@ export default function ChangeLog() {
             <div key={item.id}>
               <div className="flex flex-row items-start py-2 pr-2">
                 {/* checkbox */}
-                <div className="mx-2 mt-1 flex md:mx-4">
-                  <input
-                    className="default-checkbox cursor-none"
-                    type="checkbox"
-                    checked={item.completed}
-                  />
-                </div>
+                <div className="default-checkbox checkbox-checked" />
                 {/* item text */}
                 <div className="w-full">
                   <div
