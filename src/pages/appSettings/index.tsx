@@ -43,25 +43,25 @@ export default function AppSettings() {
             <label className="default-label">Tamanho do texto das tarefas</label>
             <select
               onChange={(event) => onChangeTextSize(event.target.value as AppTextSizeProps)}
-              className="h-9 max-w-lg rounded-default border border-default px-4 py-2 text-sm outline-none disabled:text-lightenGray dark:border-dark disabled:dark:text-darkTextGray md:text-base"
+              className="h-9 max-w-lg rounded-default border border-default px-4 py-2 font-sans text-sm outline-none disabled:text-lightenGray dark:border-dark disabled:dark:text-darkTextGray md:text-base"
             >
               <option
                 value={AppTextSizeProps.BASE}
                 selected={textSize === AppTextSizeProps.BASE}
               >
-                normal
+                Normal
               </option>
               <option
                 selected={textSize === AppTextSizeProps.SMALL}
                 value={AppTextSizeProps.SMALL}
               >
-                pequeno
+                Pequeno
               </option>
               <option
                 value={AppTextSizeProps.LARGE}
                 selected={textSize === AppTextSizeProps.LARGE}
               >
-                grande
+                Grande
               </option>
             </select>
           </div>

@@ -90,7 +90,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
       ...task,
       completed: isItemCompleted,
       completedAt: isItemCompleted ? new Date().toISOString() : undefined,
-      scheduleDate: undefined,
+      scheduleDate: '',
     })
 
     fallback(isItemCompleted)

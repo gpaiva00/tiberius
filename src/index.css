@@ -95,7 +95,7 @@
   }
 
   .default-header {
-    @apply flex w-full items-center px-4 py-2;
+    @apply flex w-full items-center px-4 py-1;
   }
 
   .default-header-title {
@@ -103,7 +103,7 @@
   }
 
   .default-input-text {
-    @apply w-full rounded-default border border-default bg-lightGray px-4 py-2 text-sm outline-none transition-colors focus:bg-white disabled:text-lightenGray dark:border-dark dark:bg-darkInputBackground dark:text-darkTextLight dark:focus:bg-darkBackgroundIconButton disabled:dark:text-darkTextGray md:text-base;
+    @apply w-full rounded-md border border-default bg-lightGray px-4 py-2 text-sm outline-none transition-colors focus:bg-white disabled:text-lightenGray dark:border-dark dark:bg-darkInputBackground dark:text-darkTextLight dark:focus:bg-darkBackgroundIconButton disabled:dark:text-darkTextGray md:text-base;
   }
 
   .default-link {
@@ -133,7 +133,7 @@
 
 /* datepicker clear button */
 .react-datepicker__close-icon::after {
-  @apply bg-gray transition-colors hover:bg-zinc-600 dark:bg-darkBackgroundIconButton dark:hover:bg-darkBackgroundIconButton;
+  @apply bg-zinc-500 transition-colors hover:bg-zinc-600 dark:bg-darkBackgroundIconButton dark:hover:bg-darkBackgroundIconButton;
 }
 
 .react-datepicker {

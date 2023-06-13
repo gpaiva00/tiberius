@@ -46,7 +46,7 @@ export default function MainCard({
         'relative flex flex-col overflow-hidden rounded-default bg-white dark:border-dark dark:bg-darkCardBackground dark:shadow-none md:shadow-default dark:md:shadow-none',
         {
           'h-screen w-full md:h-72 md:w-72': size === 'sm',
-          'h-screen w-full md:h-[38rem] md:w-[50rem]': size === 'lg',
+          'h-screen w-full md:h-[40rem] md:w-[56.25rem]': size === 'lg',
           'h-[20rem] w-[25rem]': size === 'demo',
         },
         className

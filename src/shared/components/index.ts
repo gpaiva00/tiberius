@@ -1,6 +1,5 @@
 import Badge from '@/shared/components/Badge'
 import { CardContentContainer } from '@/shared/components/CardContentContainer'
-import CardWithTabBar from '@/shared/components/CardWithTabBar'
 import CompletedItemsCount from '@/shared/components/CompletedItemsCount'
 import DefaultLayout from '@/shared/components/DefaultLayout'
 import Divider from '@/shared/components/Divider'
@@ -15,19 +14,18 @@ import SimpleCard from '@/shared/components/SimpleCard'
 import Task from '@/shared/components/Task'
 
 export {
-  MainCard,
-  Task,
   Badge,
-  Modal,
-  SimpleCard,
   CardContentContainer,
   CompletedItemsCount,
   DefaultLayout,
   Divider,
   Footer,
   FooterContainer,
-  ProgressBar,
-  InputTextWithFormatting,
   FormattedItemText,
-  CardWithTabBar,
+  InputTextWithFormatting,
+  MainCard,
+  Modal,
+  ProgressBar,
+  SimpleCard,
+  Task,
 }
