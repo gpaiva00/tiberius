@@ -50,7 +50,7 @@ export default function Task({
       onDragLeave={(event) => event.currentTarget.classList.remove('drag-over')}
       ref={listRef}
     >
-      <div className={classNames('flex flex-row items-start py-4 pr-2', className)}>
+      <div className={classNames('flex flex-row items-start py-2 pr-2', className)}>
         {/* checkbox */}
         {handleCompleteTask ? (
           <div className="mx-2 mt-1 flex md:mx-4">
@@ -75,7 +75,7 @@ export default function Task({
           >
             {FormattedItemText(task.text)}
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-end justify-start gap-4">
             {/* schedule date */}
             {showScheduleDate && task.scheduleDate && handleClickOnScheduleDate && (
               <button onClick={handleClickOnScheduleDate}>

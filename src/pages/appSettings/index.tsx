@@ -9,15 +9,17 @@ export default function AppSettings() {
 
   return (
     <MainCard title="Configurações Gerais">
-      <CardContentContainer className="gap-4 p-4">
-        <div className="flex flex-col gap-2 p-2 md:gap-4 md:p-4">
-          <div className="flex flex-col gap-2">
+      <CardContentContainer className="px-24 py-8">
+        {/* input container */}
+        <div className="flex flex-col gap-2 p-2 md:gap-8 md:p-4">
+          {/* completed task */}
+          <div className="flex flex-col gap-1">
             <label className="default-label">Tarefas completadas aparecem como</label>
             <select
               onChange={(event) =>
                 onChangeCompletedTaskStyle(event.target.value as CompletedTaskStyleProps)
               }
-              className="h-9 max-w-lg rounded-default border border-default px-4 py-2 text-sm outline-none disabled:text-lightenGray dark:border-dark disabled:dark:text-darkTextGray md:text-base"
+              className="h-9 rounded-default border border-default px-4 py-2 text-sm outline-none disabled:text-lightenGray dark:border-dark disabled:dark:text-darkTextGray md:text-base"
             >
               <option
                 value={CompletedTaskStyleProps.GRAY_AND_STROKE}
@@ -39,11 +41,12 @@ export default function AppSettings() {
               </option>
             </select>
           </div>
-          <div className="flex flex-col gap-2">
+          {/* text size */}
+          <div className="flex flex-col gap-1">
             <label className="default-label">Tamanho do texto das tarefas</label>
             <select
               onChange={(event) => onChangeTextSize(event.target.value as AppTextSizeProps)}
-              className="h-9 max-w-lg rounded-default border border-default px-4 py-2 font-sans text-sm outline-none disabled:text-lightenGray dark:border-dark disabled:dark:text-darkTextGray md:text-base"
+              className="h-9 rounded-default border border-default px-4 py-2 font-sans text-sm outline-none disabled:text-lightenGray dark:border-dark disabled:dark:text-darkTextGray md:text-base"
             >
               <option
                 value={AppTextSizeProps.BASE}

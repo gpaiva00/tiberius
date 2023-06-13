@@ -111,7 +111,7 @@ export default function MainCard({
       {/* overlay */}
       <div
         className={classNames(
-          'absolute left-0 top-12 h-full w-full bg-black transition duration-200 ease-in-out',
+          'absolute left-0 top-11 h-full w-full bg-black transition duration-200 ease-in-out',
           {
             'z-40 opacity-30 dark:opacity-70': showSidebar,
             'invisible z-auto opacity-0': !showSidebar,
