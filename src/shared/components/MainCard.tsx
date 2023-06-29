@@ -2,7 +2,13 @@ import classNames from 'classnames'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { DEFAULT_ICON_PROPS, LISTS_ROUTE, OVERVIEW_ROUTE, USER_ROUTE } from '@/consts'
+import {
+  APP_SETTINGS_ROUTE,
+  DEFAULT_ICON_PROPS,
+  LISTS_ROUTE,
+  OVERVIEW_ROUTE,
+  USER_ROUTE,
+} from '@/consts'
 import { useAuth } from '@/hooks'
 
 import Divider from '@/shared/components/Divider'
@@ -11,6 +17,7 @@ import { FormattedItemText } from '@/shared/components'
 import {
   CaretLeft,
   CaretRight,
+  GearSix,
   HouseSimple,
   ListBullets,
   SidebarSimple,
@@ -81,7 +88,7 @@ export default function MainCard({
                 className="sidebar-button flex items-center gap-2"
               >
                 <HouseSimple {...DEFAULT_ICON_PROPS} />
-                <h1 className="font-bold hover:underline dark:text-darkTextLight">Início</h1>
+                <h1 className="font-bold hover:underline dark:text-darkTextLight">Hoje</h1>
               </Link>
               <Link
                 to={LISTS_ROUTE}
@@ -89,6 +96,13 @@ export default function MainCard({
               >
                 <ListBullets {...DEFAULT_ICON_PROPS} />
                 <h1 className="font-bold hover:underline dark:text-darkTextLight">Listas</h1>
+              </Link>
+              <Link
+                to={APP_SETTINGS_ROUTE}
+                className="sidebar-button flex items-center gap-2"
+              >
+                <GearSix {...DEFAULT_ICON_PROPS} />
+                <h1 className="font-bold hover:underline dark:text-darkTextLight">Configurações</h1>
               </Link>
             </div>
             <Link

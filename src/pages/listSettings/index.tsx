@@ -1,16 +1,19 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router'
 
 import { useList } from '@/hooks'
 
 import { CardContentContainer, FormattedItemText, MainCard } from '@/shared/components'
 
-import { DEFAULT_ICON_PROPS, DEFAULT_TOAST_PROPS } from '@/consts'
+import { DEFAULT_ICON_PROPS, DEFAULT_TOAST_PROPS, LISTS_ROUTE } from '@/consts'
+import { deleteList } from '@/services/list'
 import { ListProps, ListTypesProps } from '@/typings/List'
 import { Archive } from '@phosphor-icons/react'
 
 export default function ListSettings() {
   const { selectedList, updateList } = useList()
+  const navigate = useNavigate()
 
   const [inputText, setInputText] = useState<string>(selectedList?.name as string)
 
@@ -38,6 +41,15 @@ export default function ListSettings() {
     })
   }
 
+  async function handleDeleteList() {
+    const confirm = window.confirm('Tem certeza que deseja excluir essa lista?')
+
+    if (!confirm) return
+
+    await deleteList(selectedList?.id as string)
+    navigate(LISTS_ROUTE)
+  }
+
   return (
     <MainCard
       title={
@@ -60,8 +72,8 @@ export default function ListSettings() {
     >
       <CardContentContainer className="px-24 py-8">
         {/* input container */}
-        <div className="flex flex-col gap-2 p-2 md:gap-8 md:p-4">
-          <div className="flex flex-col gap-1">
+        <div className="flex flex-col items-center gap-2 p-2 md:gap-8 md:p-4">
+          <div className="flex w-full flex-col gap-1">
             <label className="default-label">Nome da lista</label>
             <input
               type="text"
@@ -75,6 +87,14 @@ export default function ListSettings() {
               disabled={selectedList?.type === ListTypesProps.GENERAL}
             />
           </div>
+          {selectedList?.type !== ListTypesProps.GENERAL && (
+            <button
+              className="secondary-button max-w-sm"
+              onClick={handleDeleteList}
+            >
+              Excluir lista
+            </button>
+          )}
         </div>
       </CardContentContainer>
     </MainCard>

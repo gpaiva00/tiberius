@@ -27,7 +27,7 @@ export default function Overview() {
 
   return (
     <MainCard
-      title="Início"
+      title="Hoje"
       options={
         <Link
           to={APP_SETTINGS_ROUTE}
@@ -43,7 +43,7 @@ export default function Overview() {
         </h4>
 
         <SimpleCard className="max-h-96 overflow-y-scroll bg-lightGray pt-2 shadow-md">
-          <h4 className="ml-4 pb-2 font-bold dark:text-darkTextLight">Para hoje</h4>
+          <h4 className="ml-4 pb-2 font-bold dark:text-darkTextLight">Suas tarefas</h4>
           {/* quotation */}
           {!todayTasks.length && (
             <div className="flex flex-1 items-center justify-center px-4 py-8 md:px-0">

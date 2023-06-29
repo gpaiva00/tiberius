@@ -189,6 +189,20 @@ export default function List() {
     })
   }
 
+  function handleClearCompletedTasks() {
+    const prompt = window.confirm('Tem certeza que deseja excluir todas as tarefas completas?')
+
+    if (!prompt) return
+
+    const updatedItems = selectedList?.items.filter((task) => !task.completed)
+    const updatedList: ListProps = {
+      ...(selectedList as ListProps),
+      items: updatedItems as TaskProps[],
+    }
+
+    updateList(updatedList)
+  }
+
   const handleOnDropItem = async (event: React.DragEvent<HTMLDivElement>, index: number) => {
     event.preventDefault()
     event.currentTarget.classList.remove('drag-over')
@@ -467,6 +481,12 @@ export default function List() {
                 {sortedTasks.completed.length}{' '}
                 {sortedTasks.completed.length === 1 ? 'concluído' : 'concluídas'}
               </h2>
+              <button
+                onClick={handleClearCompletedTasks}
+                className="default-link ml-auto"
+              >
+                Limpar tudo
+              </button>
             </div>
           )}
           {/* completed tasks */}
