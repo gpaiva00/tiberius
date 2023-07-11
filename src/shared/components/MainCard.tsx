@@ -20,6 +20,7 @@ import {
   GearSix,
   HouseSimple,
   ListBullets,
+  Notification,
   SidebarSimple,
   X,
 } from '@phosphor-icons/react'
@@ -53,7 +54,7 @@ export default function MainCard({
         'relative flex flex-col overflow-hidden rounded-default bg-white dark:border-dark dark:bg-darkCardBackground dark:shadow-none md:shadow-default dark:md:shadow-none',
         {
           'h-screen w-full md:h-72 md:w-72': size === 'sm',
-          'h-screen w-full md:h-[40rem] md:w-[56.25rem]': size === 'lg',
+          'h-screen w-full md:h-[40rem] md:max-w-[85%] lg:max-w-[80%]': size === 'lg',
           'h-[20rem] w-[25rem]': size === 'demo',
         },
         className
@@ -97,6 +98,13 @@ export default function MainCard({
                 <ListBullets {...DEFAULT_ICON_PROPS} />
                 <h1 className="font-bold hover:underline dark:text-darkTextLight">Listas</h1>
               </Link>
+              {/* <Link
+                to={''}
+                className="sidebar-button flex items-center gap-2"
+              >
+                <Notification {...DEFAULT_ICON_PROPS} />
+                <h1 className="font-bold hover:underline dark:text-darkTextLight">Notificações</h1>
+              </Link> */}
               <Link
                 to={APP_SETTINGS_ROUTE}
                 className="sidebar-button flex items-center gap-2"

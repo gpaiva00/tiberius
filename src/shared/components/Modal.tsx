@@ -57,7 +57,7 @@ export default function Modal({
                   'w-full transform overflow-hidden rounded-default bg-white text-left align-middle shadow-xl transition-all dark:bg-darkCardBackground',
                   {
                     'max-w-lg': size === 'default',
-                    'max-w-xl': size === 'xl',
+                    'max-w-2xl': size === 'xl',
                   }
                 )}
               >
