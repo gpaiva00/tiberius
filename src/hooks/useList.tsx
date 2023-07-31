@@ -8,7 +8,7 @@ import {
   updateList as updateListOnDB,
 } from '@/services/list'
 
-import { STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
+import { RECENTLY_ACCESSED_LISTS_KEY, STORAGE_SELECTED_LIST_ID_KEY } from '@/constants'
 import { ListProps, ListTypesProps, TaskProps } from '@/typings/List'
 import { getFromStorage, setToStorage, sortListsByPosition, sortTasksByStatus } from '@/utils'
 import { SortTasksByStatusProps } from '@/utils/sortTasksByStatus'
@@ -23,6 +23,8 @@ interface UseListProps {
   updateList: (list: ListProps) => Promise<void>
   deleteList: (listID: ListProps['id']) => Promise<void>
   saveSelectedList: (list: ListProps) => void
+  getRecentlyAccessedLists: () => ListProps[]
+  updateRecentlyAccessedLists: (list: ListProps) => void
   isListCompleted: boolean
   sortedTasks: SortTasksByStatusProps
 }
@@ -41,6 +43,23 @@ export const ListProvider = ({ children }: ListProviderProps) => {
     setToStorage(STORAGE_SELECTED_LIST_ID_KEY, list.id)
   }
 
+  function getRecentlyAccessedLists() {
+    const recentlyAccessedLists = getFromStorage(RECENTLY_ACCESSED_LISTS_KEY) || []
+
+    return lists.filter((list) => recentlyAccessedLists.includes(list.id))
+  }
+
+  function updateRecentlyAccessedLists(list: ListProps) {
+    const recentlyAccessedLists = getFromStorage(RECENTLY_ACCESSED_LISTS_KEY) || []
+
+    const updatedList = [
+      list.id,
+      ...recentlyAccessedLists.filter((id: ListProps['id']) => id !== list.id),
+    ].slice(0, 3)
+
+    setToStorage(RECENTLY_ACCESSED_LISTS_KEY, updatedList)
+  }
+
   const handleSetSelectedList = (lists: ListProps[]) => {
     const selectedListOnStorage = getFromStorage(STORAGE_SELECTED_LIST_ID_KEY)
 
@@ -54,6 +73,12 @@ export const ListProvider = ({ children }: ListProviderProps) => {
   }
 
   const deleteList = async (listID: ListProps['id']) => {
+    // remove from recently accessed lists
+    const recentlyAccessedLists = getFromStorage(RECENTLY_ACCESSED_LISTS_KEY) || []
+    const updatedList = recentlyAccessedLists.filter((id: ListProps['id']) => id !== listID)
+
+    setToStorage(RECENTLY_ACCESSED_LISTS_KEY, updatedList)
+
     // select user's general list as default selected list
     if (selectedList?.id === listID) {
       const userGeneralList = lists.find(
@@ -92,6 +117,8 @@ export const ListProvider = ({ children }: ListProviderProps) => {
         updateList,
         isListCompleted,
         sortedTasks,
+        getRecentlyAccessedLists,
+        updateRecentlyAccessedLists,
       }}
     >
       {children}

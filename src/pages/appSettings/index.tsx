@@ -1,5 +1,3 @@
-import { CardContentContainer, MainCard } from '@/shared/components'
-
 import { useAppSettings } from '@/hooks'
 import { AppTextSizeProps, CompletedTaskStyleProps } from '@/hooks/useAppSettings'
 
@@ -8,10 +6,15 @@ export default function AppSettings() {
     useAppSettings()
 
   return (
-    <MainCard title="Configurações Gerais">
-      <CardContentContainer className="px-24 py-8">
+    <>
+      {/* title container */}
+      <div className="mb-2 flex w-full items-center px-4">
+        <h1 className="default-header-title">Configurações Gerais</h1>
+      </div>
+      {/* content container */}
+      <div className="flex min-h-[350px] w-full flex-col items-center gap-2 overflow-y-scroll rounded-default bg-white p-2 dark:bg-darkCardBackground md:gap-8 md:p-4">
         {/* input container */}
-        <div className="flex flex-col gap-2 p-2 md:gap-8 md:p-4">
+        <div className="flex w-full flex-col gap-4">
           {/* completed task */}
           <div className="flex flex-col gap-1">
             <label className="default-label">Tarefas completadas aparecem como</label>
@@ -69,7 +72,7 @@ export default function AppSettings() {
             </select>
           </div>
         </div>
-      </CardContentContainer>
-    </MainCard>
+      </div>
+    </>
   )
 }

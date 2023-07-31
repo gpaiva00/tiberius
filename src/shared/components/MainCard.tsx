@@ -8,7 +8,7 @@ import {
   LISTS_ROUTE,
   OVERVIEW_ROUTE,
   USER_ROUTE,
-} from '@/consts'
+} from '@/constants'
 import { useAuth } from '@/hooks'
 
 import Divider from '@/shared/components/Divider'
@@ -20,7 +20,6 @@ import {
   GearSix,
   HouseSimple,
   ListBullets,
-  Notification,
   SidebarSimple,
   X,
 } from '@phosphor-icons/react'

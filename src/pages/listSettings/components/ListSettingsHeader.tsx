@@ -4,7 +4,7 @@ import { useList } from '@/hooks'
 
 import { Divider, FormattedItemText } from '@/shared/components'
 
-import { DEFAULT_ICON_PROPS, LISTS_ROUTE } from '@/consts'
+import { DEFAULT_ICON_PROPS, LISTS_ROUTE } from '@/constants'
 import { ListProps, ListTypesProps } from '@/typings/List'
 
 import { Archive, CaretLeft, Dot, SidebarSimple } from '@phosphor-icons/react'

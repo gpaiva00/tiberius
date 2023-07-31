@@ -2,7 +2,7 @@ import classNames from 'classnames'
 
 import { CardContentContainer, Divider } from '@/shared/components'
 
-import { DEFAULT_ICON_PROPS, SIGN_IN_ROUTE } from '@/consts'
+import { DEFAULT_ICON_PROPS, SIGN_IN_ROUTE } from '@/constants'
 import { ListProps, ListTypesProps } from '@/typings/List'
 
 import { Check, DotsThree } from '@phosphor-icons/react'

@@ -1,10 +1,10 @@
-import { ABOUT_ROUTE, CONTACT_ROUTE, HELP_ROUTE, TERMOS_OF_USE_ROUTE } from '@/consts'
+import { ABOUT_ROUTE, CONTACT_ROUTE, HELP_ROUTE, TERMOS_OF_USE_ROUTE } from '@/constants'
 import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
-    <footer className="z-50 w-full pb-2 pt-6 md:pt-0">
-      <p className="text-center text-sm text-lightenGray dark:text-darkTextGray">
+    <footer className="absolute bottom-0 mb-2 w-full">
+      <p className="text-center text-xs text-lightenGray dark:text-darkTextGray">
         <Link
           to={TERMOS_OF_USE_ROUTE}
           className="hover:underline"

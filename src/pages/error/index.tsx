@@ -4,7 +4,7 @@ import { Footer } from '@/shared/components'
 
 import { getRandomQuote } from '@/utils'
 
-import { ERROR_MESSAGES, LISTS_ROUTE, QUOTES } from '@/consts'
+import { ERROR_MESSAGES, LISTS_ROUTE, QUOTES } from '@/constants'
 
 export default function Error() {
   return (

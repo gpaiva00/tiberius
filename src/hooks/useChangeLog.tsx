@@ -4,7 +4,7 @@ import { getChangeLog as getChangeLogService } from '@/services/changelog'
 
 import { getFromStorage, setToStorage } from '@/utils'
 
-import { HAVE_SEEN_CHANGE_LOG_DATE_KEY } from '@/consts'
+import { HAVE_SEEN_CHANGE_LOG_DATE_KEY } from '@/constants'
 import { ChangeLogListProps } from '@/pages/changeLog/typings/ChangeLog'
 
 interface ChangeLogProps {

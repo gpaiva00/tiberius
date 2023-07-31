@@ -7,7 +7,7 @@ import { useChangeLog } from '@/hooks'
 import { CardContentContainer, Divider, FooterContainer, MainCard } from '@/shared/components'
 import FormattedItemText from '@/shared/components/ItemTextFormatted'
 
-import { LISTS_ROUTE } from '@/consts'
+import { LISTS_ROUTE } from '@/constants'
 import { ifTextHasLink } from '@/utils'
 
 export default function ChangeLog() {

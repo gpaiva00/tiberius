@@ -9,11 +9,11 @@
 
 @layer base {
   html {
-    font-family: Lato, system-ui, sans-serif;
+    font-family: Roboto, system-ui, sans-serif;
     user-select: none;
-    font-size: 1.125rem /* 18px */;
-    font-weight: 300;
-    line-height: 1.75rem /* 28px */;
+    font-size: 1rem;
+    /* font-weight: 300; */
+    line-height: 1.5rem /* 28px */;
     color: #000;
   }
 
@@ -87,11 +87,11 @@
   }
 
   .checkbox-checked {
-    @apply flex items-center justify-center border-transparent bg-primary text-white hover:bg-darkPrimary;
+    @apply flex items-center justify-center border-transparent bg-primary text-white hover:bg-darkPrimary dark:bg-darkPrimary;
   }
 
   .list-title {
-    @apply flex items-center gap-1 hover:underline dark:text-darkTextLight;
+    @apply flex items-center gap-1 dark:text-darkTextLight;
   }
 
   .default-header {
@@ -99,7 +99,7 @@
   }
 
   .default-header-title {
-    @apply text-lg font-bold capitalize dark:text-darkTextLight;
+    @apply text-xl font-bold capitalize dark:text-darkTextLight;
   }
 
   .default-input-text {

@@ -1,4 +1,4 @@
-import { APP_TEXT_SIZE_KEY } from '@/consts'
+import { APP_TEXT_SIZE_KEY } from '@/constants'
 import { getFromStorage, setToStorage } from '@/utils'
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react'
 

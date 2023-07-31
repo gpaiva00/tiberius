@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks'
 import DemoCard from '@/pages/home/components/DemoCard'
 import { Footer } from '@/shared/components'
 
-import { DEFAULT_ICON_PROPS, LIST_ROUTE, SIGN_IN_ROUTE } from '@/consts'
+import { DEFAULT_ICON_PROPS, OVERVIEW_ROUTE, SIGN_IN_ROUTE } from '@/constants'
 
 import ArrowIcon from '@assets/images/arrow.png'
 import { User } from '@phosphor-icons/react'
@@ -20,7 +20,7 @@ export default function Home() {
           <h1 className="text-2xl font-black dark:text-darkTextLight">Tiberius</h1>
           {user ? (
             <Link
-              to={LIST_ROUTE}
+              to={OVERVIEW_ROUTE}
               className="icon-button flex items-center gap-2 px-4"
             >
               <User {...DEFAULT_ICON_PROPS} />

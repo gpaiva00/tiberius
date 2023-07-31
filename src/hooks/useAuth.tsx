@@ -1,10 +1,10 @@
-import { ReactNode, createContext, useContext, useState, useEffect } from 'react'
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
 import { auth, signInWithGoogle, User as UserFirebase } from '@services/firebase'
 
-import { SIGN_IN_ROUTE, STORAGE_SELECTED_LIST_ID_KEY } from '@/consts'
+import { SIGN_IN_ROUTE, STORAGE_SELECTED_LIST_ID_KEY } from '@/constants'
 import { checkIfUserHasLists, createDefaultListForNewUser } from '@/services/list'
 
 import { UserProps } from '@/typings/User'

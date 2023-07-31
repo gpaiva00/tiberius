@@ -9,7 +9,7 @@ export default function Card({ children, className }: DefaultCardProps) {
   return (
     <div
       className={classNames(
-        'flex flex-col rounded-default border-default bg-white dark:border-dark dark:bg-darkCardBackground',
+        'w-full rounded-default border border-lightGray px-4 py-2 text-start transition-colors dark:border-gray',
         className
       )}
     >

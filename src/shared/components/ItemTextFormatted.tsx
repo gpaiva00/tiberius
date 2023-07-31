@@ -1,4 +1,4 @@
-import { URL_REGEX } from '@/consts'
+import { URL_REGEX } from '@/constants'
 import DOMPurify from 'dompurify'
 
 export default function FormattedItemText(itemText: string | undefined) {

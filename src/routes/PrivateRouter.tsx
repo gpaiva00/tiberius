@@ -2,7 +2,7 @@ import { Navigate, Outlet } from 'react-router-dom'
 
 import { useAuth } from '@/hooks'
 
-import { SIGN_IN_ROUTE } from '@/consts'
+import { SIGN_IN_ROUTE } from '@/constants'
 
 export const PrivateRouter = () => {
   const { isLoadingUser, isLogged } = useAuth()

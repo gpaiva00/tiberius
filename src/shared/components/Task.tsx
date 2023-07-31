@@ -1,5 +1,6 @@
 import { Badge, FormattedItemText } from '@/shared/components'
 import classNames from 'classnames'
+import { twMerge } from 'tailwind-merge'
 
 import { TodaysTaskProps } from '@/hooks/useTask'
 import { TaskProps } from '@/typings/List'
@@ -18,6 +19,7 @@ interface TaskComponentProps {
   options?: React.ReactNode
   showScheduleDate?: boolean
   className?: string
+  onClick?: () => void
 }
 
 export default function Task({
@@ -30,6 +32,7 @@ export default function Task({
   showScheduleDate = false,
   className,
   handleClickOnScheduleDate,
+  ...props
 }: TaskComponentProps) {
   const { textSize } = useAppSettings()
 
@@ -49,21 +52,29 @@ export default function Task({
       }
       onDragLeave={(event) => event.currentTarget.classList.remove('drag-over')}
       ref={listRef}
+      {...props}
     >
-      <div className={classNames('flex flex-row items-start py-2 pr-2', className)}>
+      <div
+        className={twMerge(
+          'flex flex-row items-start rounded-default bg-white py-2 pr-2 transition-colors hover:bg-lightGray dark:bg-darkCardBackground dark:hover:bg-darkBackgroundIconButton',
+          className
+        )}
+      >
         {/* checkbox */}
-        {handleCompleteTask ? (
+        {handleCompleteTask && (
           <div className="mx-2 mt-1 flex md:mx-4">
             <div
               className="default-checkbox"
               onClick={() => handleCompleteTask(task)}
             />
           </div>
-        ) : (
-          <div className="mx-2 mt-1 flex md:mx-4" />
         )}
         {/* item text */}
-        <div className="w-full">
+        <div
+          className={classNames('w-full', {
+            'mx-4': !handleCompleteTask,
+          })}
+        >
           <div
             className={classNames(
               'm-0 max-w-[92%] break-words p-0 dark:text-darkTextLight',
@@ -75,7 +86,8 @@ export default function Task({
           >
             {FormattedItemText(task.text)}
           </div>
-          <div className="flex items-end justify-start gap-4">
+          {/* footer */}
+          <div className="mt-2 flex items-end justify-start gap-4">
             {/* schedule date */}
             {showScheduleDate && task.scheduleDate && handleClickOnScheduleDate && (
               <button onClick={handleClickOnScheduleDate}>

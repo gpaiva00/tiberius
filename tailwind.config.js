@@ -6,7 +6,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        darkBackground: '#090909',
+        darkBackground: '#000',
         darkCardBackground: '#16181c',
         darkTextGray: '#acacac',
         darkBackgroundIconButton: '#2f3336',
@@ -21,7 +21,7 @@ export default {
         lightenPrimary: lighten(0.4, '#1d9bf0'),
       },
       borderRadius: {
-        default: '0.75rem',
+        default: '0.625rem',
       },
       boxShadow: {
         default: '50px 50px 100px #c6c6c6, -50px -50px 100px #e9e9e9;',

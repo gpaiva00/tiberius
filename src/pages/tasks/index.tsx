@@ -1,7 +1,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Menu } from '@headlessui/react'
 import classNames from 'classnames'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Confetti from 'react-confetti'
 import DatePicker from 'react-datepicker'
 import toast from 'react-hot-toast'
@@ -9,12 +9,10 @@ import { Link } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
 import {
-  CardContentContainer,
   CompletedItemsCount,
   Divider,
   FormattedItemText,
   InputTextWithFormatting,
-  MainCard,
   Task,
 } from '@/shared/components'
 import Modal from '@/shared/components/Modal'
@@ -29,7 +27,7 @@ import {
   QUOTES,
   SCHEDULE_LIMIT,
   TASK_CHAR_LIMIT,
-} from '@/consts'
+} from '@/constants'
 import { useAppSettings, useList, useTask } from '@/hooks'
 import {
   copyToClipboard,
@@ -37,12 +35,14 @@ import {
   getInputLength,
   getRandomQuote,
   ifTextHasLink,
+  isTextInputEmpty,
 } from '@/utils'
 import { ListProps, ListTypesProps, TaskMarksProps, TaskProps } from '@typings/List'
 
 import {
   Archive,
   CalendarBlank,
+  CaretCircleRight,
   CaretRight,
   Check,
   Copy,
@@ -56,6 +56,7 @@ import {
 } from '@phosphor-icons/react'
 
 import { CompletedTaskStyleProps } from '@/hooks/useAppSettings'
+import TaskEditable from '@/shared/components/TaskEditable'
 import 'react-datepicker/dist/react-datepicker.css'
 
 enum Modals {
@@ -70,6 +71,7 @@ export default function List() {
   const [editingTask, setEditingTask] = useState<TaskProps | null>(null)
   const [isEditingTask, setIsEditingTask] = useState(false)
   const [selectedItem, setSelectedItem] = useState<TaskProps | null>(null)
+  const [showCompletedTasks, setShowCompletedTasks] = useState(false)
 
   const [currentModal, setCurrentModal] = useState<Modals>(Modals.NONE)
 
@@ -81,10 +83,7 @@ export default function List() {
   const isListCompletedRef = useRef(isListCompleted)
   const [parent] = useAutoAnimate()
 
-  const isTextInputEmpty = (inputValue: string) => {
-    const stripped = inputValue.replace(/<[^>]*>?/gm, '').trim()
-    return !stripped.length
-  }
+  const quoteMessage = useMemo(() => getRandomQuote(QUOTES), [])
 
   const handleClickOnCreateTask = () => {
     setEditingTask({
@@ -96,7 +95,6 @@ export default function List() {
       createdAt: new Date().toISOString(),
       scheduleDate: '',
     })
-    setCurrentModal(Modals.CREATE_TASK)
   }
 
   const handleClickOnDeleteTask = async (task: TaskProps) => {
@@ -128,7 +126,7 @@ export default function List() {
     })
   }
 
-  const handleSaveTask = async () => {
+  async function handleSaveTask() {
     const newTasks = [...(selectedList?.items as TaskProps[])]
 
     if (isEditingTask) {
@@ -147,7 +145,8 @@ export default function List() {
     } as ListProps)
 
     setCurrentModal(Modals.NONE)
-
+    setEditingTask(null)
+    setIsEditingTask(false)
     listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }
 
@@ -190,7 +189,7 @@ export default function List() {
   }
 
   function handleClearCompletedTasks() {
-    const prompt = window.confirm('Tem certeza que deseja excluir todas as tarefas completas?')
+    const prompt = window.confirm('Tem certeza que deseja excluir todas as tarefas concluídas?')
 
     if (!prompt) return
 
@@ -201,6 +200,10 @@ export default function List() {
     }
 
     updateList(updatedList)
+  }
+
+  function toggleShowCompletedTasks() {
+    setShowCompletedTasks(!showCompletedTasks)
   }
 
   const handleOnDropItem = async (event: React.DragEvent<HTMLDivElement>, index: number) => {
@@ -235,7 +238,7 @@ export default function List() {
         })
 
         setIsEditingTask(true)
-        setCurrentModal(Modals.EDIT_TASK)
+        // setCurrentModal(Modals.EDIT_TASK)
       },
     },
     {
@@ -375,48 +378,77 @@ export default function List() {
           recycle={false}
         />
       )}
-      <MainCard
-        title={
-          <div className="flex w-full items-center gap-2">
-            <h1 className="default-header-title max-w-xs truncate">
-              {FormattedItemText(
-                selectedList?.type === 'default' ? selectedList?.name : 'Itens gerais'
-              )}
-            </h1>
-            <CompletedItemsCount
-              size="sm"
-              items={selectedList?.items || []}
-            />
+      {/* title container */}
+      <div className="mb-2 flex w-full items-center justify-between px-4">
+        <div className="flex w-full items-center gap-2">
+          <h1 className="default-header-title max-w-xs truncate">
+            {FormattedItemText(
+              selectedList?.type === 'default' ? selectedList?.name : 'Itens gerais'
+            )}
+          </h1>
+          <CompletedItemsCount
+            size="sm"
+            items={selectedList?.items || []}
+          />
+        </div>
+        <div className="flex items-end gap-2">
+          <button
+            onClick={handleClickOnCreateTask}
+            className="icon-button"
+          >
+            <Plus {...DEFAULT_ICON_PROPS} />
+          </button>
+          <Link
+            to={LIST_SETTINGS_ROUTE}
+            className="icon-button"
+          >
+            <GearSix {...DEFAULT_ICON_PROPS} />
+          </Link>
+        </div>
+      </div>
+      {/* content container */}
+      <div className="w-full overflow-y-scroll rounded-default">
+        {/* quotation */}
+        {!selectedList?.items?.length && (
+          <div className="mt-10 flex flex-1 items-center justify-center">
+            <p className="italic text-lightenGray">{quoteMessage}</p>
           </div>
-        }
-        options={
-          <>
-            <button
-              onClick={handleClickOnCreateTask}
-              className="icon-button"
-            >
-              <Plus {...DEFAULT_ICON_PROPS} />
-            </button>
-            <Link
-              to={LIST_SETTINGS_ROUTE}
-              className="icon-button"
-            >
-              <GearSix {...DEFAULT_ICON_PROPS} />
-            </Link>
-          </>
-        }
-      >
-        <CardContentContainer>
-          {/* quotation */}
-          {!selectedList?.items?.length && (
-            <div className="flex flex-1 items-center justify-center px-4 md:px-0">
-              <p className="text-center italic text-lightenGray">{getRandomQuote(QUOTES)}</p>
-            </div>
+        )}
+        {/* tasks */}
+        <div
+          ref={parent}
+          className="flex flex-col gap-2 pb-4"
+        >
+          {/* editable task when creating */}
+          {editingTask && !isEditingTask && (
+            <TaskEditable
+              task={editingTask}
+              setEditingTask={setEditingTask}
+              index={0}
+              handleCompleteTask={handleCompleteTask}
+              listRef={listRef}
+              handleKeyDownCreateTaskInput={handleKeyDownCreateTaskInput}
+              handleSaveTask={handleSaveTask}
+            />
           )}
-          {/* tasks */}
-          <div ref={parent}>
-            {sortedTasks.notCompleted.map((task: TaskProps, index: number) => (
-              <>
+          {sortedTasks.notCompleted.map((task: TaskProps, index: number) => {
+            const currentTaskIsEditing = isEditingTask && editingTask?.id === task.id
+            // replace current task with editable task if it's editing
+            if (currentTaskIsEditing) {
+              return (
+                <TaskEditable
+                  task={editingTask}
+                  setEditingTask={setEditingTask}
+                  index={index}
+                  handleCompleteTask={handleCompleteTask}
+                  listRef={listRef}
+                  handleKeyDownCreateTaskInput={handleKeyDownCreateTaskInput}
+                  handleSaveTask={handleSaveTask}
+                  key={task.id}
+                />
+              )
+            } else {
+              return (
                 <Task
                   task={task}
                   index={index}
@@ -471,26 +503,45 @@ export default function List() {
                     </Menu>
                   }
                 />
-                {index !== sortedTasks.notCompleted.length - 1 && <Divider />}
-              </>
-            ))}
-          </div>
-          {sortedTasks.completed.length > 0 && (
-            <div className="sticky bottom-0 flex items-center bg-zinc-300 px-2 py-2 dark:bg-darkBackgroundIconButton md:px-4">
-              <h2 className="text-sm font-bold dark:text-darkTextLight md:text-base">
+              )
+            }
+          })}
+        </div>
+        {/* completed tasks container */}
+        {sortedTasks.completed.length > 0 && (
+          <div className="sticky bottom-0 flex items-center justify-between rounded-default bg-zinc-200 px-2 py-2 dark:bg-darkBackgroundIconButton md:px-4">
+            <div
+              className="flex cursor-pointer items-center gap-2"
+              onClick={toggleShowCompletedTasks}
+            >
+              <CaretCircleRight
+                {...DEFAULT_ICON_PROPS}
+                className={classNames('dark:text-darkTextLight', {
+                  'rotate-90 transform duration-150': showCompletedTasks,
+                  'rotate-0 transform duration-150': !showCompletedTasks,
+                })}
+              />
+              <h2 className="text-sm font-bold hover:underline dark:text-darkTextLight md:text-base">
                 {sortedTasks.completed.length}{' '}
                 {sortedTasks.completed.length === 1 ? 'concluído' : 'concluídas'}
               </h2>
-              <button
-                onClick={handleClearCompletedTasks}
-                className="default-link ml-auto"
-              >
-                Limpar tudo
-              </button>
             </div>
-          )}
-          {/* completed tasks */}
-          <div ref={parent}>
+            <button
+              onClick={handleClearCompletedTasks}
+              className="icon-button"
+            >
+              <TrashSimple {...DEFAULT_ICON_PROPS} />
+            </button>
+          </div>
+        )}
+        {/* completed tasks */}
+        <div ref={parent}>
+          <div
+            className={classNames({
+              'h-0 overflow-hidden opacity-0 transition-[opacity]': !showCompletedTasks,
+              'h-auto opacity-100 transition-[opacity]': showCompletedTasks,
+            })}
+          >
             {sortedTasks.completed.map((task: TaskProps, index: number) => (
               <div key={task.id}>
                 <div className="flex flex-row items-start py-2 pr-2">
@@ -537,8 +588,9 @@ export default function List() {
               </div>
             ))}
           </div>
-        </CardContentContainer>
-      </MainCard>
+        </div>
+      </div>
+      {/* modals */}
       {/* move task */}
       <Modal
         isOpen={currentModal === Modals.MOVE_TASK}

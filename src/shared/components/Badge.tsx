@@ -10,7 +10,7 @@ export default function Badge({ children, variant = 'default', className }: Badg
   return (
     <span
       className={classNames(
-        'inline-flex h-5 items-center justify-center gap-1 rounded-full px-[0.5rem] text-[0.5rem] dark:border-dark md:text-[0.625rem]',
+        'inline-flex h-5 items-center justify-center gap-1 rounded-full px-[0.5rem] text-xs dark:border-dark md:text-[0.625rem]',
         {
           'bg-lightenPrimary text-primary dark:bg-darkBackgroundIconButton dark:text-darkPrimary':
             variant === 'primary',

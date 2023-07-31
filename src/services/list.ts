@@ -1,14 +1,14 @@
 import {
-  doc,
+  DocumentData,
+  QuerySnapshot,
   collection,
   deleteDoc,
-  setDoc,
-  onSnapshot,
-  QuerySnapshot,
-  DocumentData,
-  query,
-  where,
+  doc,
   getDocs,
+  onSnapshot,
+  query,
+  setDoc,
+  where,
   writeBatch,
 } from 'firebase/firestore'
 
@@ -17,7 +17,7 @@ import { db } from '@services/firebase'
 import { ListProps } from '@/typings/List'
 import { UserProps } from '@/typings/User'
 
-import { GENERAL_LIST } from '@/consts'
+import { GENERAL_LIST } from '@/constants'
 
 interface SubscribeToUserListsProps {
   observer: (snapshot: QuerySnapshot<DocumentData>) => void
@@ -73,6 +73,8 @@ export const updateUserLists = async (lists: ListProps[]) => {
 
 export const createList = async (list: ListProps) => {
   try {
+    console.warn({ list })
+
     await setDoc(doc(db, listDocumentName, list.id), list)
   } catch (error) {
     console.error('createList', error)

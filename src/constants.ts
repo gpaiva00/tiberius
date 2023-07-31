@@ -46,6 +46,7 @@ export const STORAGE_SELECTED_LIST_ID_KEY = '@tiberius/selectedList'
 export const HAVE_SEEN_CHANGE_LOG_DATE_KEY = '@tiberius/haveSeenChangeLogDate'
 export const APP_TEXT_SIZE_KEY = '@tiberius/appTextSize'
 export const APP_COMPLETED_TASK_STYLE_KEY = '@tiberius/appCompletedTaskStyle'
+export const RECENTLY_ACCESSED_LISTS_KEY = '@tiberius/recentlyAccessedListIds'
 
 export const DEFAULT_ICON_SIZE = 20
 

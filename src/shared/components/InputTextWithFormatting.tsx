@@ -22,7 +22,7 @@ export default function InputTextWithFormatting({
   handleOnKeyDown,
 }: InputTextWithFormattingProps) {
   return (
-    <div className="text-editor">
+    <div className="text-editor w-full">
       <ReactQuill
         ref={ref}
         placeholder={placeholder}

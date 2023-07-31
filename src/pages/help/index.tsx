@@ -1,6 +1,6 @@
 import { CardContentContainer, Divider, MainCard } from '@/shared/components'
 
-import { DEFAULT_ICON_PROPS } from '@/consts'
+import { DEFAULT_ICON_PROPS } from '@/constants'
 
 import { User } from '@phosphor-icons/react'
 

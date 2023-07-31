@@ -37,7 +37,8 @@ import {
   SIGN_IN_ROUTE,
   TERMOS_OF_USE_ROUTE,
   USER_ROUTE,
-} from '@/consts'
+} from '@/constants'
+import Redesign from '@/pages/redesign'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -57,6 +58,10 @@ const router = createBrowserRouter(
         element={<Error />}
       />
       <Route element={<DefaultLayout />}>
+        <Route
+          path="/redesign"
+          element={<Redesign />}
+        />
         <Route element={<PrivateRouter />}>
           <Route
             path={APP_SETTINGS_ROUTE}
