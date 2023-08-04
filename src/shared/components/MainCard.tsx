@@ -50,7 +50,7 @@ export default function MainCard({
   return (
     <div
       className={classNames(
-        'relative flex flex-col overflow-hidden rounded-default bg-white dark:border-dark dark:bg-darkCardBackground dark:shadow-none md:shadow-default dark:md:shadow-none',
+        'relative flex flex-col overflow-hidden rounded-default bg-white dark:border-dark-gray dark:bg-zinc-800 dark:shadow-none md:shadow-default dark:md:shadow-none',
         {
           'h-screen w-full md:h-72 md:w-72': size === 'sm',
           'h-screen w-full md:h-[40rem] md:max-w-[85%] lg:max-w-[80%]': size === 'lg',
@@ -62,16 +62,16 @@ export default function MainCard({
       {/* side menu */}
       <aside
         className={classNames(
-          'absolute left-0 top-0 z-50 h-full w-64 transform border-r-default bg-white transition-transform duration-200 ease-in-out dark:border-r-dark dark:bg-darkCardBackground',
+          'dark:border-r-dark absolute left-0 top-0 z-50 h-full w-64 transform border-r-default bg-white transition-transform duration-200 ease-in-out dark:bg-zinc-800',
           {
             'translate-x-0': showSidebar,
             '-translate-x-full border-r': !showSidebar,
           }
         )}
       >
-        <div className="flex h-full flex-col gap-4 bg-white px-4 py-2 dark:bg-darkCardBackground">
+        <div className="flex h-full flex-col gap-4 bg-white px-4 py-2 dark:bg-zinc-800">
           <div className="flex w-full items-center justify-between">
-            <h1 className="font-bold dark:text-lightenGray">Menu</h1>
+            <h1 className="font-bold dark:text-gray-200">Menu</h1>
             <button
               className="icon-button place-self-end"
               onClick={toggleSidebar}
@@ -88,28 +88,28 @@ export default function MainCard({
                 className="sidebar-button flex items-center gap-2"
               >
                 <HouseSimple {...DEFAULT_ICON_PROPS} />
-                <h1 className="font-bold hover:underline dark:text-darkTextLight">Hoje</h1>
+                <h1 className="font-bold hover:underline dark:text-gray-300">Hoje</h1>
               </Link>
               <Link
                 to={LISTS_ROUTE}
                 className="sidebar-button flex items-center gap-2"
               >
                 <ListBullets {...DEFAULT_ICON_PROPS} />
-                <h1 className="font-bold hover:underline dark:text-darkTextLight">Listas</h1>
+                <h1 className="font-bold hover:underline dark:text-gray-300">Listas</h1>
               </Link>
               {/* <Link
                 to={''}
                 className="sidebar-button flex items-center gap-2"
               >
                 <Notification {...DEFAULT_ICON_PROPS} />
-                <h1 className="font-bold hover:underline dark:text-darkTextLight">Notificações</h1>
+                <h1 className="font-bold hover:underline dark:text-gray-300">Notificações</h1>
               </Link> */}
               <Link
                 to={APP_SETTINGS_ROUTE}
                 className="sidebar-button flex items-center gap-2"
               >
                 <GearSix {...DEFAULT_ICON_PROPS} />
-                <h1 className="font-bold hover:underline dark:text-darkTextLight">Configurações</h1>
+                <h1 className="font-bold hover:underline dark:text-gray-300">Configurações</h1>
               </Link>
             </div>
             <Link
@@ -122,9 +122,7 @@ export default function MainCard({
                 alt="user photo"
                 referrerPolicy="no-referrer"
               />
-              <h1 className="font-bold hover:underline dark:text-darkTextLight">
-                {user?.displayName}
-              </h1>
+              <h1 className="font-bold hover:underline dark:text-gray-300">{user?.displayName}</h1>
             </Link>
           </div>
         </div>

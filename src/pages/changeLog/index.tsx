@@ -27,7 +27,7 @@ export default function ChangeLog() {
     <MainCard title="🎉 Novidades">
       <CardContentContainer>
         <div className="p-2 pb-2 md:p-4">
-          <h4 className="dark:text-darkTextLight">{changeLog?.description}</h4>
+          <h4 className="dark:text-gray-300">{changeLog?.description}</h4>
         </div>
         {!!changeLog?.items &&
           changeLog.items.map((item, index) => (
@@ -38,12 +38,9 @@ export default function ChangeLog() {
                 {/* item text */}
                 <div className="w-full">
                   <div
-                    className={classNames(
-                      'm-0 max-w-[92%] break-words p-0 dark:text-darkTextLight',
-                      {
-                        'break-all': ifTextHasLink(item.text),
-                      }
-                    )}
+                    className={classNames('m-0 max-w-[92%] break-words p-0 dark:text-gray-300', {
+                      'break-all': ifTextHasLink(item.text),
+                    })}
                   >
                     {FormattedItemText(item.text)}
                   </div>

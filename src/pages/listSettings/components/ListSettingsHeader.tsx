@@ -46,15 +46,15 @@ export default function Header({ selectedList }: ListContentHeaderProps) {
           >
             <CaretLeft {...DEFAULT_ICON_PROPS} />
           </button>
-          <h1 className="default-header-title max-w-[5.25rem] truncate dark:text-darkTextLight md:max-w-fit">
+          <h1 className="default-header-title max-w-[5.25rem] truncate dark:text-gray-300 md:max-w-fit">
             Configurações
           </h1>
           <Dot
             {...DEFAULT_ICON_PROPS}
             size={25}
-            className="text-lightenGray dark:text-darkTextGray"
+            className="text-gray-200 dark:text-gray-300"
           />
-          <h1 className="flex max-w-xs items-center truncate text-xl font-semibold text-lightenGray dark:text-darkTextGray md:max-w-[15.625rem]">
+          <h1 className="flex max-w-xs items-center truncate text-xl font-semibold text-gray-200 dark:text-gray-300 md:max-w-[15.625rem]">
             {selectedList?.type === ListTypesProps.GENERAL && (
               <Archive
                 {...DEFAULT_ICON_PROPS}

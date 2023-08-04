@@ -9,10 +9,9 @@
 
 @layer base {
   html {
-    font-family: Roboto, system-ui, sans-serif;
+    font-family: Roboto, sans-serif;
     user-select: none;
     font-size: 1rem;
-    /* font-weight: 300; */
     line-height: 1.5rem /* 28px */;
     color: #000;
   }
@@ -39,59 +38,59 @@
 
 @layer components {
   .primary-button {
-    @apply flex w-full items-center justify-center rounded-full border-default bg-primary px-4 py-2 font-bold text-white transition-colors hover:bg-darkButtonHover hover:text-white disabled:bg-lightGray disabled:text-lightenGray disabled:hover:bg-lightGray dark:border-dark dark:bg-darkPrimary dark:text-darkTextLight dark:hover:bg-darkButtonHover dark:hover:text-darkTextLight dark:disabled:bg-darkInputBackground dark:disabled:hover:bg-darkInputBackground dark:disabled:hover:text-lightenGray;
+    @apply flex w-full items-center justify-center rounded-full border-default bg-blue-500 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-600 disabled:bg-gray-200 disabled:text-gray-200 disabled:hover:bg-gray-200 dark:border-transparent dark:bg-blue-600 dark:hover:bg-blue-700 dark:disabled:bg-zinc-500 dark:disabled:hover:bg-zinc-500 dark:disabled:hover:text-gray-200;
   }
 
   .secondary-button {
-    @apply w-full items-center rounded-full border border-lightGray px-3 py-2 font-bold text-primary transition-all hover:bg-lightGray disabled:text-lightenGray dark:border-dark dark:text-darkPrimary dark:hover:bg-darkBackgroundIconButton;
+    @apply w-full items-center rounded-full border border-gray-200 px-3 py-2 font-bold text-blue-500 transition-all hover:bg-gray-200 disabled:text-gray-200 dark:border-zinc-700 dark:text-blue-500 dark:hover:bg-zinc-700;
   }
 
   .icon-button {
-    @apply flex items-center justify-center rounded-full p-2 transition-colors hover:bg-lightGray disabled:text-lightGray disabled:hover:bg-transparent dark:text-darkTextLight dark:hover:bg-darkBackgroundIconButton disabled:dark:text-gray;
+    @apply flex items-center justify-center rounded-full p-2 transition-colors hover:bg-gray-200 disabled:text-gray-200 disabled:hover:bg-transparent dark:text-gray-300 dark:hover:bg-zinc-700 disabled:dark:text-gray-300;
   }
 
   .tab-bar-button {
-    @apply flex items-center justify-center rounded-full p-2 transition-colors hover:bg-lightGray hover:text-primary disabled:text-lightGray disabled:hover:bg-transparent dark:text-darkTextLight dark:hover:bg-darkBackgroundIconButton dark:hover:text-darkPrimary disabled:dark:text-gray;
+    @apply flex items-center justify-center rounded-full p-2 transition-colors hover:bg-gray-200 hover:text-blue-500 disabled:text-gray-200 disabled:hover:bg-transparent dark:text-gray-300 dark:hover:bg-zinc-700 dark:hover:text-blue-500 disabled:dark:text-gray-300;
   }
 
   .tab-bar-button-active {
-    @apply flex items-center justify-center text-primary transition-colors dark:text-darkPrimary;
+    @apply flex items-center justify-center text-blue-500 transition-colors dark:text-blue-500;
   }
 
   .text-button {
-    @apply text-primary hover:underline dark:text-darkPrimary;
+    @apply text-blue-500 hover:underline dark:text-blue-500;
   }
 
   .popover-button {
-    @apply flex w-full items-center gap-2 rounded-full p-2 transition-colors hover:bg-lightGray disabled:text-lightGray disabled:hover:bg-transparent dark:text-darkTextLight dark:hover:bg-darkBackgroundIconButton disabled:dark:text-gray;
+    @apply flex w-full items-center gap-2 rounded-full p-2 transition-colors hover:bg-gray-200 disabled:text-gray-200 disabled:hover:bg-transparent dark:text-gray-300 dark:hover:bg-zinc-700 disabled:dark:text-gray-300;
   }
 
   .sidebar-button {
-    @apply flex w-full items-center gap-2 rounded-full p-2 transition-colors hover:bg-lightGray disabled:text-lightGray disabled:hover:bg-transparent dark:text-darkTextLight dark:hover:bg-darkBackgroundIconButton disabled:dark:text-gray;
+    @apply flex w-full items-center gap-2 rounded-full p-2 transition-colors hover:bg-gray-200 disabled:text-gray-200 disabled:hover:bg-transparent dark:text-gray-300 dark:hover:bg-zinc-700 disabled:dark:text-gray-300;
   }
 
   .menu-items {
-    @apply absolute right-0 z-50 mt-2 origin-top-right rounded-default border-default bg-white p-2 shadow-lg dark:border-dark dark:bg-darkCardBackground dark:shadow-sm dark:shadow-gray;
+    @apply absolute right-0 z-50 mt-2 origin-top-right rounded-default border-default bg-white p-2 shadow-lg dark:border-zinc-700 dark:bg-zinc-800 dark:shadow-zinc-900;
   }
 
   .drag-over {
-    @apply bg-lightGray dark:bg-darkBackgroundIconButton;
+    @apply bg-gray-200 dark:bg-gray-500;
   }
 
   .default-label {
-    @apply font-medium dark:text-darkTextLight;
+    @apply font-medium dark:text-gray-300;
   }
 
   .default-checkbox {
-    @apply h-4 w-4 rounded-full border-default border-lightenGray transition-all hover:cursor-pointer hover:bg-lightGray dark:border-darkTextGray dark:hover:bg-darkBackgroundIconButton md:h-[1.125rem] md:w-[1.125rem];
+    @apply h-5 w-5 rounded-full border-default border-gray-400 transition-all hover:cursor-pointer hover:bg-gray-300 dark:border-zinc-500 dark:hover:bg-zinc-500 md:h-[1.125rem] md:w-[1.125rem];
   }
 
   .checkbox-checked {
-    @apply flex items-center justify-center border-transparent bg-primary text-white hover:bg-darkPrimary dark:bg-darkPrimary;
+    @apply flex items-center justify-center border-transparent bg-blue-500 text-white hover:bg-blue-600;
   }
 
   .list-title {
-    @apply flex items-center gap-1 dark:text-darkTextLight;
+    @apply flex items-center gap-1 dark:text-gray-300;
   }
 
   .default-header {
@@ -99,41 +98,46 @@
   }
 
   .default-header-title {
-    @apply text-xl font-bold capitalize dark:text-darkTextLight;
+    @apply text-xl font-bold capitalize dark:text-gray-300;
   }
 
   .default-input-text {
-    @apply w-full rounded-md border border-default bg-lightGray px-4 py-2 text-sm outline-none transition-colors focus:bg-white disabled:text-lightenGray dark:border-dark dark:bg-darkInputBackground dark:text-darkTextLight dark:focus:bg-darkBackgroundIconButton disabled:dark:text-darkTextGray md:text-base;
+    @apply w-full rounded-md border border-default bg-gray-200 px-4 py-2 text-sm outline-none transition-colors focus:bg-white disabled:text-gray-200 dark:border-dark-gray dark:bg-zinc-700 dark:text-gray-200 dark:focus:bg-zinc-600 disabled:dark:text-gray-300 md:text-base;
   }
 
   .default-link {
-    @apply text-primary hover:underline dark:text-darkPrimary;
+    @apply text-blue-500 hover:underline dark:text-blue-500;
   }
 }
 
 /* quill input text */
 .ql-editor {
-  @apply rounded-b-md !border-default bg-lightGray p-2 text-sm outline-none transition-colors focus:bg-white disabled:text-lightenGray dark:!border-dark dark:bg-darkInputBackground dark:text-darkTextLight dark:focus:bg-darkInputBackground disabled:dark:text-darkTextGray md:text-base;
+  @apply rounded-b-md !border-default bg-gray-200 p-2 text-sm outline-none transition-colors focus:bg-white disabled:text-gray-200 dark:!border-zinc-700 dark:bg-zinc-700 dark:text-gray-200 dark:focus:bg-zinc-600 disabled:dark:text-gray-300 md:text-base;
 }
 
 /* quill toolbar */
 .ql-toolbar.ql-snow {
-  @apply rounded-t-md dark:border-dark dark:bg-darkInputBackground;
+  @apply rounded-t-md dark:border-zinc-600 dark:bg-zinc-600;
+}
+
+.ql-snow.ql-toolbar button,
+.ql-snow .ql-toolbar button {
+  @apply dark:text-gray-200 !important;
 }
 
 /* quill container */
 .ql-container.ql-snow {
-  @apply h-auto rounded-b-md dark:border-dark dark:bg-darkInputBackground;
+  @apply h-auto rounded-b-md dark:border-zinc-700 dark:bg-zinc-600;
 }
 
 /* quill placeholder */
 .ql-editor.ql-blank::before {
-  @apply !not-italic text-lightenGray dark:text-darkTextGray;
+  @apply !not-italic text-gray-500 dark:text-gray-200;
 }
 
 /* datepicker clear button */
 .react-datepicker__close-icon::after {
-  @apply bg-zinc-500 transition-colors hover:bg-zinc-600 dark:bg-darkBackgroundIconButton dark:hover:bg-darkBackgroundIconButton;
+  @apply bg-zinc-500 transition-colors hover:bg-zinc-600 dark:bg-zinc-500 dark:hover:bg-zinc-700;
 }
 
 .react-datepicker {

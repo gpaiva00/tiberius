@@ -11,15 +11,15 @@ export default function Help() {
       showAsideButton={false}
     >
       <CardContentContainer className="p-4">
-        <h4 className="dark:text-darkTextLight">
+        <h4 className="dark:text-gray-300">
           Está com dúvidas sobre como usar o Tiberius? Aqui você encontrará algumas informações que
           podem te ajudar.
         </h4>
         {/* lists */}
         <div className="my-4">
-          <h1 className="mb-1 text-xl font-bold dark:text-darkTextLight">Listas de tarefas</h1>
+          <h1 className="mb-1 text-xl font-bold dark:text-gray-300">Listas de tarefas</h1>
           <Divider />
-          <ol className="my-2 list-inside list-decimal dark:text-darkTextLight">
+          <ol className="my-2 list-inside list-decimal dark:text-gray-300">
             <li>
               <span className="font-bold">Criar uma lista:</span> para criar uma lista, digite o
               nome dela na parte inferior da tela e pressione a tecla{' '}
@@ -52,9 +52,9 @@ export default function Help() {
         </div>
         {/* items */}
         <div className="my-4">
-          <h1 className="mb-1 text-xl font-bold dark:text-darkTextLight">Itens</h1>
+          <h1 className="mb-1 text-xl font-bold dark:text-gray-300">Itens</h1>
           <Divider />
-          <ol className="my-2 list-inside list-decimal dark:text-darkTextLight">
+          <ol className="my-2 list-inside list-decimal dark:text-gray-300">
             <li>
               <span className="font-bold">Criar um item:</span> para criar um item, digite o nome
               dele na parte inferior da tela e pressione a tecla{' '}
@@ -86,14 +86,14 @@ export default function Help() {
         </div>
         {/* profile */}
         <div className="my-4">
-          <h1 className="mb-1 text-xl font-bold dark:text-darkTextLight">Perfil</h1>
+          <h1 className="mb-1 text-xl font-bold dark:text-gray-300">Perfil</h1>
           <Divider />
-          <ol className="my-2 list-inside list-decimal dark:text-darkTextLight">
+          <ol className="my-2 list-inside list-decimal dark:text-gray-300">
             <li>
               <span className="font-bold">Acessar o perfil:</span> para acessar o perfil, vá para a
               tela de listas e clique no ícone{' '}
               <User
-                className="m-0 mx-1 inline-block p-0 dark:text-darkTextGray"
+                className="m-0 mx-1 inline-block p-0 dark:text-gray-300"
                 {...DEFAULT_ICON_PROPS}
               />
               .

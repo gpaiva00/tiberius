@@ -9,9 +9,9 @@ export default function ProgressBar({ items = [] }: ProgressBarProps) {
   const progressPercentage = (completedItems / (items.length || 0)) * 100 || 0
 
   return (
-    <div className="h-[0.125rem] w-20 rounded-default bg-lightGray dark:bg-darkBackgroundIconButton">
+    <div className="h-[0.125rem] w-20 rounded-default bg-gray-200 dark:bg-zinc-500">
       <div
-        className="h-[0.125rem] rounded-default bg-primary transition-all dark:bg-darkPrimary"
+        className="h-[0.125rem] rounded-default bg-blue-500 transition-all dark:bg-blue-500"
         style={{
           width: `${progressPercentage}%`,
         }}

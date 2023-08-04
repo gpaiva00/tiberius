@@ -1,13 +1,15 @@
-import { CardContentContainer, Divider, MainCard } from '@/shared/components'
+import { Divider } from '@/shared/components'
 
 export default function About() {
   return (
-    <MainCard
-      title="Sobre o Tiberius"
-      showAsideButton={false}
-    >
-      <CardContentContainer className="p-4">
-        <p className="dark:text-darkTextLight">
+    <>
+      {/* title container */}
+      <div className="mb-2 flex w-full items-center px-4">
+        <h1 className="default-header-title">sobre o tiberius</h1>
+      </div>
+      {/* content container */}
+      <div className="flex min-h-[350px] w-full flex-col overflow-y-scroll rounded-default bg-white p-4 dark:bg-zinc-800">
+        <p className="dark:text-gray-300">
           O Tiberius é um app de listas de tarefas simples e minimalista. Ele nasceu em Abril de
           2023, partindo de uma necessidade pessoal de ter um app de listas de tarefas que tivesse
           apenas o essencial, sem distrações. No meu dia a dia, gosto de organizar minhas tarefas em
@@ -22,9 +24,9 @@ export default function About() {
         </p>
         {/* why tiberius */}
         <div className="my-4">
-          <h1 className="mb-1 text-xl font-bold dark:text-darkTextLight">Por que Tiberius?</h1>
+          <h1 className="mb-1 text-xl font-bold dark:text-gray-300">Por que Tiberius?</h1>
           <Divider />
-          <p className="my-2 dark:text-darkTextLight">
+          <p className="my-2 dark:text-gray-300">
             O nome Tiberius foi inspirado no nome do imperador romano Tibério Júlio César Augusto,
             que governou o Império Romano de 14 a 37 d.C. Tibério foi um imperador que se destacou
             por ser um <span className="font-bold">administrador eficiente</span>, que se preocupava
@@ -45,7 +47,7 @@ export default function About() {
             <br />
             <br />
             {/* quotation */}
-            <span className="rounded-full bg-lightGray px-4 py-2 dark:bg-darkInputBackground dark:text-darkTextLight">
+            <span className="rounded-full bg-gray-500 px-4 py-2 dark:bg-zinc-700">
               <span className="italic">
                 "concentre-se no presente, pois é um presente que você recebeu."
               </span>
@@ -56,14 +58,15 @@ export default function About() {
         </div>
         {/* who am i */}
         <div className="my-4">
-          <h1 className="mb-1 text-xl font-bold dark:text-darkTextLight">Quem sou eu?</h1>
+          <h1 className="mb-1 text-xl font-bold dark:text-gray-300">Quem sou eu?</h1>
           <Divider />
-          <p className="my-2 dark:text-darkTextLight">
+          <p className="my-2 dark:text-gray-300">
             Meu nome é <span className="font-bold">Gabriel</span>, tenho{' '}
-            {new Date().getFullYear() - 1998} anos e sou engenheiro de software há 7 anos. Sou
-            apaixonado por tecnologia, e gosto de usá-la para facilitar a vida de alguma forma. Sou
-            um entusiasta de <span className="font-bold">produtividade pessoal</span>, e gosto de
-            estudar sobre o assunto. Gosto de design e de criar coisas simples e minimalistas.
+            {new Date().getFullYear() - 1998} anos e sou engenheiro de software há{' '}
+            {new Date().getFullYear() - 2017} anos. Sou apaixonado por tecnologia, e gosto de usá-la
+            para facilitar a vida de alguma forma. Sou um entusiasta de{' '}
+            <span className="font-bold">produtividade pessoal</span>, e gosto de estudar sobre o
+            assunto. Gosto de design e de criar coisas simples e minimalistas.
             <br />
             <br />
             Você pode me encontrar nas redes sociais:
@@ -75,7 +78,7 @@ export default function About() {
                   href="https://www.linkedin.com/in/gabrielpaiva00"
                   target="_blank"
                   rel="noreferrer"
-                  className="text-primary hover:underline dark:text-darkPrimary"
+                  className="text-blue-500 hover:underline dark:text-blue-500"
                 >
                   LinkedIn
                 </a>
@@ -86,7 +89,7 @@ export default function About() {
                     https://www.instagram.com/simplesmente_gab/"
                   target="_blank"
                   rel="noreferrer"
-                  className="text-primary hover:underline dark:text-darkPrimary"
+                  className="text-blue-500 hover:underline dark:text-blue-500"
                 >
                   Instagram
                 </a>
@@ -97,7 +100,7 @@ export default function About() {
                     https://twitter.com/papaiva00"
                   target="_blank"
                   rel="noreferrer"
-                  className="text-primary hover:underline dark:text-darkPrimary"
+                  className="text-blue-500 hover:underline dark:text-blue-500"
                 >
                   Twitter
                 </a>
@@ -105,7 +108,7 @@ export default function About() {
             </ul>
           </p>
         </div>
-      </CardContentContainer>
-    </MainCard>
+      </div>
+    </>
   )
 }

@@ -48,6 +48,7 @@ import {
   Copy,
   CursorText,
   DotsThree,
+  FunnelSimple,
   GearSix,
   ListBullets,
   PencilSimple,
@@ -227,7 +228,7 @@ export default function List() {
       text: 'Renomear',
       icon: (
         <PencilSimple
-          className="text-lightenGray dark:text-darkTextGray"
+          className="dark:text-gray-300"
           {...DEFAULT_ICON_PROPS}
         />
       ),
@@ -245,7 +246,7 @@ export default function List() {
       text: 'Excluir',
       icon: (
         <TrashSimple
-          className="text-lightenGray dark:text-darkTextGray"
+          className="dark:text-gray-300"
           {...DEFAULT_ICON_PROPS}
         />
       ),
@@ -255,7 +256,7 @@ export default function List() {
       text: 'Agendar',
       icon: (
         <CalendarBlank
-          className="text-lightenGray dark:text-darkTextGray"
+          className="dark:text-gray-300"
           {...DEFAULT_ICON_PROPS}
         />
       ),
@@ -271,7 +272,7 @@ export default function List() {
       text: 'Copiar',
       icon: (
         <CursorText
-          className="text-lightenGray dark:text-darkTextGray"
+          className="dark:text-gray-300"
           {...DEFAULT_ICON_PROPS}
         />
       ),
@@ -281,7 +282,7 @@ export default function List() {
       text: 'Duplicar',
       icon: (
         <Copy
-          className="text-lightenGray dark:text-darkTextGray"
+          className="dark:text-gray-300"
           {...DEFAULT_ICON_PROPS}
         />
       ),
@@ -291,7 +292,7 @@ export default function List() {
       text: 'Mover',
       icon: (
         <ListBullets
-          className="text-lightenGray dark:text-darkTextGray"
+          className="dark:text-gray-300"
           {...DEFAULT_ICON_PROPS}
         />
       ),
@@ -309,8 +310,7 @@ export default function List() {
           className={classNames(
             'h-4 w-4 rounded-full bg-green-400 transition-all hover:bg-green-500 hover:opacity-100',
             {
-              'border border-black opacity-100 dark:border-darkTextLight':
-                task?.markColor === 'green',
+              'border border-black opacity-100 dark:border-gray-200': task?.markColor === 'green',
               'opacity-25': task?.markColor && task?.markColor !== 'green',
             }
           )}
@@ -324,8 +324,7 @@ export default function List() {
           className={classNames(
             'h-4 w-4 rounded-full bg-yellow-400 transition-all hover:bg-yellow-500 hover:opacity-100',
             {
-              'border border-black opacity-100 dark:border-darkTextLight':
-                task?.markColor === 'yellow',
+              'border border-black opacity-100 dark:border-gray-200': task?.markColor === 'yellow',
               'opacity-25': task?.markColor && task?.markColor !== 'yellow',
             }
           )}
@@ -339,8 +338,7 @@ export default function List() {
           className={classNames(
             'h-4 w-4 rounded-full bg-rose-400 transition-all hover:bg-rose-500 hover:opacity-100',
             {
-              'border border-black opacity-100 dark:border-darkTextLight':
-                task?.markColor === 'red',
+              'border border-black opacity-100 dark:border-gray-200': task?.markColor === 'red',
               'opacity-25': task?.markColor && task?.markColor !== 'red',
             }
           )}
@@ -354,8 +352,7 @@ export default function List() {
           className={classNames(
             'h-4 w-4 rounded-full bg-blue-400 transition-all hover:bg-blue-500 hover:opacity-100',
             {
-              'border border-black opacity-100 dark:border-darkTextLight':
-                task?.markColor === 'blue',
+              'border border-black opacity-100 dark:border-gray-200': task?.markColor === 'blue',
               'opacity-25': task?.markColor && task?.markColor !== 'blue',
             }
           )}
@@ -386,10 +383,7 @@ export default function List() {
               selectedList?.type === 'default' ? selectedList?.name : 'Itens gerais'
             )}
           </h1>
-          <CompletedItemsCount
-            size="sm"
-            items={selectedList?.items || []}
-          />
+          <CompletedItemsCount items={selectedList?.items || []} />
         </div>
         <div className="flex items-end gap-2">
           <button
@@ -397,6 +391,12 @@ export default function List() {
             className="icon-button"
           >
             <Plus {...DEFAULT_ICON_PROPS} />
+          </button>
+          <button
+            className="icon-button"
+            onClick={() => alert('Esta funcionalidade chegará em breve. 🙏')}
+          >
+            <FunnelSimple {...DEFAULT_ICON_PROPS} />
           </button>
           <Link
             to={LIST_SETTINGS_ROUTE}
@@ -409,9 +409,9 @@ export default function List() {
       {/* content container */}
       <div className="w-full overflow-y-scroll rounded-default">
         {/* quotation */}
-        {!selectedList?.items?.length && (
-          <div className="mt-10 flex flex-1 items-center justify-center">
-            <p className="italic text-lightenGray">{quoteMessage}</p>
+        {!selectedList?.items?.length && !editingTask && (
+          <div className="mt-20 flex flex-1 items-center justify-center">
+            <p className="italic text-gray-500">{quoteMessage}</p>
           </div>
         )}
         {/* tasks */}
@@ -470,11 +470,8 @@ export default function List() {
                       className="relative inline-block outline-none ring-0 focus:ring-0"
                     >
                       <Menu.Button className="inline-flex">
-                        <button className="icon-button">
-                          <DotsThree
-                            className="text-lightenGray dark:text-darkTextGray"
-                            {...DEFAULT_ICON_PROPS}
-                          />
+                        <button className="icon-button hover:bg-zinc-300 dark:hover:bg-zinc-600">
+                          <DotsThree {...DEFAULT_ICON_PROPS} />
                         </button>
                       </Menu.Button>
                       <Menu.Items className="menu-items w-[150px]">
@@ -509,26 +506,26 @@ export default function List() {
         </div>
         {/* completed tasks container */}
         {sortedTasks.completed.length > 0 && (
-          <div className="sticky bottom-0 flex items-center justify-between rounded-default bg-zinc-200 px-2 py-2 dark:bg-darkBackgroundIconButton md:px-4">
+          <div className="sticky bottom-0 flex items-center justify-between rounded-default bg-zinc-300 px-2 py-2 dark:bg-zinc-700 md:px-4">
             <div
               className="flex cursor-pointer items-center gap-2"
               onClick={toggleShowCompletedTasks}
             >
               <CaretCircleRight
                 {...DEFAULT_ICON_PROPS}
-                className={classNames('dark:text-darkTextLight', {
+                className={classNames('dark:text-gray-300', {
                   'rotate-90 transform duration-150': showCompletedTasks,
                   'rotate-0 transform duration-150': !showCompletedTasks,
                 })}
               />
-              <h2 className="text-sm font-bold hover:underline dark:text-darkTextLight md:text-base">
+              <h2 className="text-sm font-bold hover:underline dark:text-gray-300 md:text-base">
                 {sortedTasks.completed.length}{' '}
                 {sortedTasks.completed.length === 1 ? 'concluído' : 'concluídas'}
               </h2>
             </div>
             <button
               onClick={handleClearCompletedTasks}
-              className="icon-button"
+              className="icon-button dark:hover:bg-zinc-600"
             >
               <TrashSimple {...DEFAULT_ICON_PROPS} />
             </button>
@@ -553,7 +550,7 @@ export default function List() {
                     >
                       <Check
                         weight="bold"
-                        size={15}
+                        size={13}
                       />
                     </div>
                   </div>
@@ -563,11 +560,11 @@ export default function List() {
                         'm-0 max-w-[92%] select-text break-words p-0 opacity-90',
                         {
                           'break-all': ifTextHasLink(task.text),
-                          'text-lightenGray dark:text-darkTextGray':
+                          'text-gray-200 dark:text-gray-300':
                             completedTaskStyle === CompletedTaskStyleProps.GRAY,
-                          'text-lightenGray line-through dark:text-darkTextGray':
+                          'text-gray-200 line-through dark:text-gray-300':
                             completedTaskStyle === CompletedTaskStyleProps.GRAY_AND_STROKE,
-                          'line-through dark:text-darkTextLight':
+                          'line-through dark:text-gray-300':
                             completedTaskStyle === CompletedTaskStyleProps.STROKE,
                         },
                         `text-${textSize}`
@@ -575,7 +572,7 @@ export default function List() {
                     >
                       {FormattedItemText(task.text)}
                     </div>
-                    <small className="text-[0.5rem] text-lightenGray dark:text-darkTextGray md:text-[0.625rem]">
+                    <small className="text-[0.5rem] text-gray-200 dark:text-gray-400 md:text-xs">
                       Feita {getDayFromDateString(task.completedAt as string)} às{' '}
                       {new Date(task.completedAt as string).toLocaleTimeString(navigator.language, {
                         hour: '2-digit',
@@ -603,7 +600,7 @@ export default function List() {
             <>
               <div
                 key={index}
-                className="flex flex-row items-center pl-4 pr-2 transition-all hover:bg-lightGray dark:hover:bg-darkInputBackground"
+                className="flex flex-row items-center pl-4 pr-2 transition-all hover:bg-gray-200 dark:hover:bg-zinc-500"
               >
                 <div
                   className="flex w-full cursor-pointer items-center gap-2 py-4"
@@ -632,7 +629,7 @@ export default function List() {
                 </div>
                 <CaretRight
                   {...DEFAULT_ICON_PROPS}
-                  className="text-lightenGray dark:text-lightenGray"
+                  className="text-gray-200 dark:text-gray-200"
                 />
               </div>
               {(index !== lists.length - 1 || list.type === ListTypesProps.GENERAL) && <Divider />}
@@ -640,9 +637,9 @@ export default function List() {
           ))}
         </div>
         {/* buttons */}
-        <div className="mt-4 p-2">
+        <div className="mt-4 flex items-center justify-center p-2">
           <button
-            className="secondary-button"
+            className="secondary-button max-w-md"
             onClick={() => {
               setCurrentModal(Modals.NONE)
               setSelectedItem(null)
@@ -677,7 +674,7 @@ export default function List() {
             />
             {/* character count */}
             <div className="flex w-full items-center justify-end gap-2">
-              <span className="text-xs text-lightenGray">
+              <span className="text-xs text-gray-200">
                 {getInputLength(editingTask?.text || '')}/{TASK_CHAR_LIMIT}
               </span>
             </div>
@@ -729,7 +726,7 @@ export default function List() {
             />
             {/* character count */}
             <div className="flex w-full items-center justify-end gap-2">
-              <span className="text-xs text-lightenGray">
+              <span className="text-xs text-gray-200">
                 {getInputLength(editingTask?.text || '')}/{TASK_CHAR_LIMIT}
               </span>
             </div>

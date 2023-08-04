@@ -1,10 +1,10 @@
-import { ABOUT_ROUTE, CONTACT_ROUTE, HELP_ROUTE, TERMOS_OF_USE_ROUTE } from '@/constants'
+import { ABOUT_ROUTE, CONTACT_ROUTE, TERMOS_OF_USE_ROUTE } from '@/constants'
 import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
-    <footer className="absolute bottom-0 mb-2 w-full">
-      <p className="text-center text-xs text-lightenGray dark:text-darkTextGray">
+    <footer className="absolute bottom-0 mb-3 w-full">
+      <p className="text-center text-sm text-gray-200 dark:text-gray-300">
         <Link
           to={TERMOS_OF_USE_ROUTE}
           className="hover:underline"
@@ -34,13 +34,14 @@ export default function Footer() {
           Github
         </Link>
         <span className="mx-1 md:mx-2">•</span>
-        <Link
+        {/* TODO: update info */}
+        {/* <Link
           to={HELP_ROUTE}
           className="hover:underline"
         >
           Ajuda
-        </Link>
-        <span className="mx-1 hidden md:mx-2 md:inline">•</span>
+        </Link> */}
+        {/* <span className="mx-1 hidden md:mx-2 md:inline">•</span> */}
         <span className="mt-1 block md:mt-0 md:inline">
           © {new Date().getFullYear()}{' '}
           <Link

@@ -1,20 +1,22 @@
-import { CardContentContainer, Divider, MainCard } from '@/shared/components'
+import { Divider } from '@/shared/components'
 
 export default function TermsOfUse() {
   return (
-    <MainCard
-      title="termos de uso"
-      showAsideButton={false}
-    >
-      <CardContentContainer className="p-4">
-        <h4 className="dark:text-darkTextLight">
+    <>
+      {/* title container */}
+      <div className="mb-2 flex w-full items-center px-4">
+        <h1 className="default-header-title">termos de uso</h1>
+      </div>
+      {/* content container */}
+      <div className="flex min-h-[350px] w-full flex-col overflow-y-scroll rounded-default bg-white p-4 dark:bg-zinc-800">
+        <h4 className="dark:text-gray-300">
           Ao usar o Tiberius você está de acordo com os seguintes termos de uso:
         </h4>
         {/* about tiberius */}
         <div className="my-4">
-          <h1 className="mb-1 text-xl font-bold dark:text-darkTextLight">Tiberius</h1>
+          <h1 className="mb-1 text-xl font-bold dark:text-gray-300">Tiberius</h1>
           <Divider />
-          <ol className="list-inside list-decimal dark:text-darkTextLight">
+          <ol className="list-inside list-decimal dark:text-gray-300">
             <li className="my-2">
               O Tiberius tem como principal objetivo{' '}
               <span className="font-bold">ajudar você a organizar suas tarefas</span>. Isso inclui
@@ -42,9 +44,9 @@ export default function TermsOfUse() {
         </div>
         {/* about user */}
         <div className="my-4">
-          <h1 className="mb-1 text-xl font-bold dark:text-darkTextLight">Usuário</h1>
+          <h1 className="mb-1 text-xl font-bold dark:text-gray-300">Usuário</h1>
           <Divider />
-          <ol className="list-inside list-decimal dark:text-darkTextLight">
+          <ol className="list-inside list-decimal dark:text-gray-300">
             <li className="my-2">
               O usuário é responsável por seus dados e por manter sua conta segura.
             </li>
@@ -77,11 +79,11 @@ export default function TermsOfUse() {
         </div>
         {/* copyright and intelectual property */}
         <div className="my-4">
-          <h1 className="mb-1 text-xl font-bold dark:text-darkTextLight">
+          <h1 className="mb-1 text-xl font-bold dark:text-gray-300">
             Direitos autorais e propriedade intelectual
           </h1>
           <Divider />
-          <ol className="list-inside list-decimal dark:text-darkTextLight">
+          <ol className="list-inside list-decimal dark:text-gray-300">
             <li className="my-2">
               O Tiberius é um software de código aberto, licenciado sob a licença MIT. O código
               fonte do projeto pode ser encontrado no{' '}
@@ -97,9 +99,9 @@ export default function TermsOfUse() {
         </div>
         {/* guarantees */}
         <div className="my-4">
-          <h1 className="mb-1 text-xl font-bold dark:text-darkTextLight">Garantias</h1>
+          <h1 className="mb-1 text-xl font-bold dark:text-gray-300">Garantias</h1>
           <Divider />
-          <ol className="list-inside list-decimal dark:text-darkTextLight">
+          <ol className="list-inside list-decimal dark:text-gray-300">
             <li className="my-2">
               O Tiberius é um projeto de natureza Open Source, com esforços feitos de forma
               espontânea e não oferecemos nenhuma garantia para a disponibilidade do serviço ou
@@ -109,11 +111,11 @@ export default function TermsOfUse() {
         </div>
         {/* updates on terms */}
         <div className="my-4">
-          <h1 className="mb-1 text-xl font-bold dark:text-darkTextLight">
+          <h1 className="mb-1 text-xl font-bold dark:text-gray-300">
             Alterações nos termos de uso
           </h1>
           <Divider />
-          <ol className="list-inside list-decimal dark:text-darkTextLight">
+          <ol className="list-inside list-decimal dark:text-gray-300">
             <li className="my-2">
               Os termos naturalmente poderão ser alterados quando necessário e estas alterações
               serão acompanhadas de notificações dentro do próprio Tiberius. Iremos sempre destacar
@@ -124,11 +126,11 @@ export default function TermsOfUse() {
         <Divider />
         {/* last update date */}
         <div className="my-4">
-          <p className="text-xs text-gray dark:text-darkTextGray">
+          <p className="text-gray text-xs dark:text-gray-300">
             Última atualização: 22 de Maio de 2023
           </p>
         </div>
-      </CardContentContainer>
-    </MainCard>
+      </div>
+    </>
   )
 }

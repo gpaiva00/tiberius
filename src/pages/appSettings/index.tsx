@@ -12,7 +12,7 @@ export default function AppSettings() {
         <h1 className="default-header-title">Configurações Gerais</h1>
       </div>
       {/* content container */}
-      <div className="flex min-h-[350px] w-full flex-col items-center gap-2 overflow-y-scroll rounded-default bg-white p-2 dark:bg-darkCardBackground md:gap-8 md:p-4">
+      <div className="flex min-h-[350px] w-full flex-col items-center gap-2 overflow-y-scroll rounded-default bg-white p-2 dark:bg-zinc-800 md:gap-8 md:p-4">
         {/* input container */}
         <div className="flex w-full flex-col gap-4">
           {/* completed task */}
@@ -22,7 +22,7 @@ export default function AppSettings() {
               onChange={(event) =>
                 onChangeCompletedTaskStyle(event.target.value as CompletedTaskStyleProps)
               }
-              className="h-9 rounded-default border border-default px-4 py-2 text-sm outline-none disabled:text-lightenGray dark:border-dark disabled:dark:text-darkTextGray md:text-base"
+              className="h-9 rounded-default border border-default px-4 py-2 text-sm outline-none disabled:text-gray-200 dark:border-dark-gray disabled:dark:text-gray-300 md:text-base"
             >
               <option
                 value={CompletedTaskStyleProps.GRAY_AND_STROKE}
@@ -49,7 +49,7 @@ export default function AppSettings() {
             <label className="default-label">Tamanho do texto das tarefas</label>
             <select
               onChange={(event) => onChangeTextSize(event.target.value as AppTextSizeProps)}
-              className="h-9 rounded-default border border-default px-4 py-2 font-sans text-sm outline-none disabled:text-lightenGray dark:border-dark disabled:dark:text-darkTextGray md:text-base"
+              className="h-9 rounded-default border border-default px-4 py-2 font-sans text-sm outline-none disabled:text-gray-200 dark:border-dark-gray disabled:dark:text-gray-300 md:text-base"
             >
               <option
                 value={AppTextSizeProps.BASE}

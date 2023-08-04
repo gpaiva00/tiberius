@@ -5,10 +5,13 @@ import { CardContentContainer, Divider } from '@/shared/components'
 import { DEFAULT_ICON_PROPS, SIGN_IN_ROUTE } from '@/constants'
 import { ListProps, ListTypesProps } from '@/typings/List'
 
+import { useAuth } from '@/hooks'
 import { Check, DotsThree } from '@phosphor-icons/react'
 import { Link } from 'react-router-dom'
 
 export default function DemoCard() {
+  const { isLogged } = useAuth()
+
   const demoList: ListProps = {
     id: 'demo-list-id',
     name: 'lista de tarefas',
@@ -24,21 +27,21 @@ export default function DemoCard() {
       {
         id: 'demo-item-id-2',
         text: 'criar minha conta',
-        completed: false,
+        completed: isLogged ? true : false,
         updatedAt: new Date().toISOString(),
         markColor: '',
       },
       {
         id: 'demo-item-id-3',
         text: 'criar minha primeira lista',
-        completed: false,
+        completed: isLogged ? true : false,
         updatedAt: new Date().toISOString(),
         markColor: '',
       },
       {
         id: 'demo-item-id-4',
         text: 'ser feliz :)',
-        completed: false,
+        completed: isLogged ? true : false,
         updatedAt: new Date().toISOString(),
         markColor: '',
       },
@@ -49,7 +52,7 @@ export default function DemoCard() {
   }
 
   return (
-    <div className="relative flex h-[20rem] w-[25rem] flex-col overflow-hidden rounded-default border-default bg-white dark:border-dark dark:bg-darkCardBackground">
+    <div className="relative flex h-[20rem] w-[25rem] flex-col overflow-hidden rounded-default border-default bg-white dark:border-dark-gray dark:bg-zinc-800">
       <header className="default-header py-2">
         <div className="flex w-full items-center gap-2">
           <h1 className="default-header-title max-w-xs truncate">Para hoje</h1>
@@ -75,12 +78,9 @@ export default function DemoCard() {
               </Link>
               <div className="mx-4 flex flex-1">
                 <label
-                  className={classNames(
-                    'select-text font-light transition-all dark:text-darkTextLight',
-                    {
-                      'text-gray line-through opacity-30 hover:line-through': item.completed,
-                    }
-                  )}
+                  className={classNames('select-text transition-all dark:text-gray-300', {
+                    'text-gray line-through opacity-30 hover:line-through': item.completed,
+                  })}
                 >
                   {item.text}
                 </label>

@@ -123,7 +123,7 @@ export default function Lists() {
       text: 'Configurar',
       icon: (
         <GearSix
-          className="text-lightenGray dark:text-darkTextGray"
+          className="dark:text-gray-300"
           {...DEFAULT_ICON_PROPS}
         />
       ),
@@ -133,7 +133,7 @@ export default function Lists() {
       text: 'Excluir',
       icon: (
         <TrashSimple
-          className="text-lightenGray dark:text-darkTextGray"
+          className="dark:text-gray-300"
           {...DEFAULT_ICON_PROPS}
         />
       ),
@@ -156,14 +156,14 @@ export default function Lists() {
         </div>
       </div>
       {/* content container */}
-      <div className="w-full overflow-y-scroll rounded-default bg-white dark:bg-darkCardBackground">
+      <div className="w-full overflow-y-scroll rounded-default bg-white dark:bg-zinc-800">
         {/* {!haveSeenChangeLog && (
           <div>
-            <div className="flex items-center justify-between bg-primary p-2 dark:bg-darkPrimary">
+            <div className="flex items-center justify-between bg-blue-500 p-2 dark:bg-blue-500">
               <div className="flex flex-1 flex-col">
                 <div className="flex items-center gap-1">
                   <Link to={CHANGE_LOG_ROUTE}>
-                    <h1 className="font-bold text-white hover:underline dark:text-darkTextLight">
+                    <h1 className="font-bold text-white hover:underline dark:text-gray-300">
                       <span>🎉 novidades</span>
                     </h1>
                   </Link>
@@ -171,7 +171,7 @@ export default function Lists() {
               </div>
               <CaretRight
                 {...DEFAULT_ICON_PROPS}
-                className="text-white dark:text-darkTextLight"
+                className="text-white dark:text-gray-300"
               />
             </div>
             <Divider />
@@ -180,7 +180,7 @@ export default function Lists() {
         {/* quotation */}
         {!lists.length && (
           <div className="mt-10 flex flex-1 items-center justify-center">
-            <p className="italic text-lightenGray">{quoteMessage}</p>
+            <p className="italic text-gray-500">{quoteMessage}</p>
           </div>
         )}
         {/* lists */}
@@ -197,7 +197,7 @@ export default function Lists() {
             >
               <div
                 className={classNames(
-                  'flex items-center py-2 pl-4 pr-2 transition-all hover:bg-lightGray dark:hover:bg-darkInputBackground',
+                  'flex items-center py-2 pl-4 pr-2 transition-all hover:bg-gray-200 dark:hover:bg-zinc-700',
                   {
                     'pr-4': list.type === ListTypesProps.GENERAL,
                     'rounded-t-default': index === 0,
@@ -220,16 +220,13 @@ export default function Lists() {
                     {FormattedItemText(list.name)}
                   </h1>
                   {/* complete items count */}
-                  <CompletedItemsCount
-                    size="sm"
-                    items={list.items || []}
-                  />
+                  <CompletedItemsCount items={list.items || []} />
                 </div>
                 {/* floating menu */}
                 {list.type === ListTypesProps.GENERAL ? (
                   <CaretRight
                     {...DEFAULT_ICON_PROPS}
-                    className="text-lightenGray dark:text-lightenGray"
+                    className="text-gray-400"
                   />
                 ) : (
                   <Menu
@@ -237,11 +234,8 @@ export default function Lists() {
                     className="relative inline-block"
                   >
                     <Menu.Button className="inline-flex">
-                      <button className="icon-button hover:bg-zinc-300 dark:hover:bg-zinc-700">
-                        <DotsThree
-                          className="text-lightenGray dark:text-darkTextGray"
-                          {...DEFAULT_ICON_PROPS}
-                        />
+                      <button className="icon-button hover:bg-zinc-300 dark:hover:bg-zinc-600">
+                        <DotsThree {...DEFAULT_ICON_PROPS} />
                       </button>
                     </Menu.Button>
                     <Menu.Items className="menu-items">

@@ -4,10 +4,9 @@ import classNames from 'classnames'
 
 interface CompletedItemsCount {
   items: TaskProps[]
-  size?: 'sm' | 'normal'
 }
 
-export default function CompletedItemsCount({ items = [], size = 'normal' }: CompletedItemsCount) {
+export default function CompletedItemsCount({ items = [] }: CompletedItemsCount) {
   const completedItems = items.filter((item) => item.completed).length || 0
   const isListCompleted = items.length === completedItems && items.length > 0
   const listItemsStatus = `${completedItems}/${items.length}`
@@ -15,7 +14,7 @@ export default function CompletedItemsCount({ items = [], size = 'normal' }: Com
   return (
     <Badge
       className={classNames('bg-transparent', {
-        'text-primary': isListCompleted,
+        'text-blue-500': isListCompleted,
       })}
     >
       {listItemsStatus}

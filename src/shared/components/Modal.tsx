@@ -54,7 +54,7 @@ export default function Modal({
             >
               <Dialog.Panel
                 className={classNames(
-                  'w-full transform overflow-hidden rounded-default bg-white text-left align-middle shadow-xl transition-all dark:bg-darkCardBackground',
+                  'w-full transform overflow-hidden rounded-default bg-white text-left align-middle shadow-xl transition-all dark:bg-zinc-800',
                   {
                     'max-w-lg': size === 'default',
                     'max-w-2xl': size === 'xl',
@@ -63,10 +63,10 @@ export default function Modal({
               >
                 <Dialog.Title
                   as="h3"
-                  className="default-header flex-col items-start"
+                  className="default-header flex-col items-start py-2"
                 >
-                  <h1 className="font-bold capitalize dark:text-darkTextLight">{title}</h1>
-                  {subtitle && <p className="text-xs font-light text-lightenGray">{subtitle}</p>}
+                  <h1 className="font-bold capitalize dark:text-gray-300">{title}</h1>
+                  {subtitle && <p className="text-xs text-gray-500">{subtitle}</p>}
                 </Dialog.Title>
                 <Divider />
                 {children}

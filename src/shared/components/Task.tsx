@@ -56,7 +56,7 @@ export default function Task({
     >
       <div
         className={twMerge(
-          'flex flex-row items-start rounded-default bg-white py-2 pr-2 transition-colors hover:bg-lightGray dark:bg-darkCardBackground dark:hover:bg-darkBackgroundIconButton',
+          'flex flex-row items-start rounded-default bg-white py-2 pr-2 transition-colors hover:bg-gray-200/60 dark:bg-zinc-800 dark:hover:bg-zinc-700',
           className
         )}
       >
@@ -77,7 +77,7 @@ export default function Task({
         >
           <div
             className={classNames(
-              'm-0 max-w-[92%] break-words p-0 dark:text-darkTextLight',
+              'm-0 max-w-[92%] break-words p-0 dark:text-gray-300',
               {
                 'break-all': ifTextHasLink(task.text),
               },
@@ -92,11 +92,12 @@ export default function Task({
             {showScheduleDate && task.scheduleDate && handleClickOnScheduleDate && (
               <button onClick={handleClickOnScheduleDate}>
                 <Badge
-                  variant={
-                    new Date(task.scheduleDate as string).getTime() < new Date().getTime()
-                      ? 'danger'
-                      : 'primary'
-                  }
+                  variant={classNames({
+                    danger: new Date(task.scheduleDate as string).getTime() < new Date().getTime(),
+                    primary: new Date(task.scheduleDate as string).getTime() > new Date().getTime(),
+                    // TODO: fix this
+                    alert: new Date(task.scheduleDate as string).getTime() === new Date().getTime(),
+                  })}
                   className="hover:underline"
                 >
                   <CalendarBlank size={10} /> Agendada para{' '}
@@ -110,7 +111,7 @@ export default function Task({
             )}
             {/* updated at */}
             {task.updatedAt && (
-              <small className="m-0 p-0 text-[0.5rem] text-lightenGray dark:text-darkTextGray md:text-[0.625rem]">
+              <small className="m-0 p-0 text-[0.5rem] text-gray-400 dark:text-gray-400 md:text-xs">
                 Atualizada {getDayFromDateString(task.updatedAt as string)} às{' '}
                 {new Date(task.updatedAt as string).toLocaleTimeString(navigator.language, {
                   hour: '2-digit',

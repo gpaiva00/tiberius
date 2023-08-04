@@ -69,14 +69,14 @@ export default function Task({
     >
       <div
         className={twMerge(
-          'flex gap-4 rounded-default bg-white p-4 transition-colors hover:bg-lightGray dark:bg-darkCardBackground dark:hover:bg-darkBackgroundIconButton',
+          'flex flex-row items-center rounded-default bg-white p-2 transition-colors dark:bg-zinc-800',
           className
         )}
       >
         {/* item text */}
         <div
           className={classNames(
-            'm-0 flex w-full break-words p-0 dark:text-darkTextLight',
+            'm-0 flex w-full break-words p-0 dark:text-gray-300',
             {
               'break-all': ifTextHasLink(task.text),
             },
@@ -101,11 +101,11 @@ export default function Task({
             onClick={() => {
               setEditingTask(null)
             }}
-            className="icon-button"
+            className="icon-button dark:hover:bg-zinc-600"
           >
             <TrashSimple
               {...DEFAULT_ICON_PROPS}
-              className="dark:text-darkTextLight"
+              className="dark:text-gray-300"
             />
           </button>
         </div>

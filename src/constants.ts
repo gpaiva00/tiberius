@@ -17,6 +17,7 @@ export const HELP_ROUTE = '/help'
 export const OVERVIEW_ROUTE = '/overview'
 export const SEARCH_ROUTE = '/search'
 export const APP_SETTINGS_ROUTE = '/app-settings'
+export const NOTIFICATIONS_ROUTE = '/notifications'
 
 export const GENERAL_LIST: Omit<ListProps, 'userId' | 'createdAt'> = {
   id: uuidv4(),

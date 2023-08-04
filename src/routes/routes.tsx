@@ -13,7 +13,6 @@ import AppSettings from '@/pages/appSettings'
 import ChangeLog from '@/pages/changeLog'
 import Contact from '@/pages/contact'
 import Error from '@/pages/error'
-import Help from '@/pages/help'
 import Home from '@/pages/home'
 import Lists from '@/pages/lists'
 import ListSettings from '@/pages/listSettings'
@@ -29,16 +28,17 @@ import {
   APP_SETTINGS_ROUTE,
   CHANGE_LOG_ROUTE,
   CONTACT_ROUTE,
-  HELP_ROUTE,
   LIST_ROUTE,
   LIST_SETTINGS_ROUTE,
   LISTS_ROUTE,
+  NOTIFICATIONS_ROUTE,
   OVERVIEW_ROUTE,
   SIGN_IN_ROUTE,
   TERMOS_OF_USE_ROUTE,
   USER_ROUTE,
 } from '@/constants'
-import Redesign from '@/pages/redesign'
+import Notifications from '@/pages/Notifications'
+import { useEffect } from 'react'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -58,14 +58,15 @@ const router = createBrowserRouter(
         element={<Error />}
       />
       <Route element={<DefaultLayout />}>
-        <Route
-          path="/redesign"
-          element={<Redesign />}
-        />
         <Route element={<PrivateRouter />}>
           <Route
             path={APP_SETTINGS_ROUTE}
             element={<AppSettings />}
+            errorElement={<Error />}
+          />
+          <Route
+            path={NOTIFICATIONS_ROUTE}
+            element={<Notifications />}
             errorElement={<Error />}
           />
           <Route
@@ -120,16 +121,24 @@ const router = createBrowserRouter(
           element={<About />}
           errorElement={<Error />}
         />
-        <Route
+        {/* <Route
           path={HELP_ROUTE}
           element={<Help />}
           errorElement={<Error />}
-        />
+        /> */}
       </Route>
     </Route>
   )
 )
 
 export default function AppRoutes() {
+  useEffect(() => {
+    if (!('Notification' in window)) {
+      console.log('Browser does not support desktop notification.')
+    } else {
+      // Notification.requestPermission()
+    }
+  }, [])
+
   return <RouterProvider router={router} />
 }

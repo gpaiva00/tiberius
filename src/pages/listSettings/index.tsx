@@ -54,10 +54,10 @@ export default function ListSettings() {
     <>
       {/* title container */}
       <div className="mb-2 flex w-full items-center px-4">
-        <h1 className="default-header-title max-w-[5.25rem] truncate dark:text-darkTextLight md:max-w-fit">
+        <h1 className="default-header-title max-w-[5.25rem] truncate dark:text-gray-300 md:max-w-fit">
           Configurações ・
         </h1>
-        <h1 className="default-header-title max-w-xs items-center truncate text-lightenGray dark:text-darkTextGray md:max-w-[15.625rem]">
+        <h1 className="default-header-title max-w-xs items-center truncate text-zinc-600 dark:text-gray-300 md:max-w-[15.625rem]">
           {selectedList?.type === ListTypesProps.GENERAL && (
             <Archive
               {...DEFAULT_ICON_PROPS}
@@ -68,7 +68,7 @@ export default function ListSettings() {
         </h1>
       </div>
       {/* content container */}
-      <div className="flex min-h-[350px] w-full flex-col items-center gap-2 overflow-y-scroll rounded-default bg-white p-2 dark:bg-darkCardBackground md:gap-8 md:p-4">
+      <div className="flex min-h-[350px] w-full flex-col items-center gap-2 overflow-y-scroll rounded-default bg-white p-2 dark:bg-zinc-800 md:gap-8 md:p-4">
         <div className="flex w-full flex-1 flex-col gap-1">
           <label className="default-label">Nome da lista</label>
           <input
@@ -85,7 +85,7 @@ export default function ListSettings() {
         </div>
         {selectedList?.type !== ListTypesProps.GENERAL && (
           <button
-            className="secondary-button max-w-sm text-red-500"
+            className="secondary-button dark:text-dark-red max-w-sm text-red-500"
             onClick={handleDeleteList}
           >
             Excluir lista

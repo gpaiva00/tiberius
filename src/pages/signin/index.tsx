@@ -33,15 +33,17 @@ export default function SignIn() {
         <h1 className="default-header-title">Entrar ou criar conta</h1>
       </div>
       {/* content container */}
-      <div className="flex min-h-[350px] w-full flex-col items-center gap-2 overflow-y-scroll rounded-default bg-white p-2 dark:bg-darkCardBackground md:gap-8 md:p-4">
+      <div className="flex min-h-[350px] w-full flex-col items-center gap-2 overflow-y-scroll rounded-default bg-white p-2 dark:bg-zinc-800 md:gap-8 md:p-4">
         <div className="flex h-full flex-col items-center justify-center gap-10 px-2">
-          <p className="text-lg font-bold dark:text-darkTextLight">
-            Entre para ter acesso ao Tiberius.
-            <p className="text-start font-normal text-lightenGray md:text-center">
+          <div className="flex flex-col gap-4">
+            <h1 className="text-xl font-bold capitalize dark:text-gray-300">
+              Entre para ter acesso ao Tiberius.
+            </h1>
+            <p className="text-start font-normal text-gray-200 md:text-center">
               {' '}
               Simples assim, e de graça.
             </p>
-          </p>
+          </div>
 
           <button
             className="primary-button max-w-sm gap-4"
